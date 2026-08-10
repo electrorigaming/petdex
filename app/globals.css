@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Canales RGB (no hex): habilita los modificadores de opacidad de Tailwind
+ * (bg-primary/90, etc.) vía rgb(var(--x) / <alpha-value>) en tailwind.config.ts.
+ */
+:root {
+  --color-primary: 24 24 27; /* #18181b */
+  --color-on-primary: 255 255 255; /* #ffffff */
+  --color-secondary: 63 63 70; /* #3f3f46 */
+  --color-accent: 37 99 235; /* #2563eb */
+  --color-on-accent: 255 255 255; /* #ffffff */
+  --color-background: 250 250 250; /* #fafafa */
+  --color-foreground: 9 9 11; /* #09090b */
+  --color-card: 255 255 255; /* #ffffff */
+  --color-card-foreground: 9 9 11; /* #09090b */
+  --color-muted: 232 236 240; /* #e8ecf0 */
+  --color-muted-foreground: 100 116 139; /* #64748b */
+  --color-border: 228 228 231; /* #e4e4e7 */
+  --color-destructive: 220 38 38; /* #dc2626 */
+  --color-ring: 37 99 235; /* #2563eb */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--color-ring));
+  outline-offset: 2px;
+}
+
+/*
+ * El atributo data-view en <html> decide el layout, no el estado de React:
+ * el script anti-flash de app/layout.tsx lo aplica antes de la hidratación
+ * (research.md §3), así que el mismo árbol de PetCard sirve para ambas vistas.
+ */
+.pet-collection {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .pet-collection {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pet-collection {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .pet-collection {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+html[data-view="list"] .pet-collection {
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-card-media {
+  aspect-ratio: 1 / 1;
+}
+
+html[data-view="list"] .pet-card {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+html[data-view="list"] .pet-card-media {
+  width: 120px;
+  flex-shrink: 0;
+  aspect-ratio: 3 / 2;
+}

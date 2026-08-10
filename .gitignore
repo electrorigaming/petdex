@@ -3,3 +3,12 @@
 # Supabase CLI local state
 supabase/.temp
 supabase/.branches
+
+# Python (skills scripts)
+__pycache__/
+*.pyc
+
+# Next.js / Node (added ahead of scaffold)
+node_modules/
+.next/
+*.tsbuildinfo
