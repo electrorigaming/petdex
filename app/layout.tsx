@@ -1,6 +1,9 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import Link from "next/link"
 import Script from "next/script"
+import { Suspense } from "react"
+import { SessionNavLink } from "@/components/auth/session-nav-link"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -34,6 +37,16 @@ export default function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: VIEW_PREFERENCE_SCRIPT }}
         />
+        <header className="border-b border-border">
+          <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 py-3 md:px-6">
+            <Link href="/" className="text-label font-semibold text-foreground">
+              PetDex
+            </Link>
+            <Suspense fallback={null}>
+              <SessionNavLink />
+            </Suspense>
+          </div>
+        </header>
         {children}
       </body>
     </html>

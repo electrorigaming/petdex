@@ -1,19 +1,28 @@
 <!--
-Sync Impact Report
-- Version change: [TEMPLATE] → 1.0.0 (initial ratification)
-- Modified principles: n/a (first concrete fill of the template)
-- Added principles:
-  - I. Los permisos viven en la base de datos
-  - II. Minimalismo visual (Swiss Style)
-  - III. Mobile-first, una sola mano
-  - IV. Ninguna imagen depende de una URL que expira
-  - V. El esquema es la fuente de verdad
-  - VI. Degradación offline
-- Added sections: Stack y Alcance, Flujo de Desarrollo y Cumplimiento
-- Removed sections: none
+Sync Impact Report — v1.0.0 → 1.1.0
+- Version change: 1.0.0 → 1.1.0 (MINOR: expande alcance v1 + actualiza
+  rationale de un principio existente, sin redefinirlo de forma incompatible)
+- Trigger: clarificación de la feature 002-panel-administracion
+  (specs/002-panel-administracion/spec.md) — el login del panel de admin pasa
+  de "una única cuenta con email/contraseña" a "múltiples cuentas
+  administradoras autorizadas por email de Google (Google Sign-In)", todas
+  con los mismos permisos, sin roles ni jerarquía.
+- Modified principles:
+  - I. Los permisos viven en la base de datos — Rationale actualizado: "una
+    sola cuenta de escritura" → "un conjunto acotado de cuentas de escritura
+    (administradoras autorizadas por Google, todas con los mismos permisos)".
+    La regla central del principio (RLS como única garantía real, service
+    role key prohibida) no cambió.
+- Added principles: ninguno
+- Removed principles: ninguno
+- Scope change: "Stack y Alcance" — se retira "múltiples administradores" de
+  la lista de exclusiones del alcance v1 (ahora está dentro de alcance).
+- Added sections: ninguna
+- Removed sections: ninguna
 - Templates requiring follow-up: none — .specify/templates/*.md reference the
   constitution generically and need no principle-specific edits.
-- Deferred TODOs: none
+- Deferred TODOs: `CLAUDE.md` se actualiza en el mismo cambio para reflejar
+  esta enmienda (guía operativa derivada de esta constitución).
 -->
 
 # PetDex Constitution
@@ -30,10 +39,13 @@ La service role key de Supabase NO se usa en este proyecto: no vive en el
 `.env`, no se importa, no existe. Si en algún momento parece necesaria para
 destrabar una tarea, eso es una señal de que una política está mal escrita;
 la solución es arreglar la política, nunca saltear RLS.
-**Rationale**: Es una app de lectura pública con una sola cuenta de escritura.
-Sin este principio, cualquier descuido en una Server Action expondría
-escritura no autorizada; centralizar la garantía en Postgres hace que la
-seguridad no dependa de que cada nuevo endpoint recuerde revalidar.
+**Rationale**: Es una app de lectura pública con un conjunto acotado de
+cuentas de escritura — cada una una cuenta de Google autorizada manualmente
+como administradora, todas con exactamente los mismos permisos, sin roles ni
+jerarquía entre ellas. Sin este principio, cualquier descuido en una Server
+Action expondría escritura no autorizada; centralizar la garantía en Postgres
+hace que la seguridad no dependa de que cada nuevo endpoint recuerde
+revalidar, sin importar cuántas cuentas administradoras existan.
 
 ### II. Minimalismo visual (Swiss Style)
 La interfaz sigue una estética Swiss Style minimalista: paleta neutra con un
@@ -96,8 +108,8 @@ intercambiables: `lib/supabase/client.ts` (browser), `lib/supabase/server.ts`
 
 Alcance v1 — dentro: cuadrícula con contador, ficha con timeline de hitos,
 calendario de avistamientos, panel de admin, PWA con degradación offline.
-Alcance v1 — fuera: múltiples administradores, comentarios de usuarios,
-notificaciones push, geolocalización automática, flujo de adopciones.
+Alcance v1 — fuera: comentarios de usuarios, notificaciones push,
+geolocalización automática, flujo de adopciones.
 Cualquier tarea que empuje hacia algo fuera de alcance se detiene y se
 pregunta antes de implementar.
 
@@ -138,4 +150,4 @@ explícitamente en la descripción del cambio. `CLAUDE.md`, en la raíz del
 repositorio, sirve como guía operativa del día a día derivada de esta
 constitución.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-09 | **Last Amended**: 2026-08-09
+**Version**: 1.1.0 | **Ratified**: 2026-08-09 | **Last Amended**: 2026-08-10

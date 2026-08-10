@@ -9,6 +9,8 @@ export type PetSummary = {
   zone: string | null
 }
 
+export type PetStatus = "activo" | "sin_ver" | "adoptado" | "fallecido"
+
 export type PetDetail = {
   name: string
   nicknames: string[]
@@ -19,7 +21,10 @@ export type PetDetail = {
   weightKg: number | null
   description: string | null
   photoUrl: string | null
+  status: PetStatus
 }
+
+export type WriteResult = { ok: true; slug: string } | { ok: false; message: string }
 
 export async function getPetSummaries(): Promise<PetSummary[]> {
   const supabase = await createClient()
@@ -57,7 +62,7 @@ export async function getPetBySlug(
   const { data, error } = await supabase
     .from("pets")
     .select(
-      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url"
+      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status"
     )
     .eq("slug", slug)
     .maybeSingle()
@@ -76,6 +81,7 @@ export async function getPetBySlug(
     weightKg: data.weight_kg,
     description: data.description,
     photoUrl: data.photo_url,
+    status: data.status as PetStatus,
   }
 }
 
@@ -96,6 +102,26 @@ export async function getMilestonesForPet(petId: string): Promise<Milestone[]> {
     category: row.category as Milestone["category"],
     note: row.note,
   }))
+}
+
+export async function getMilestoneById(id: string): Promise<Milestone | null> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("milestones")
+    .select("id, title, occurred_on, category, note")
+    .eq("id", id)
+    .maybeSingle()
+
+  if (error) throw error
+  if (!data) return null
+
+  return {
+    id: data.id,
+    title: data.title,
+    occurredOn: data.occurred_on,
+    category: data.category as Milestone["category"],
+    note: data.note,
+  }
 }
 
 export async function getAllPetSlugs(): Promise<string[]> {

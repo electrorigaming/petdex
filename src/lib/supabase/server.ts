@@ -30,8 +30,10 @@ export async function createClient() {
               cookieStore.set(name, value, options)
             )
           } catch {
-            // Se llama desde un Server Component sin capacidad de escritura
-            // de cookies (no hay sesión de usuario en esta feature) — ignorar.
+            // Un Server Component no puede escribir cookies — es esperable.
+            // El refresco real de la sesión lo hace middleware.ts en cada
+            // request; este catch solo evita que un Server Component rompa
+            // el render por intentarlo.
           }
         },
       },

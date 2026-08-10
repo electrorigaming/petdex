@@ -1,7 +1,8 @@
 # PetDex
 
 PWA de registro y seguimiento de animales callejeros de un barrio.
-Lectura pública sin cuenta; escritura solo para una cuenta administradora.
+Lectura pública sin cuenta; escritura solo para cuentas administradoras
+autorizadas (login con Google).
 
 **Stack:** Next.js App Router · TypeScript · Tailwind · shadcn/ui · Supabase · Vercel
 **Metodología:** Spec-Driven Development (Spec-Kit). Los artefactos viven en `specs/`.
@@ -27,6 +28,13 @@ Solo dos variables de entorno son válidas:
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 ```
+
+### Login de administradoras
+
+Google Sign-In únicamente — sin contraseña propia, sin registro, sin
+recuperación de contraseña. **Puede haber más de una cuenta administradora**:
+cada email de Google autorizado se carga a mano en la tabla `admins`, todas
+con exactamente los mismos permisos, sin roles ni jerarquía entre ellas.
 
 ### Clientes de Supabase
 
@@ -114,9 +122,9 @@ seguir. Los tipos de `src/types/database.ts` son generados: no editarlos a mano.
 **Dentro:** cuadrícula con contador, ficha con timeline de hitos, calendario de
 avistamientos, panel de admin, PWA con degradación offline.
 
-**Fuera:** múltiples administradores, comentarios de usuarios, notificaciones
-push, geolocalización automática, flujo de adopciones. Si una tarea empuja hacia
-alguno de estos, pará y preguntá antes de implementar.
+**Fuera:** comentarios de usuarios, notificaciones push, geolocalización
+automática, flujo de adopciones. Si una tarea empuja hacia alguno de estos,
+pará y preguntá antes de implementar.
 
 ---
 
