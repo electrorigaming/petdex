@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test"
+import { test, expect, request as playwrightRequest } from "@playwright/test"
 import { createClient } from "@supabase/supabase-js"
 import type { Database } from "@/types/database"
 
@@ -31,5 +31,31 @@ test.describe("Visitante sin sesión (FR-022)", () => {
   test("rutas protegidas redirigen a /login", async ({ page }) => {
     await page.goto("/mascotas/nueva")
     await page.waitForURL(/\/login\?next=/)
+  })
+
+  test("el HTML de servidor no filtra controles de admin ni con sesión activa (contracts/service-worker.md)", async ({
+    baseURL,
+  }) => {
+    // Un service worker que cachea /  y /mascotas/[slug] con NetworkFirst
+    // (research.md §1) exige que esas rutas devuelvan el mismo documento sin
+    // importar quién las pida — se verifica con la cookie de una sesión
+    // admin real, no solo desde un visitante anónimo.
+    const adminContext = await playwrightRequest.newContext({
+      baseURL,
+      storageState: "tests/e2e/.auth/admin.json",
+    })
+
+    const homeHtml = await (await adminContext.get("/")).text()
+    expect(homeHtml).not.toContain("Editar")
+    expect(homeHtml).not.toContain("Agregar hito")
+    expect(homeHtml).not.toContain("Cerrar sesión")
+
+    test.skip(!existingSlug, "No hay ninguna mascota en la base para probar la ficha.")
+    const petHtml = await (await adminContext.get(`/mascotas/${existingSlug}`)).text()
+    expect(petHtml).not.toContain("Editar")
+    expect(petHtml).not.toContain("Agregar hito")
+    expect(petHtml).not.toContain("Cerrar sesión")
+
+    await adminContext.dispose()
   })
 })

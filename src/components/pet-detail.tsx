@@ -11,7 +11,7 @@ export function PetDetail({ pet }: { pet: PetDetailType }) {
             src={pet.photoUrl}
             alt={pet.name}
             fill
-            sizes="(min-width: 768px) 768px, 100vw"
+            unoptimized
             className="object-cover"
             priority
           />

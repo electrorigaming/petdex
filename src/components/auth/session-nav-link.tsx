@@ -1,16 +1,20 @@
+"use client"
+
+// Client Component sobre useSession() (research.md §1) — el servidor ya no
+// decide qué renderizar acá, así que el HTML de /, que monta este
+// componente en el header, no varía por sesión (precondición para poder
+// cachearlo con el service worker, contracts/service-worker.md).
+
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
+import { useSession } from "@/hooks/use-session"
 import { LogoutButton } from "@/components/auth/logout-button"
 
-export async function SessionNavLink() {
-  const supabase = await createClient()
-  // getUser() valida el token contra el servidor de Auth; getSession() solo
-  // leería la cookie sin validarla. Ver src/lib/supabase/middleware.ts.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+export function SessionNavLink() {
+  const { isAuthenticated, loading } = useSession()
 
-  if (!user) {
+  if (loading) return null
+
+  if (!isAuthenticated) {
     return (
       <Link
         href="/login"

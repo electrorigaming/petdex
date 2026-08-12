@@ -41,9 +41,28 @@ export default defineConfig({
       },
     },
     {
+      // anonymous-visibility.spec.ts navega sin sesión (use.storageState no
+      // se define acá), pero un test hace además un fetch autenticado con
+      // el archivo que deja auth.setup.ts (contracts/service-worker.md) —
+      // depende de "setup" para que ese archivo exista antes de correr.
       name: "anonymous",
       testMatch: /anonymous-visibility\.spec\.ts/,
+      dependencies: ["setup"],
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      // offline-sighting.spec.ts (User Story 5) necesita sesión admin igual
+      // que "authenticated", pero en su propio proyecto: usa
+      // context.setOffline(), que conviene aislar de admin-flow.spec.ts para
+      // que ninguno de los dos corra con la red del otro alterada por
+      // casualidad si Playwright decide compartir un worker.
+      name: "offline",
+      testMatch: /offline-sighting\.spec\.ts/,
+      dependencies: ["setup"],
+      use: {
+        ...devices["Desktop Chrome"],
+        storageState: "tests/e2e/.auth/admin.json",
+      },
     },
   ],
 });

@@ -1,0 +1,24 @@
+name: Keep Supabase awake
+
+# Los proyectos gratuitos de Supabase se pausan tras 7 días sin actividad
+# (CLAUDE.md, deuda técnica documentada). Este workflow es el workaround: un
+# ping trivial cada 3 días. La solución real sigue siendo el plan Pro.
+
+on:
+  schedule:
+    - cron: "0 0 */3 * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping pets_overview
+        run: |
+          curl -sf -o /dev/null -w "keep-alive: %{http_code}\n" \
+            "$SUPABASE_URL/rest/v1/pets_overview?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY"
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}

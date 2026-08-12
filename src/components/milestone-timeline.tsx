@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { ArrowUpDown, CalendarDays, Pencil, Plus } from "lucide-react"
+import { useSession } from "@/hooks/use-session"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DeleteMilestoneDialog } from "@/components/milestones/delete-milestone-dialog"
@@ -18,12 +19,14 @@ const CATEGORY_LABEL: Record<NonNullable<Milestone["category"]>, string> = {
 export function MilestoneTimeline({
   milestones: initialMilestones,
   petSlug,
-  isAdmin,
 }: {
   milestones: Milestone[]
   petSlug: string
-  isAdmin: boolean
 }) {
+  // isAdmin ya no llega del servidor (research.md §1): el HTML de
+  // /mascotas/[slug] no puede variar por sesión para poder cachearlo con el
+  // service worker.
+  const { isAuthenticated: isAdmin } = useSession()
   const [milestones, setMilestones] = useState(initialMilestones)
   const [direction, setDirection] = useState<"desc" | "asc">("desc")
   const sorted = sortMilestones(milestones, direction)
