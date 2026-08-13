@@ -1,8 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Search } from "lucide-react"
-import { NoResultsState } from "@/components/empty-states"
+import { EmptyState, NoResultsState } from "@/components/empty-states"
 import { PetCard } from "@/components/pet-card"
 import {
   Select,
@@ -11,8 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import { ViewToggle } from "@/components/view-toggle"
+import { useCatalogSearch } from "@/components/catalog-search-context"
 import { normalizeSearchText } from "@/lib/search"
 import type { PetSummary } from "@/lib/pets"
 
@@ -24,13 +23,27 @@ export type PetGridProps = {
 const ALL_ZONES = "__all__"
 
 export function PetGrid({ pets, total }: PetGridProps) {
-  const [query, setQuery] = useState("")
-  const [zone, setZone] = useState(ALL_ZONES)
+  const { query, setQuery } = useCatalogSearch()
 
+  if (total === 0) return <EmptyState />
+
+  return <FilterablePetGrid pets={pets} total={total} query={query} setQuery={setQuery} />
+}
+
+function FilterablePetGrid({
+  pets,
+  total,
+  query,
+  setQuery,
+}: PetGridProps & { query: string; setQuery: (q: string) => void }) {
   const zones = useMemo(
     () => [...new Set(pets.map((p) => p.zone).filter((z): z is string => Boolean(z)))],
     [pets]
   )
+
+  // El estado de la zona no se comparte con el header (a diferencia del
+  // buscador) — solo tiene sentido en esta pantalla, así que se queda local.
+  const [zone, setZoneState] = useState(ALL_ZONES)
 
   const filtered = useMemo(() => {
     const normalizedQuery = normalizeSearchText(query.trim())
@@ -43,31 +56,38 @@ export function PetGrid({ pets, total }: PetGridProps) {
     })
   }, [pets, query, zone])
 
+  const trimmedQuery = query.trim()
+  const isFiltered = trimmedQuery.length > 0 || zone !== ALL_ZONES
+
+  function clearFilters() {
+    setQuery("")
+    setZoneState(ALL_ZONES)
+  }
+
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-display text-foreground">{total}</p>
-        <ViewToggle />
+    <div className="flex flex-col gap-4">
+      <div>
+        {isFiltered ? (
+          <>
+            <p className="text-counter md:text-counter-lg text-foreground">{filtered.length}</p>
+            <p className="mt-1 text-meta text-neutral-500">
+              {trimmedQuery
+                ? `resultados para "${trimmedQuery}"${zone !== ALL_ZONES ? ` en ${zone}` : ""}`
+                : `mascotas en ${zone}`}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="text-counter md:text-counter-lg text-foreground">{total}</p>
+            <p className="mt-1 text-meta text-neutral-500">mascotas en el registro</p>
+          </>
+        )}
       </div>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
-        <div className="relative flex-1">
-          <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            type="search"
-            placeholder="Buscar por nombre o apodo"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="pl-9"
-            aria-label="Buscar mascota por nombre o apodo"
-          />
-        </div>
+      <div className="flex items-center gap-2.5">
         {zones.length > 0 && (
-          <Select value={zone} onValueChange={setZone}>
-            <SelectTrigger className="sm:w-48" aria-label="Filtrar por zona">
+          <Select value={zone} onValueChange={setZoneState}>
+            <SelectTrigger className="flex-1 md:w-[190px] md:flex-none" aria-label="Filtrar por zona">
               <SelectValue placeholder="Todas las zonas" />
             </SelectTrigger>
             <SelectContent>
@@ -80,10 +100,11 @@ export function PetGrid({ pets, total }: PetGridProps) {
             </SelectContent>
           </Select>
         )}
+        <ViewToggle className="md:ml-auto" />
       </div>
 
       {filtered.length === 0 ? (
-        <NoResultsState />
+        <NoResultsState query={trimmedQuery} onClearFilters={clearFilters} />
       ) : (
         <div className="pet-collection">
           {filtered.map((pet) => (

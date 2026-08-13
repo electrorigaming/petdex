@@ -13,8 +13,8 @@ export default async function NewMilestonePage({
   if (!pet) notFound()
 
   return (
-    <main className="mx-auto max-w-screen-sm px-4 py-6 md:px-6">
-      <h1 className="mb-6 text-h1 text-foreground">Agregar hito a {pet.name}</h1>
+    <main className="mx-auto max-w-screen-sm px-4 py-6 md:px-14">
+      <h1 className="mb-4 text-h4 text-text">Agregar hito a {pet.name}</h1>
       <MilestoneForm mode="create" petId={pet.id} petSlug={slug} />
     </main>
   )

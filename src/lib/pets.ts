@@ -7,6 +7,8 @@ export type PetSummary = {
   nicknames: string[]
   photoUrl: string | null
   zone: string | null
+  seenToday: boolean
+  lastSeenOn: string | null
 }
 
 export type PetStatus = "activo" | "sin_ver" | "adoptado" | "fallecido"
@@ -30,7 +32,7 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("pets_overview")
-    .select("slug, name, nicknames, photo_url, zone")
+    .select("slug, name, nicknames, photo_url, zone, seen_today, last_seen_on")
     .order("registered_on", { ascending: false })
 
   if (error) throw error
@@ -41,6 +43,8 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
     nicknames: row.nicknames ?? [],
     photoUrl: row.photo_url,
     zone: row.zone,
+    seenToday: row.seen_today ?? false,
+    lastSeenOn: row.last_seen_on,
   }))
 }
 

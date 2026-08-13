@@ -2,7 +2,10 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowUpDown, CalendarDays, Pencil, Plus } from "lucide-react"
+import { ArrowsDownUpIcon } from "@phosphor-icons/react/dist/ssr/ArrowsDownUp"
+import { CalendarBlankIcon } from "@phosphor-icons/react/dist/ssr/CalendarBlank"
+import { PencilSimpleIcon } from "@phosphor-icons/react/dist/ssr/PencilSimple"
+import { PlusIcon } from "@phosphor-icons/react/dist/ssr/Plus"
 import { useSession } from "@/hooks/use-session"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -36,25 +39,25 @@ export function MilestoneTimeline({
   }
 
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-3.5 md:max-w-[560px]">
       <div className="flex items-center justify-between">
-        <h2 className="text-h2 text-foreground">Hitos</h2>
-        <div className="flex items-center gap-2">
+        <span className="text-h5 text-text">Hitos</span>
+        <div className="flex items-center gap-1.5">
           {milestones.length > 1 && (
             <Button
               type="button"
-              variant="outline"
-              size="icon"
-              aria-label="Invertir orden de los hitos"
+              variant="ghost"
+              className="text-meta"
               onClick={() => setDirection((d) => (d === "desc" ? "asc" : "desc"))}
             >
-              <ArrowUpDown className="h-4 w-4" aria-hidden="true" />
+              <ArrowsDownUpIcon size={15} aria-hidden="true" />
+              Invertir orden
             </Button>
           )}
           {isAdmin && (
-            <Button asChild variant="outline">
+            <Button asChild variant="secondary">
               <Link href={`/mascotas/${petSlug}/hitos/nuevo`}>
-                <Plus className="h-4 w-4" aria-hidden="true" />
+                <PlusIcon size={14} aria-hidden="true" />
                 Agregar hito
               </Link>
             </Button>
@@ -62,26 +65,30 @@ export function MilestoneTimeline({
         </div>
       </div>
       {sorted.length === 0 ? (
-        <p className="text-body text-muted-foreground">
-          Todavía no hay hitos registrados para esta mascota.
-        </p>
+        <p className="text-caption text-neutral-500">Todavía no hay hitos registrados para esta mascota.</p>
       ) : (
-        <ol className="flex flex-col gap-4">
+        <ol className="flex flex-col gap-3">
           {sorted.map((milestone) => (
-            <li
-              key={milestone.id}
-              className="flex flex-col gap-1 rounded-lg border border-border bg-card p-4"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2 text-label text-muted-foreground">
-                  <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+            <li key={milestone.id} className="flex flex-col gap-1.5 rounded-md bg-card p-3">
+              <div className="flex items-center gap-2.5">
+                <span className="flex items-center gap-1.5 text-caption text-neutral-600">
+                  <CalendarBlankIcon size={12} aria-hidden="true" />
                   {milestone.occurredOn}
-                </div>
+                </span>
+                {milestone.category && (
+                  <Badge variant="accent">{CATEGORY_LABEL[milestone.category]}</Badge>
+                )}
                 {isAdmin && (
-                  <div className="flex items-center gap-1">
-                    <Button asChild variant="ghost" size="icon" aria-label={`Editar el hito ${milestone.title}`}>
+                  <span className="ml-auto flex items-center gap-0.5">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="icon"
+                      className="h-[30px] w-[30px]"
+                      aria-label={`Editar el hito ${milestone.title}`}
+                    >
                       <Link href={`/mascotas/${petSlug}/hitos/${milestone.id}/editar`}>
-                        <Pencil className="h-4 w-4" aria-hidden="true" />
+                        <PencilSimpleIcon size={15} aria-hidden="true" />
                       </Link>
                     </Button>
                     <DeleteMilestoneDialog
@@ -90,18 +97,11 @@ export function MilestoneTimeline({
                       petSlug={petSlug}
                       onDeleted={handleDeleted}
                     />
-                  </div>
+                  </span>
                 )}
               </div>
-              <p className="text-body font-medium text-card-foreground">
-                {milestone.title}
-              </p>
-              {milestone.category && (
-                <Badge>{CATEGORY_LABEL[milestone.category]}</Badge>
-              )}
-              {milestone.note && (
-                <p className="text-label text-muted-foreground">{milestone.note}</p>
-              )}
+              <p className="text-[16px] font-medium text-card-foreground">{milestone.title}</p>
+              {milestone.note && <p className="text-meta text-neutral-500">{milestone.note}</p>}
             </li>
           ))}
         </ol>

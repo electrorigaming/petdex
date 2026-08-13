@@ -13,7 +13,7 @@
 
 import { useEffect, useState } from "react"
 import { useSession } from "@/hooks/use-session"
-import { todayLocal } from "@/lib/dates"
+import { addDays, todayLocal } from "@/lib/dates"
 import { subscribe } from "@/lib/offline/events"
 import { MarkTodayControl } from "@/components/sightings/mark-today-control"
 import { PastDayDialog } from "@/components/sightings/past-day-dialog"
@@ -31,8 +31,16 @@ export function PetSightingsSection({
   registeredOn: string
 }) {
   const { isAuthenticated } = useSession()
+  const yesterday = addDays(todayLocal(), -1)
+  // Una mascota registrada hoy no tiene ningún día pasado para corregir.
+  const hasPastDay = registeredOn <= yesterday
   const [refreshKey, setRefreshKey] = useState(0)
   const [selectedPastDate, setSelectedPastDate] = useState<string | null>(null)
+  // Distingue cómo se abrió el diálogo: click en un día puntual del
+  // calendario (fecha fija, sin selector) o el botón "Corregir un día
+  // anterior" (fecha editable, para no tener que navegar el calendario mes a
+  // mes buscando un día olvidado).
+  const [manualEntry, setManualEntry] = useState(false)
 
   useEffect(() => {
     return subscribe((event) => {
@@ -46,7 +54,13 @@ export function PetSightingsSection({
     // Hoy ya tiene su propio control (<MarkTodayControl>) — el diálogo es
     // solo para corregir un día pasado (User Story 3, FR-014).
     if (date === todayLocal()) return
+    setManualEntry(false)
     setSelectedPastDate(date)
+  }
+
+  function handleManualEntry() {
+    setManualEntry(true)
+    setSelectedPastDate(yesterday)
   }
 
   return (
@@ -66,11 +80,16 @@ export function PetSightingsSection({
         // sesión (RLS igual la rechazaría, pero no tiene sentido abrir el
         // diálogo para que falle).
         onDaySelect={isAuthenticated ? handleDaySelect : undefined}
+        onCorrectDay={isAuthenticated && hasPastDay ? handleManualEntry : undefined}
       />
       {isAuthenticated && (
         <PastDayDialog
           petId={petId}
           date={selectedPastDate}
+          editableDate={manualEntry}
+          minDate={registeredOn}
+          maxDate={yesterday}
+          onDateChange={setSelectedPastDate}
           onClose={() => setSelectedPastDate(null)}
           onSaved={() => {
             setSelectedPastDate(null)

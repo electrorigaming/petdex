@@ -7,10 +7,12 @@
 // de la mascota afectada — por eso no vive dentro de <MarkTodayControl> ni
 // de <SightingCalendar>. petSlug/petName vienen del propio evento (ya
 // denormalizados en PendingSighting, contracts/offline-queue.md), sin
-// consulta adicional.
+// consulta adicional. Nocturne no tiene color de peligro: el ícono de
+// advertencia usa accent-400, nunca rojo.
 
 import { useEffect, useState } from "react"
-import { AlertTriangle, X as XIcon } from "lucide-react"
+import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
+import { XIcon } from "@phosphor-icons/react/dist/ssr/X"
 import Link from "next/link"
 import { pendingKey, remove } from "@/lib/offline/queue"
 import { subscribe } from "@/lib/offline/events"
@@ -54,29 +56,26 @@ export function SyncFailureBanner() {
   if (failures.length === 0) return null
 
   return (
-    <div className="flex flex-col gap-2 bg-destructive/10 px-4 py-2">
+    <div className="flex flex-col gap-1.5 bg-sunken px-3.5 py-2">
       {failures.map((failure) => (
-        <div
-          key={failure.key}
-          role="alert"
-          className="flex items-center justify-between gap-3 text-label text-destructive"
-        >
-          <span className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
-            No se pudo registrar el avistamiento de{" "}
-            <Link href={`/mascotas/${failure.petSlug}`} className="underline">
+        <div key={failure.key} role="alert" className="flex items-center gap-2.5 text-meta text-neutral-300">
+          <WarningIcon size={15} className="shrink-0 text-accent-400" aria-hidden="true" />
+          <span className="flex-1">
+            No se pudo guardar el avistamiento de{" "}
+            <Link href={`/mascotas/${failure.petSlug}`} className="text-accent hover:underline">
               {failure.petName}
-            </Link>
-            : {failure.reason}
+            </Link>{" "}
+            — {failure.reason}
           </span>
           <Button
             type="button"
             variant="ghost"
             size="icon"
+            className="h-7 w-7"
             onClick={() => handleDiscard(failure.key)}
             aria-label={`Descartar aviso de ${failure.petName}`}
           >
-            <XIcon className="h-4 w-4" aria-hidden="true" />
+            <XIcon size={14} className="text-neutral-600" aria-hidden="true" />
           </Button>
         </div>
       ))}

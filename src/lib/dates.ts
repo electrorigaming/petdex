@@ -3,6 +3,16 @@
 
 const LOCAL_OFFSET_HOURS = -3 // UTC-3 fijo — el barrio no observa horario de verano
 
+const WEEKDAY_NAMES = [
+  "domingo",
+  "lunes",
+  "martes",
+  "miércoles",
+  "jueves",
+  "viernes",
+  "sábado",
+]
+
 const MONTH_NAMES = [
   "enero",
   "febrero",
@@ -64,4 +74,24 @@ export function monthLabel(year: number, month: number): string {
 export function dayOfWeek(dateStr: string): number {
   const [year, month, day] = dateStr.split("-").map(Number)
   return new Date(Date.UTC(year, month - 1, day)).getUTCDay()
+}
+
+// "Jueves 6 de agosto" — título de <PastDayDialog> al abrirse desde una
+// celda puntual del calendario (Nocturne 1l).
+export function formatLongDate(dateStr: string): string {
+  const weekday = WEEKDAY_NAMES[dayOfWeek(dateStr)]
+  const day = Number(dateStr.slice(8, 10))
+  const month = MONTH_NAMES[Number(dateStr.slice(5, 7)) - 1]
+  const capitalized = weekday.charAt(0).toUpperCase() + weekday.slice(1)
+  return `${capitalized} ${day} de ${month}`
+}
+
+// to - from, en días completos — usado para el tag "Hoy"/"Ayer" de <PetCard>
+// y el "hace N días" de la fila de lista (diseño Nocturne).
+export function daysBetween(fromDateStr: string, toDateStr: string): number {
+  const [fy, fm, fd] = fromDateStr.split("-").map(Number)
+  const [ty, tm, td] = toDateStr.split("-").map(Number)
+  const from = Date.UTC(fy, fm - 1, fd)
+  const to = Date.UTC(ty, tm - 1, td)
+  return Math.round((to - from) / 86_400_000)
 }

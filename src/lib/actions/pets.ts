@@ -123,3 +123,43 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
   revalidatePath(`/mascotas/${existing.slug}`, "page")
   return { ok: true, slug: existing.slug }
 }
+
+export async function deletePet(
+  id: string
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { ok: false, message: "Iniciá sesión con una cuenta autorizada para continuar." }
+  }
+
+  const { data: existing, error: fetchError } = await supabase
+    .from("pets")
+    .select("photo_url")
+    .eq("id", id)
+    .maybeSingle()
+
+  if (fetchError || !existing) {
+    return { ok: false, message: mapPostgresError(fetchError) }
+  }
+
+  const { error } = await supabase.from("pets").delete().eq("id", id)
+  if (error) {
+    return { ok: false, message: mapPostgresError(error) }
+  }
+
+  // La fila ya se borró (milestones/sightings caen con ella por `on delete
+  // cascade`) — recién ahora se borra la foto. Si esto falla, el peor caso es
+  // un archivo huérfano en el bucket, nunca una mascota a medio borrar.
+  if (existing.photo_url) {
+    const path = existing.photo_url.split("/pet-photos/")[1]
+    if (path) {
+      await supabase.storage.from("pet-photos").remove([path])
+    }
+  }
+
+  revalidatePath("/")
+  return { ok: true }
+}

@@ -2,14 +2,13 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+// Nocturne .card: superficie rellena (bg-surface), sin borde — la elevación
+// es aparte (.elev-sm/md/lg, box-shadow), no una línea de borde.
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(
-        "rounded-lg border border-border bg-card text-card-foreground",
-        className
-      )}
+      className={cn("flex flex-col gap-2 rounded-md bg-card p-3 text-card-foreground", className)}
       {...props}
     />
   )
@@ -18,7 +17,7 @@ Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col gap-1 p-4", className)} {...props} />
+    <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props} />
   )
 )
 CardHeader.displayName = "CardHeader"
@@ -27,7 +26,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn("text-h2 font-semibold text-card-foreground", className)}
+      className={cn("text-[17px] font-medium leading-tight text-card-foreground", className)}
       {...props}
     />
   )
@@ -35,9 +34,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
 CardTitle.displayName = "CardTitle"
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-4 pt-0", className)} {...props} />
-  )
+  ({ className, ...props }, ref) => <div ref={ref} className={cn(className)} {...props} />
 )
 CardContent.displayName = "CardContent"
 

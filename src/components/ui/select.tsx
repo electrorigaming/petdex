@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
-import { Check, ChevronDown } from "lucide-react"
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
+import { CaretDownIcon } from "@phosphor-icons/react/dist/ssr/CaretDown"
 
 import { cn } from "@/lib/utils"
 
@@ -16,14 +17,14 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-10 w-full items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 text-body text-card-foreground focus-visible:border-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50",
+      "flex min-h-9 w-full items-center justify-between gap-2 rounded-md border border-divider bg-card px-2.5 text-label text-card-foreground hover:border-text/45 focus-visible:border-accent focus-visible:outline-0 disabled:opacity-45",
       className
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+      <CaretDownIcon size={14} className="text-neutral-600" aria-hidden="true" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -38,7 +39,7 @@ const SelectContent = React.forwardRef<
       ref={ref}
       position={position}
       className={cn(
-        "z-50 overflow-hidden rounded-lg border border-border bg-card text-card-foreground shadow-md",
+        "z-50 overflow-hidden rounded-md bg-card text-card-foreground shadow-md",
         position === "popper" && "translate-y-1",
         className
       )}
@@ -57,14 +58,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pl-8 pr-2 text-body outline-none focus:bg-muted data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 pl-8 pr-2 text-label outline-none focus:bg-text/[.07] data-[disabled]:pointer-events-none data-[disabled]:opacity-45",
       className
     )}
     {...props}
   >
     <span className="absolute left-2 flex h-4 w-4 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" aria-hidden="true" />
+        <CheckIcon size={14} className="text-accent" aria-hidden="true" />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

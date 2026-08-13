@@ -4,10 +4,15 @@
 // con código de error (RLS, FK) se muestra como error inline; un fallo sin
 // código (sin conexión) encola en vez de solo avisar (User Story 5,
 // FR-019/020/021) — misma función callMarkSighting que reintenta
-// src/lib/offline/sync.ts, research.md §6.
+// src/lib/offline/sync.ts, research.md §6. Copy y botones per Nocturne 1g:
+// "Vista hoy" (btn-primary) / "Pasé y no estaba" (btn-secondary) — el
+// tratamiento relleno adicional (bg-accent-800 / bg-text/7) marca cuál de
+// los dos está confirmado hoy, sin abandonar el lenguaje de botón delineado.
 
 import { useEffect, useState } from "react"
-import { Check, Clock, X } from "lucide-react"
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
+import { XIcon } from "@phosphor-icons/react/dist/ssr/X"
+import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
 import { createClient } from "@/lib/supabase/client"
 import { callMarkSighting } from "@/lib/sightings"
 import { mapPostgresError } from "@/lib/errors"
@@ -17,6 +22,7 @@ import { subscribe } from "@/lib/offline/events"
 import { usePendingSighting } from "@/hooks/use-pending-sighting"
 import { AdminOnly } from "@/components/auth/admin-only"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 type MarkState =
   | { status: "idle" }
@@ -80,8 +86,9 @@ function MarkTodayControlInner({
       if (!result.error.code) {
         // Sin conexión: encolar en vez de solo avisar. Optimista (research.md
         // §8) — el botón queda marcado de inmediato, igual que un éxito
-        // online; el badge de reloj (usePendingSighting) es lo que distingue
-        // "pendiente" de "confirmado" hasta que el motor de sync lo resuelva.
+        // online; el punto de acento (usePendingSighting) es lo que
+        // distingue "pendiente" de "confirmado" hasta que el motor de sync
+        // lo resuelva.
         await enqueueSighting({ petId, petSlug, petName, seenOn: date, seen })
         setState({ status: "confirmed", seen })
         return
@@ -102,38 +109,41 @@ function MarkTodayControlInner({
   const isPending = pending !== null
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex gap-2">
+    <div className="flex flex-col gap-3">
+      <span className="text-h5 text-text">¿La viste hoy?</span>
+      <div className="flex gap-2.5">
         <Button
           type="button"
-          variant={seenIsActive ? "default" : "outline"}
-          className="relative h-12 flex-1"
+          variant="primary"
+          aria-pressed={seenIsActive}
+          className={cn("min-h-12 flex-1 text-[15px]", seenIsActive && "bg-accent-800")}
           disabled={isSaving}
           onClick={() => handleMark(true)}
         >
-          <Check className="h-4 w-4" aria-hidden="true" />
-          Visto hoy
-          {isPending && seenIsActive && <Clock className="h-3.5 w-3.5" aria-hidden="true" />}
+          <CheckIcon size={17} aria-hidden="true" />
+          Vista hoy
         </Button>
         <Button
           type="button"
-          variant={notThereIsActive ? "default" : "outline"}
-          className="relative h-12 flex-1"
+          variant="secondary"
+          aria-pressed={notThereIsActive}
+          className={cn("min-h-12 flex-1 text-[15px]", notThereIsActive && "bg-text/[.07]")}
           disabled={isSaving}
           onClick={() => handleMark(false)}
         >
-          <X className="h-4 w-4" aria-hidden="true" />
-          Revisado y no estaba
-          {isPending && notThereIsActive && <Clock className="h-3.5 w-3.5" aria-hidden="true" />}
+          <XIcon size={16} aria-hidden="true" />
+          Pasé y no estaba
         </Button>
       </div>
       {isPending && (
-        <p role="status" className="text-label text-muted-foreground">
-          Pendiente de sincronizar — se guardó en el celular, se envía solo cuando vuelva la señal.
+        <p role="status" className="flex items-center gap-1.5 text-meta text-neutral-500">
+          <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+          Marcada hoy sin conexión — se sincroniza sola cuando vuelva la señal.
         </p>
       )}
       {state.status === "error" && (
-        <p role="alert" className="text-label text-destructive">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+          <WarningIcon size={14} aria-hidden="true" />
           {state.message}
         </p>
       )}

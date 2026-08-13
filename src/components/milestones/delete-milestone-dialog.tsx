@@ -1,8 +1,13 @@
 "use client"
 
+// Mismo patrón que <DeletePetButton>: confirmar no borra al instante — el
+// hito desaparece de la lista ya (optimista) y el borrado real en el
+// servidor se programa 15s después vía <DeleteUndoProvider> (Nocturne 1k).
+
 import { useState } from "react"
-import { Trash2 } from "lucide-react"
+import { TrashIcon } from "@phosphor-icons/react/dist/ssr/Trash"
 import { deleteMilestone } from "@/lib/actions/milestones"
+import { useDeleteUndo } from "@/components/delete-undo-context"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -25,47 +30,48 @@ export function DeleteMilestoneDialog({
   petSlug: string
   onDeleted: (milestoneId: string) => void
 }) {
+  const { scheduleDelete } = useDeleteUndo()
   const [open, setOpen] = useState(false)
-  const [deleting, setDeleting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
 
-  async function handleConfirm() {
-    setDeleting(true)
-    setError(null)
-    const result = await deleteMilestone(milestoneId, petSlug)
-    setDeleting(false)
-
-    if (!result.ok) {
-      setError(result.message)
-      return
-    }
+  function handleConfirm() {
     setOpen(false)
     onDeleted(milestoneId)
+    scheduleDelete({
+      message: `Se eliminó "${milestoneTitle}".`,
+      commit: async () => {
+        const result = await deleteMilestone(milestoneId, petSlug)
+        if (!result.ok) {
+          console.error("No se pudo eliminar el hito:", result.message)
+        }
+      },
+    })
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="ghost" size="icon" aria-label={`Borrar el hito ${milestoneTitle}`}>
-          <Trash2 className="h-4 w-4" aria-hidden="true" />
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="h-[30px] w-[30px]"
+          aria-label={`Borrar el hito ${milestoneTitle}`}
+        >
+          <TrashIcon size={15} className="text-neutral-500" aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>¿Borrar el hito &quot;{milestoneTitle}&quot;?</DialogTitle>
-          <DialogDescription>Esta acción no se puede deshacer.</DialogDescription>
+          <TrashIcon size={18} className="text-accent-400" aria-hidden="true" />
+          <DialogTitle className="text-[18px]">¿Eliminar &quot;{milestoneTitle}&quot;?</DialogTitle>
         </DialogHeader>
-        {error && (
-          <p role="alert" className="text-label text-destructive">
-            {error}
-          </p>
-        )}
+        <DialogDescription>El hito desaparece de la ficha. No se puede deshacer.</DialogDescription>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)} disabled={deleting}>
+          <Button variant="secondary" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
-          <Button variant="default" onClick={handleConfirm} disabled={deleting}>
-            {deleting ? "Borrando…" : "Confirmar"}
+          <Button variant="primary" onClick={handleConfirm}>
+            Eliminar
           </Button>
         </DialogFooter>
       </DialogContent>

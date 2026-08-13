@@ -37,7 +37,12 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
       password: process.env.TEST_ADMIN_PASSWORD!,
     })
     await admin.from("pets").delete().eq("slug", createdSlug)
-    await admin.auth.signOut()
+    // scope: "local" — sin esto, signOut() revoca la sesión globalmente
+    // (default de supabase-js) e invalida la sesión ya guardada en
+    // tests/e2e/.auth/admin.json, rompiendo cualquier test que corra
+    // después en la misma ejecución (offline-sighting.spec.ts, que reusa
+    // ese storageState). Bug real encontrado corriendo la suite completa.
+    await admin.auth.signOut({ scope: "local" })
   })
 
   test("alta con foto, edición con reemplazo, agregar hito, cerrar sesión", async ({ page }) => {
@@ -49,9 +54,15 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     const pastDay = addDaysForTest(today, -1)
     const futureDay = addDaysForTest(today, 1)
 
-    await page.goto("/mascotas/nueva")
-    await page.getByLabel("Nombre").fill(petName)
-    await page.getByLabel("Fecha de registro").fill(registeredOn)
+    // Botón "Agregar" (renombrado desde "Dar de alta") en la cuadrícula.
+    await page.goto("/")
+    await page.getByRole("link", { name: "Agregar" }).click()
+    await page.waitForURL("/mascotas/nueva")
+    // exact: true — el buscador del header ("Buscar mascota por nombre o
+    // apodo") también matchea "Nombre" por substring case-insensitive si no
+    // se pide exacto.
+    await page.getByLabel("Nombre", { exact: true }).fill(petName)
+    await page.getByLabel("En el registro desde").fill(registeredOn)
     await page.locator('input[type="file"]').setInputFiles(PHOTO_FIXTURE)
     await expect(page.getByText("Subiendo foto…")).toHaveCount(0, { timeout: 15000 })
 
@@ -67,26 +78,29 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     await expect(page.getByRole("heading", { name: petName })).toBeVisible()
     await expect(page.getByRole("img", { name: petName })).toBeVisible()
 
-    // Marcar el avistamiento de hoy (User Story 1): tocar "Visto hoy" lo
-    // registra; tocar "Revisado y no estaba" sobre el mismo día lo reemplaza
-    // en vez de duplicarlo (unique(pet_id, seen_on)). exact: true —
-    // <DayCell> del día de hoy queda con aria-label "10 — revisado y no
-    // estaba" apenas el calendario refetchea (mismo refreshKey de
-    // <PetSightingsSection>) y matchearía por substring sin esto.
-    const seenButton = page.getByRole("button", { name: "Visto hoy", exact: true })
-    const notThereButton = page.getByRole("button", { name: "Revisado y no estaba", exact: true })
+    // Marcar el avistamiento de hoy (User Story 1): tocar "Vista hoy" lo
+    // registra; tocar "Pasé y no estaba" sobre el mismo día lo reemplaza en
+    // vez de duplicarlo (unique(pet_id, seen_on)). exact: true — <DayCell>
+    // del día de hoy queda con aria-label "10 — revisado y no estaba" apenas
+    // el calendario refetchea (mismo refreshKey de <PetSightingsSection>) y
+    // matchearía por substring sin esto. aria-pressed (no una clase CSS) es
+    // el hook estable para saber cuál de los dos quedó activo (Nocturne: sin
+    // una clase "bg-primary" fija, el estado activo se pinta con un tinte
+    // condicional).
+    const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
+    const notThereButton = page.getByRole("button", { name: "Pasé y no estaba", exact: true })
 
     await seenButton.click()
     await expect(seenButton).toBeEnabled()
-    await expect(seenButton).toHaveClass(/bg-primary/)
+    await expect(seenButton).toHaveAttribute("aria-pressed", "true")
     // El calendario refleja el marcado en la misma vista, sin recargar
     // (quickstart.md Validación 1).
-    await expect(page.getByText("Vistos este mes").locator("..")).toContainText("1")
+    await expect(page.getByText("vistas este mes").locator("..")).toContainText("1")
 
     await notThereButton.click()
     await expect(notThereButton).toBeEnabled()
-    await expect(notThereButton).toHaveClass(/bg-primary/)
-    await expect(seenButton).not.toHaveClass(/bg-primary/)
+    await expect(notThereButton).toHaveAttribute("aria-pressed", "true")
+    await expect(seenButton).toHaveAttribute("aria-pressed", "false")
 
     // Lectura pública (sightings_public_read/pets_public_read, sin sesión) —
     // a propósito no se usa un cliente admin acá: signOut() de supabase-js
@@ -124,13 +138,13 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
 
     const dialog = page.getByRole("dialog")
     await expect(dialog).toBeVisible()
-    await expect(dialog.getByText(`Registrar el ${pastDay}`)).toBeVisible()
-    await dialog.getByRole("button", { name: "Visto" }).click()
+    await expect(dialog.getByText("Sin registro. ¿Qué pasó ese día?")).toBeVisible()
+    await dialog.getByRole("button", { name: "La vi" }).click()
     await expect(dialog).toBeHidden()
 
     // El total del mes ahora cuenta el día pasado (visto) — hoy sigue en
     // "revisado y no estaba", que no suma.
-    await expect(page.getByText("Vistos este mes").locator("..")).toContainText("1")
+    await expect(page.getByText("vistas este mes").locator("..")).toContainText("1")
 
     const { data: pastSighting } = await sightingCheck
       .from("sightings")
@@ -139,6 +153,28 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
       .eq("seen_on", pastDay)
       .single()
     expect(pastSighting?.seen).toBe(true)
+
+    // Corregir un día anterior con fecha manual (sin navegar el calendario
+    // mes a mes) — un día distinto al ya corregido arriba.
+    const manualDay = addDaysForTest(today, -2)
+    await page.getByRole("button", { name: "Corregir otro día" }).click()
+    const manualDialog = page.getByRole("dialog")
+    await expect(manualDialog).toBeVisible()
+    await expect(manualDialog.getByText("Corregir otro día", { exact: true })).toBeVisible()
+    await manualDialog.getByLabel("Día").fill(manualDay)
+    await manualDialog.getByRole("button", { name: "La vi" }).click()
+    await expect(manualDialog).toBeHidden()
+
+    // Ahora dos días "visto" en el mes (pastDay + manualDay).
+    await expect(page.getByText("vistas este mes").locator("..")).toContainText("2")
+
+    const { data: manualSighting } = await sightingCheck
+      .from("sightings")
+      .select("seen")
+      .eq("pet_id", createdPet!.id)
+      .eq("seen_on", manualDay)
+      .single()
+    expect(manualSighting?.seen).toBe(true)
 
     // Edición con reemplazo de foto
     await page.getByRole("link", { name: "Editar" }).click()
@@ -157,11 +193,25 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     await page.waitForURL(new RegExp(`/mascotas/${createdSlug}$`))
     await expect(page.getByText("Primera vacuna E2E")).toBeVisible()
 
+    // Eliminar la mascota: confirmación requerida, borra en cascada
+    // (hitos/avistamientos) y redirige a la cuadrícula.
+    await page.getByRole("button", { name: `Eliminar a ${petName}` }).click()
+    const deleteDialog = page.getByRole("dialog")
+    await expect(deleteDialog).toBeVisible()
+    await deleteDialog.getByRole("button", { name: "Sí, eliminar" }).click()
+    await page.waitForURL("/")
+
+    // El borrado real está diferido 15s (franja de Deshacer, Nocturne 1k) —
+    // acá solo se verifica la redirección optimista y el aviso; el borrado
+    // efectivo en la base no es parte de este flujo (ver
+    // delete-undo-context.tsx).
+    await expect(page.getByText(`Se eliminó a ${petName}.`)).toBeVisible()
+
     // Cerrar sesión: los controles de admin desaparecen sin necesitar sesión
     // nueva para verlo.
     await page.getByRole("button", { name: "Cerrar sesión" }).click()
     await page.waitForURL("/")
     await expect(page.getByRole("link", { name: "Iniciar sesión" })).toBeVisible()
-    await expect(page.getByRole("link", { name: "Dar de alta" })).toHaveCount(0)
+    await expect(page.getByRole("link", { name: "Agregar" })).toHaveCount(0)
   })
 })

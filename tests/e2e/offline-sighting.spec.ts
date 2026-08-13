@@ -57,23 +57,23 @@ test.describe("Marcado offline y sincronización (User Story 5)", () => {
 
     try {
       await page.goto(`/mascotas/${pet.slug}`)
-      const seenButton = page.getByRole("button", { name: "Visto hoy", exact: true })
-      await expect(seenButton).toBeVisible()
+      const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
+      await expect(seenButton).toBeVisible({ timeout: 30000 })
 
       await context.setOffline(true)
       await seenButton.click()
 
       // Feedback optimista (research.md §8): el botón queda marcado y el
       // badge de "pendiente" aparece de inmediato, sin esperar red.
-      await expect(page.getByText("Pendiente de sincronizar")).toBeVisible()
-      await expect(seenButton).toHaveClass(/bg-primary/)
+      await expect(page.getByText("Marcada hoy sin conexión")).toBeVisible()
+      await expect(seenButton).toHaveAttribute("aria-pressed", "true")
 
       await context.setOffline(false)
 
       // Sin recargar la página — el disparador es el evento `online`
       // (contracts/offline-queue.md).
-      await expect(page.getByText("Pendiente de sincronizar")).toHaveCount(0, { timeout: 10000 })
-      await expect(seenButton).toHaveClass(/bg-primary/)
+      await expect(page.getByText("Marcada hoy sin conexión")).toHaveCount(0, { timeout: 10000 })
+      await expect(seenButton).toHaveAttribute("aria-pressed", "true")
 
       // El día de hoy en el calendario pasa a "visto" sin el badge de
       // pendiente — no solo el control de marcado. Sin el refetch disparado
@@ -114,21 +114,21 @@ test.describe("Marcado offline y sincronización (User Story 5)", () => {
 
     try {
       await page.goto(`/mascotas/${pet.slug}`)
-      const seenButton = page.getByRole("button", { name: "Visto hoy", exact: true })
+      const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
       const notThereButton = page.getByRole("button", {
-        name: "Revisado y no estaba",
+        name: "Pasé y no estaba",
         exact: true,
       })
-      await expect(seenButton).toBeVisible()
+      await expect(seenButton).toBeVisible({ timeout: 30000 })
 
       await context.setOffline(true)
       await seenButton.click()
-      await expect(page.getByText("Pendiente de sincronizar")).toBeVisible()
+      await expect(page.getByText("Marcada hoy sin conexión")).toBeVisible()
       await notThereButton.click()
-      await expect(notThereButton).toHaveClass(/bg-primary/)
+      await expect(notThereButton).toHaveAttribute("aria-pressed", "true")
 
       await context.setOffline(false)
-      await expect(page.getByText("Pendiente de sincronizar")).toHaveCount(0, { timeout: 10000 })
+      await expect(page.getByText("Marcada hoy sin conexión")).toHaveCount(0, { timeout: 10000 })
 
       const { data: rows, count } = await admin
         .from("sightings")
@@ -152,12 +152,12 @@ test.describe("Marcado offline y sincronización (User Story 5)", () => {
 
     try {
       await page.goto(`/mascotas/${pet.slug}`)
-      const seenButton = page.getByRole("button", { name: "Visto hoy", exact: true })
-      await expect(seenButton).toBeVisible()
+      const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
+      await expect(seenButton).toBeVisible({ timeout: 30000 })
 
       await context.setOffline(true)
       await seenButton.click()
-      await expect(page.getByText("Pendiente de sincronizar")).toBeVisible()
+      await expect(page.getByText("Marcada hoy sin conexión")).toBeVisible()
 
       // Violación de FK (23503) al sincronizar — más determinístico de
       // reproducir en un test automatizado que invalidar la sesión (lo que

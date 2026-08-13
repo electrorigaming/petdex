@@ -21,8 +21,8 @@ export default async function EditMilestonePage({
   }
 
   return (
-    <main className="mx-auto max-w-screen-sm px-4 py-6 md:px-6">
-      <h1 className="mb-6 text-h1 text-foreground">Editar hito</h1>
+    <main className="mx-auto max-w-screen-sm px-4 py-6 md:px-14">
+      <h1 className="mb-4 text-h4 text-text">Editar hito</h1>
       <MilestoneForm
         mode="edit"
         milestoneId={hitoId}

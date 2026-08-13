@@ -3,24 +3,22 @@
 @tailwind utilities;
 
 /*
- * Canales RGB (no hex): habilita los modificadores de opacidad de Tailwind
- * (bg-primary/90, etc.) vía rgb(var(--x) / <alpha-value>) en tailwind.config.ts.
+ * Nocturne (design-system/design_handoff_v1) — interfaz oscura, acento
+ * blurple único, tokens tomados literalmente de
+ * design-system/design_handoff_v1/mockups/nocturne.css. Canales RGB (no
+ * hex) en los roles base para habilitar los modificadores de opacidad de
+ * Tailwind (bg-accent/50, etc.) vía rgb(var(--x) / <alpha-value>) en
+ * tailwind.config.ts; los pasos de rampa (accent-100..900, neutral-100..900)
+ * van directo en hex en tailwind.config.ts — cada paso ya es un tinte fijo,
+ * no necesita opacidad encima.
  */
 :root {
-  --color-primary: 24 24 27; /* #18181b */
-  --color-on-primary: 255 255 255; /* #ffffff */
-  --color-secondary: 63 63 70; /* #3f3f46 */
-  --color-accent: 37 99 235; /* #2563eb */
-  --color-on-accent: 255 255 255; /* #ffffff */
-  --color-background: 250 250 250; /* #fafafa */
-  --color-foreground: 9 9 11; /* #09090b */
-  --color-card: 255 255 255; /* #ffffff */
-  --color-card-foreground: 9 9 11; /* #09090b */
-  --color-muted: 232 236 240; /* #e8ecf0 */
-  --color-muted-foreground: 100 116 139; /* #64748b */
-  --color-border: 228 228 231; /* #e4e4e7 */
-  --color-destructive: 220 38 38; /* #dc2626 */
-  --color-ring: 37 99 235; /* #2563eb */
+  --color-bg: 22 24 38; /* #161826 */
+  --color-surface: 35 37 50; /* #232532 */
+  --color-text: 233 233 237; /* #e9e9ed */
+  --color-accent: 145 132 217; /* #9184d9 */
+  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+  --color-sunken: 30 32 48; /* #1e2030 — banners, placeholders rayados */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -35,13 +33,17 @@
 }
 
 body {
-  background-color: rgb(var(--color-background));
-  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
 }
 
 :focus-visible {
-  outline: 2px solid rgb(var(--color-ring));
+  outline: 2px solid rgb(var(--color-accent));
   outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, rgb(var(--color-accent)) 30%, transparent);
 }
 
 /*
@@ -51,20 +53,14 @@ body {
  */
 .pet-collection {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
 }
 
 @media (min-width: 768px) {
   .pet-collection {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .pet-collection {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
   }
 }
 
@@ -77,19 +73,70 @@ body {
 html[data-view="list"] .pet-collection {
   display: flex;
   flex-direction: column;
+  gap: 7px;
 }
 
 .pet-card-media {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(var(--color-surface)) 0 6px,
+    rgb(var(--color-sunken)) 6px 12px
+  );
+}
+
+html[data-view="list"] .pet-card-media {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  aspect-ratio: auto;
+  border-radius: 6px;
+}
+
+/* Cuadrícula (grid): retrato con overlay de texto — <PetCard> variante B.
+   Lista (list): fila con thumb chico — variante C. Un solo DOM, dos layouts. */
+.pet-card-row-text,
+.pet-card-row-status {
+  display: none;
 }
 
 html[data-view="list"] .pet-card {
   flex-direction: row;
-  align-items: stretch;
+  align-items: center;
+  gap: 11px;
+  padding: 9px;
 }
 
-html[data-view="list"] .pet-card-media {
-  width: 120px;
-  flex-shrink: 0;
-  aspect-ratio: 3 / 2;
+html[data-view="list"] .pet-card-overlay,
+html[data-view="list"] .pet-card-tag {
+  display: none;
+}
+
+html[data-view="list"] .pet-card-row-text {
+  display: block;
+}
+
+html[data-view="list"] .pet-card-row-status {
+  display: flex;
+}
+
+/* Rules fade to transparent at both ends instead of stopping cleanly — a
+   Nocturne signature (nocturne.css .hr, portado como utilidad de fondo). */
+.divider-fade {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px),
+    transparent
+  );
+}
+
+/* Cada foto de contenido pasa por acá (README "Assets") — mix-blend-mode
+   lighten hace que los valores más oscuros que el fondo desaparezcan,
+   integrando la foto al fondo oscuro en vez de recortarla con un borde. */
+.lighten {
+  mix-blend-mode: lighten;
+  background-color: transparent;
 }

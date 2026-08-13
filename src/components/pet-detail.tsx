@@ -1,71 +1,81 @@
 import Image from "next/image"
-import { CalendarDays, ImageOff, MapPin } from "lucide-react"
-import type { PetDetail as PetDetailType } from "@/lib/pets"
+import { ImageSquareIcon } from "@phosphor-icons/react/dist/ssr/ImageSquare"
+import { MapPinIcon } from "@phosphor-icons/react/dist/ssr/MapPin"
+import { Badge } from "@/components/ui/badge"
+import type { PetDetail as PetDetailType, PetStatus } from "@/lib/pets"
+
+const STATUS_LABEL: Record<PetStatus, string> = {
+  activo: "Activa",
+  sin_ver: "Sin ver hace tiempo",
+  adoptado: "Adoptada",
+  fallecido: "Fallecida",
+}
 
 export function PetDetail({ pet }: { pet: PetDetailType }) {
   return (
     <div className="flex flex-col gap-6">
-      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-lg bg-muted">
+      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-md bg-sunken">
         {pet.photoUrl ? (
           <Image
             src={pet.photoUrl}
             alt={pet.name}
             fill
             unoptimized
-            className="object-cover"
+            className="lighten object-cover"
             priority
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <ImageOff className="h-10 w-10 text-muted-foreground" aria-label="Sin foto" />
+            <ImageSquareIcon size={40} className="text-neutral-700" aria-label="Sin foto" />
           </div>
         )}
       </div>
 
-      <div className="flex flex-col gap-2">
-        <h1 className="text-h1 text-foreground">{pet.name}</h1>
+      <div>
+        <h1 className="text-h3 md:text-h2 mb-1 text-foreground">{pet.name}</h1>
         {pet.nicknames.length > 0 && (
-          <p className="text-label text-muted-foreground">
-            También conocido como {pet.nicknames.join(", ")}
+          <p className="text-label text-neutral-500">
+            {pet.nicknames.map((n) => `"${n}"`).join(", ")}
           </p>
         )}
-        {pet.zone && (
-          <span className="flex items-center gap-1 text-label text-muted-foreground">
-            <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-            {pet.zone}
-          </span>
-        )}
-        <span className="flex items-center gap-1 text-label text-muted-foreground">
-          <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-          Registrada el {pet.registeredOn}
-        </span>
+        <div className="mt-2.5 flex items-center gap-2.5">
+          {pet.zone && (
+            <Badge variant="neutral">
+              <MapPinIcon size={12} className="mr-1" aria-hidden="true" />
+              {pet.zone}
+            </Badge>
+          )}
+          <Badge variant="outline">{STATUS_LABEL[pet.status]}</Badge>
+        </div>
       </div>
 
-      {(pet.location || pet.ageEstimate || pet.weightKg !== null) && (
-        <dl className="grid grid-cols-2 gap-4">
-          {pet.location && (
-            <div>
-              <dt className="text-caption text-muted-foreground">Ubicación</dt>
-              <dd className="text-body text-card-foreground">{pet.location}</dd>
-            </div>
-          )}
-          {pet.ageEstimate && (
-            <div>
-              <dt className="text-caption text-muted-foreground">Edad estimada</dt>
-              <dd className="text-body text-card-foreground">{pet.ageEstimate}</dd>
-            </div>
-          )}
-          {pet.weightKg !== null && (
-            <div>
-              <dt className="text-caption text-muted-foreground">Peso</dt>
-              <dd className="text-body text-card-foreground">{pet.weightKg} kg</dd>
-            </div>
-          )}
-        </dl>
-      )}
+      <dl className="grid grid-cols-2 gap-x-3.5 gap-y-3.5">
+        {pet.location && (
+          <div>
+            <dt className="text-legend uppercase tracking-wide text-neutral-600">Ubicación</dt>
+            <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.location}</dd>
+          </div>
+        )}
+        {pet.ageEstimate && (
+          <div>
+            <dt className="text-legend uppercase tracking-wide text-neutral-600">Edad estimada</dt>
+            <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.ageEstimate}</dd>
+          </div>
+        )}
+        {pet.weightKg !== null && (
+          <div>
+            <dt className="text-legend uppercase tracking-wide text-neutral-600">Peso</dt>
+            <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.weightKg} kg</dd>
+          </div>
+        )}
+        <div>
+          <dt className="text-legend uppercase tracking-wide text-neutral-600">En el registro</dt>
+          <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.registeredOn}</dd>
+        </div>
+      </dl>
 
       {pet.description && (
-        <p className="text-body text-card-foreground">{pet.description}</p>
+        <p className="max-w-[44ch] text-body text-card-foreground/90">{pet.description}</p>
       )}
     </div>
   )

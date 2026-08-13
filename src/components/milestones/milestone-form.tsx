@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
+import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
 import { createMilestone, updateMilestone } from "@/lib/actions/milestones"
 import {
   milestoneFieldsSchema,
@@ -15,7 +17,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { RadioChip } from "@/components/ui/radio"
 
 const CATEGORY_LABEL: Record<(typeof MILESTONE_CATEGORY_OPTIONS)[number], string> = {
   salud: "Salud",
@@ -62,18 +64,19 @@ export function MilestoneForm(props: MilestoneFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex max-w-[420px] flex-col gap-4">
+      <div className="field">
         <Label htmlFor="title">Título</Label>
         <Input id="title" {...register("title")} aria-invalid={Boolean(errors.title)} />
         {errors.title && (
-          <p role="alert" className="text-label text-destructive">
+          <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+            <WarningIcon size={14} aria-hidden="true" />
             {errors.title.message}
           </p>
         )}
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className="field">
         <Label htmlFor="occurredOn">Fecha</Label>
         <Controller
           control={control}
@@ -93,35 +96,45 @@ export function MilestoneForm(props: MilestoneFormProps) {
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="category">Categoría</Label>
+      <div className="field">
+        <Label>Categoría</Label>
         <Controller
           control={control}
           name="category"
           render={({ field }) => (
-            <Select value={field.value ?? ""} onValueChange={field.onChange}>
-              <SelectTrigger id="category">
-                <SelectValue placeholder="Sin categoría" />
-              </SelectTrigger>
-              <SelectContent>
-                {MILESTONE_CATEGORY_OPTIONS.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {CATEGORY_LABEL[category]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="mt-1.5 flex flex-wrap gap-2">
+              <RadioChip
+                name="category"
+                checked={!field.value}
+                onChange={() => field.onChange(null)}
+              >
+                Sin categoría
+              </RadioChip>
+              {MILESTONE_CATEGORY_OPTIONS.map((category) => (
+                <RadioChip
+                  key={category}
+                  name="category"
+                  checked={field.value === category}
+                  onChange={() => field.onChange(category)}
+                >
+                  {CATEGORY_LABEL[category]}
+                </RadioChip>
+              ))}
+            </div>
           )}
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="note">Nota</Label>
-        <Textarea id="note" {...register("note")} />
+      <div className="field">
+        <Label htmlFor="note">
+          Nota <span className="text-neutral-700">· opcional</span>
+        </Label>
+        <Textarea id="note" placeholder="Un par de líneas para el contexto" {...register("note")} />
       </div>
 
       {submitError && (
-        <p role="alert" className="text-label text-destructive">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+          <WarningIcon size={14} aria-hidden="true" />
           {submitError}
         </p>
       )}
@@ -129,16 +142,20 @@ export function MilestoneForm(props: MilestoneFormProps) {
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button
           type="button"
-          variant="outline"
+          variant="secondary"
           onClick={() => router.push(`/mascotas/${props.petSlug}`)}
           disabled={isSubmitting}
         >
           Cancelar
         </Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Guardando…" : "Guardar"}
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
+          <CheckIcon size={15} aria-hidden="true" />
+          {isSubmitting ? "Guardando…" : "Guardar hito"}
         </Button>
       </div>
+      <p className="text-center text-legend text-neutral-600">
+        Los hitos son públicos: los ve cualquiera que abra la ficha.
+      </p>
     </form>
   )
 }

@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { GoogleLogoIcon } from "@phosphor-icons/react/dist/ssr/GoogleLogo"
+import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 
@@ -33,12 +35,14 @@ export function LoginButton({ next }: { next?: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <Button onClick={handleClick} disabled={loading} className="w-full">
+    <div className="flex flex-col gap-2.5">
+      <Button variant="secondary" size="block" onClick={handleClick} disabled={loading}>
+        <GoogleLogoIcon size={17} aria-hidden="true" />
         {loading ? "Redirigiendo…" : "Continuar con Google"}
       </Button>
       {error && (
-        <p role="alert" className="text-label text-destructive">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+          <WarningIcon size={14} aria-hidden="true" />
           {error}
         </p>
       )}

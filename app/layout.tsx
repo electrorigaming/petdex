@@ -1,9 +1,11 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import Link from "next/link"
 import Script from "next/script"
-import { SessionNavLink } from "@/components/auth/session-nav-link"
+import { AdminGate } from "@/components/auth/admin-gate"
 import { SessionProvider } from "@/components/auth/session-provider"
+import { AppHeader } from "@/components/app-header"
+import { CatalogSearchProvider } from "@/components/catalog-search-context"
+import { DeleteUndoProvider } from "@/components/delete-undo-context"
 import { OfflineBanner } from "@/components/offline/offline-banner"
 import { OfflineSyncProvider } from "@/components/offline/offline-sync-provider"
 import { SyncFailureBanner } from "@/components/offline/sync-failure-banner"
@@ -40,26 +42,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={inter.variable}>
-      <body>
+      <body className="font-sans">
         <Script
           id="view-preference"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: VIEW_PREFERENCE_SCRIPT }}
         />
         <SessionProvider>
-          <OfflineSyncProvider />
-          <UpdateAvailableBanner />
-          <OfflineBanner />
-          <SyncFailureBanner />
-          <header className="border-b border-border">
-            <div className="mx-auto flex max-w-screen-xl items-center justify-between px-4 py-3 md:px-6">
-              <Link href="/" className="text-label font-semibold text-foreground">
-                PetDex
-              </Link>
-              <SessionNavLink />
-            </div>
-          </header>
-          {children}
+          <CatalogSearchProvider>
+            <DeleteUndoProvider>
+              <OfflineSyncProvider />
+              <UpdateAvailableBanner />
+              <OfflineBanner />
+              <SyncFailureBanner />
+              <AppHeader />
+              <AdminGate>{children}</AdminGate>
+            </DeleteUndoProvider>
+          </CatalogSearchProvider>
         </SessionProvider>
       </body>
     </html>

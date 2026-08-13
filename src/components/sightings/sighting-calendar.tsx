@@ -7,7 +7,10 @@
 // (research.md §5), no por una recarga de página.
 
 import { useEffect, useMemo, useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { CaretLeftIcon } from "@phosphor-icons/react/dist/ssr/CaretLeft"
+import { CaretRightIcon } from "@phosphor-icons/react/dist/ssr/CaretRight"
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
+import { XIcon } from "@phosphor-icons/react/dist/ssr/X"
 import { createClient } from "@/lib/supabase/client"
 import {
   computeStreak,
@@ -27,11 +30,13 @@ export function SightingCalendar({
   petId,
   registeredOn,
   onDaySelect,
+  onCorrectDay,
   refreshKey,
 }: {
   petId: string
   registeredOn: string
   onDaySelect?: (date: string) => void
+  onCorrectDay?: () => void
   // Incrementado por un llamador externo (p. ej. <PetSightingsSection> tras
   // un marcado online exitoso) para forzar un refetch sin recargar la
   // página — projectMonth/computeStreak no tienen forma de enterarse solos
@@ -117,44 +122,45 @@ export function SightingCalendar({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3.5 md:max-w-[560px]">
       <div className="flex items-center justify-between">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          disabled={!canGoPrevious}
-          onClick={goToPreviousMonth}
-          aria-label="Mes anterior"
-        >
-          <ChevronLeft className="h-4 w-4" aria-hidden="true" />
-        </Button>
-        <span className="text-label font-medium capitalize text-foreground">
-          {monthLabel(year, month)}
-        </span>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          disabled={!canGoNext}
-          onClick={goToNextMonth}
-          aria-label="Mes siguiente"
-        >
-          <ChevronRight className="h-4 w-4" aria-hidden="true" />
-        </Button>
+        <span className="text-h5 text-text">Avistamientos</span>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8"
+            disabled={!canGoPrevious}
+            onClick={goToPreviousMonth}
+            aria-label="Mes anterior"
+          >
+            <CaretLeftIcon size={14} aria-hidden="true" />
+          </Button>
+          <span className="min-w-[88px] text-center text-meta text-neutral-400">
+            {monthLabel(year, month)}
+          </span>
+          <Button
+            type="button"
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8"
+            disabled={!canGoNext}
+            onClick={goToNextMonth}
+            aria-label="Mes siguiente"
+          >
+            <CaretRightIcon size={14} aria-hidden="true" />
+          </Button>
+        </div>
       </div>
 
       <div
-        className="grid grid-cols-7 place-items-center gap-1"
+        className="grid grid-cols-7 place-items-center gap-0.5"
         aria-busy={loading}
         aria-label={`Calendario de avistamientos de ${monthLabel(year, month)}`}
       >
         {WEEKDAY_LABELS.map((label, i) => (
-          <span
-            key={i}
-            className="text-caption text-muted-foreground"
-            aria-hidden="true"
-          >
+          <span key={i} className="text-kicker text-neutral-600" aria-hidden="true">
             {label}
           </span>
         ))}
@@ -166,7 +172,30 @@ export function SightingCalendar({
         ))}
       </div>
 
-      <MonthSummary days={days} streak={streak} />
+      <div className="flex flex-wrap gap-x-3.5 gap-y-2 text-legend text-neutral-500">
+        <span className="flex items-center gap-1.5">
+          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-accent-800">
+            <CheckIcon weight="bold" size={7} className="text-accent-300" aria-hidden="true" />
+          </span>
+          vista
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-neutral-700">
+            <XIcon size={7} className="text-neutral-500" aria-hidden="true" />
+          </span>
+          revisada, no estaba
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-3.5 w-3.5 rounded-full border border-dashed border-neutral-800" />
+          sin registro
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-accent" />
+          pendiente de sincronizar
+        </span>
+      </div>
+
+      <MonthSummary days={days} streak={streak} onCorrectDay={onCorrectDay} />
     </div>
   )
 }

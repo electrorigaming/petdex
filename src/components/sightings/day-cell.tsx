@@ -1,12 +1,18 @@
-// Un día del calendario: forma + ícono distinguen los tres estados además
-// del color (FR-003/SC-002, research.md §8) — nunca solo tono. La prop
-// `pending` ya está presente en la firma pero ningún llamador la activa
-// hasta User Story 5 (tasks.md T052): projectMonth() siempre resuelve
-// `pending: false` mientras <SightingCalendar> le pase `todayPendingValue:
-// null` (User Story 2).
+// Celda del calendario (Nocturne 1f/1g, "△ celda rediseñada"): número del
+// día siempre arriba, la marca (círculo) abajo — separados, no superpuestos
+// como en el diseño anterior. Un día no seleccionable (futuro o anterior al
+// registro) no dibuja círculo, solo el número, para no sugerir una acción
+// posible. "Pendiente de sincronizar" pasa de un badge de reloj superpuesto
+// a un punto de acento en la esquina de la celda (más chico, menos ruido).
+// El hover de un día interactivo cambia el borde del círculo a acento y
+// muestra un lápiz — misma affordance que "Corregir otro día…"
+// (<PetSightingsSection>), para que los dos caminos a corregir un día se
+// lean como la misma acción.
 
 import type { ReactNode } from "react"
-import { Check, Clock, X } from "lucide-react"
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
+import { XIcon } from "@phosphor-icons/react/dist/ssr/X"
+import { PencilSimpleIcon } from "@phosphor-icons/react/dist/ssr/PencilSimple"
 import { cn } from "@/lib/utils"
 import type { CalendarDay } from "@/lib/sightings"
 
@@ -30,20 +36,36 @@ export function DayCell({
       aria-label={label}
       title={label}
       className={cn(
-        "relative flex h-9 w-9 items-center justify-center rounded-full text-caption transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default",
-        !day.selectable && "opacity-40",
-        STATE_CLASSES[day.value],
-        isInteractive && "hover:opacity-80"
+        "group relative flex h-[46px] flex-col items-center justify-center gap-1 rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-default md:h-[58px]",
+        isInteractive && "cursor-pointer"
       )}
     >
-      {STATE_ICON[day.value]}
+      <span className="text-kicker leading-none text-neutral-600" aria-hidden="true">
+        {dayNumber}
+      </span>
+      <span
+        className={cn(
+          "relative flex h-6 w-6 items-center justify-center rounded-full transition-colors duration-150 md:h-7 md:w-7",
+          day.selectable ? MARK_CLASSES[day.value] : "invisible",
+          isInteractive && "group-hover:border-solid group-hover:border-accent"
+        )}
+      >
+        {day.selectable && (
+          <span className="group-hover:opacity-0">{STATE_ICON[day.value]}</span>
+        )}
+        {isInteractive && (
+          <PencilSimpleIcon
+            size={11}
+            className="absolute inset-0 m-auto text-accent opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+            aria-hidden="true"
+          />
+        )}
+      </span>
       {day.pending && (
         <span
-          className="absolute -right-0.5 -top-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-card"
+          className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-accent shadow-[0_0_0_2px_rgb(22,24,38)] md:right-2 md:top-2"
           aria-hidden="true"
-        >
-          <Clock className="h-3 w-3 text-muted-foreground" />
-        </span>
+        />
       )}
     </button>
   )
@@ -55,14 +77,14 @@ const STATE_LABEL: Record<CalendarDay["value"], string> = {
   sin_registro: "sin registro",
 }
 
-const STATE_CLASSES: Record<CalendarDay["value"], string> = {
-  visto: "bg-accent text-accent-foreground",
-  revisado_no_estaba: "border-2 border-secondary text-secondary",
-  sin_registro: "border border-dashed border-border text-transparent",
+const MARK_CLASSES: Record<CalendarDay["value"], string> = {
+  visto: "bg-accent-800 border border-accent",
+  revisado_no_estaba: "border border-neutral-700",
+  sin_registro: "border border-dashed border-neutral-800",
 }
 
 const STATE_ICON: Record<CalendarDay["value"], ReactNode> = {
-  visto: <Check className="h-4 w-4" aria-hidden="true" />,
-  revisado_no_estaba: <X className="h-4 w-4" aria-hidden="true" />,
+  visto: <CheckIcon weight="bold" size={11} className="text-accent-300" aria-hidden="true" />,
+  revisado_no_estaba: <XIcon size={11} className="text-neutral-500" aria-hidden="true" />,
   sin_registro: null,
 }

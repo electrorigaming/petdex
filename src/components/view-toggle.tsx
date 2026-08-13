@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { LayoutGrid, List } from "lucide-react"
+import { SquaresFourIcon } from "@phosphor-icons/react/dist/ssr/SquaresFour"
+import { RowsIcon } from "@phosphor-icons/react/dist/ssr/Rows"
+import { cn } from "@/lib/utils"
 
 type View = "grid" | "list"
 
@@ -12,7 +14,7 @@ function applyView(view: View) {
   localStorage.setItem(STORAGE_KEY, view)
 }
 
-export function ViewToggle() {
+export function ViewToggle({ className }: { className?: string }) {
   const [view, setView] = useState<View>("grid")
 
   useEffect(() => {
@@ -29,33 +31,31 @@ export function ViewToggle() {
     <div
       role="group"
       aria-label="Alternar entre cuadrícula y lista"
-      className="flex gap-1 rounded-lg border border-border bg-card p-1"
+      className={cn("inline-flex overflow-hidden rounded-md border border-divider", className)}
     >
       <button
         type="button"
         aria-pressed={view === "grid"}
         aria-label="Ver como cuadrícula"
         onClick={() => select("grid")}
-        className={`flex h-9 w-9 items-center justify-center rounded-md transition-colors duration-150 ${
-          view === "grid"
-            ? "bg-accent text-accent-foreground"
-            : "text-muted-foreground hover:text-foreground"
-        }`}
+        className={cn(
+          "flex h-9 w-9 items-center justify-center transition-colors duration-150",
+          view === "grid" ? "text-accent shadow-[inset_0_0_0_1px_#9184d9]" : "text-neutral-500 hover:bg-text/[.07]"
+        )}
       >
-        <LayoutGrid className="h-5 w-5" aria-hidden="true" />
+        <SquaresFourIcon size={16} aria-hidden="true" />
       </button>
       <button
         type="button"
         aria-pressed={view === "list"}
         aria-label="Ver como lista"
         onClick={() => select("list")}
-        className={`flex h-9 w-9 items-center justify-center rounded-md transition-colors duration-150 ${
-          view === "list"
-            ? "bg-accent text-accent-foreground"
-            : "text-muted-foreground hover:text-foreground"
-        }`}
+        className={cn(
+          "flex h-9 w-9 items-center justify-center border-l border-divider transition-colors duration-150",
+          view === "list" ? "text-accent shadow-[inset_0_0_0_1px_#9184d9]" : "text-neutral-500 hover:bg-text/[.07]"
+        )}
       >
-        <List className="h-5 w-5" aria-hidden="true" />
+        <RowsIcon size={16} aria-hidden="true" />
       </button>
     </div>
   )

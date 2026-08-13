@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { X } from "lucide-react"
+import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
+import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
 import { createPet, updatePet } from "@/lib/actions/pets"
 import {
   petFieldsSchema,
@@ -24,8 +25,8 @@ import { SlugField } from "@/components/pets/slug-field"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Radio } from "@/components/ui/radio"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Dialog,
   DialogContent,
@@ -51,6 +52,13 @@ function toDateInputValue(date: Date) {
   return date.toISOString().slice(0, 10)
 }
 
+function parseNicknames(text: string): string[] {
+  return text
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+}
+
 export function PetForm(props: PetFormProps) {
   const router = useRouter()
   // Generado una sola vez en el cliente: sirve como pets.id (el insert lo
@@ -62,6 +70,9 @@ export function PetForm(props: PetFormProps) {
   const [photoUrl, setPhotoUrl] = useState<PhotoFieldValue>(undefined)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
+  const [nicknamesText, setNicknamesText] = useState(() =>
+    props.mode === "edit" ? props.initialValues.nicknames.join(", ") : ""
+  )
 
   const {
     register,
@@ -89,8 +100,6 @@ export function PetForm(props: PetFormProps) {
   })
 
   const name = watch("name")
-  const nicknames = watch("nicknames") ?? []
-  const [nicknameDraft, setNicknameDraft] = useState("")
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
@@ -109,19 +118,9 @@ export function PetForm(props: PetFormProps) {
     router.back()
   }
 
-  function addNickname() {
-    const trimmed = nicknameDraft.trim()
-    if (!trimmed) return
-    setValue("nicknames", [...nicknames, trimmed], { shouldDirty: true })
-    setNicknameDraft("")
-  }
-
-  function removeNickname(index: number) {
-    setValue(
-      "nicknames",
-      nicknames.filter((_, i) => i !== index),
-      { shouldDirty: true }
-    )
+  function handleNicknamesChange(text: string) {
+    setNicknamesText(text)
+    setValue("nicknames", parseNicknames(text), { shouldDirty: true })
   }
 
   async function onSubmit(values: PetFormValues) {
@@ -155,160 +154,153 @@ export function PetForm(props: PetFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-      <PhotoField
-        petId={petId}
-        initialPhotoUrl={props.mode === "edit" ? props.initialPhotoUrl : null}
-        value={photoUrl}
-        onChange={setPhotoUrl}
-      />
-
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="name">Nombre</Label>
-        <Input id="name" {...register("name")} aria-invalid={Boolean(errors.name)} />
-        {errors.name && (
-          <p role="alert" className="text-label text-destructive">
-            {errors.name.message}
-          </p>
-        )}
+      <div>
+        <h3 className="text-h3 text-text">
+          {props.mode === "edit" ? `Editar a ${props.initialValues.name}` : "Agregar una mascota"}
+        </h3>
+        <p className="mt-1 text-meta text-neutral-600">Los campos vacíos no se muestran en la ficha.</p>
       </div>
 
-      <SlugField
-        mode={props.mode}
-        name={name}
-        value={slugValue}
-        onChange={setSlugValue}
-        currentPetId={props.mode === "edit" ? props.petId : undefined}
-      />
-
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="nickname-draft">Apodos</Label>
-        <div className="flex gap-2">
-          <Input
-            id="nickname-draft"
-            value={nicknameDraft}
-            onChange={(e) => setNicknameDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault()
-                addNickname()
-              }
-            }}
-            placeholder="Agregar un apodo"
-          />
-          <Button type="button" variant="outline" onClick={addNickname}>
-            Agregar
-          </Button>
-        </div>
-        {nicknames.length > 0 && (
-          <ul className="flex flex-wrap gap-2">
-            {nicknames.map((nickname, index) => (
-              <li
-                key={`${nickname}-${index}`}
-                className="flex items-center gap-1 rounded-md bg-muted px-2 py-1 text-label text-foreground"
-              >
-                {nickname}
-                <button
-                  type="button"
-                  onClick={() => removeNickname(index)}
-                  aria-label={`Quitar apodo ${nickname}`}
-                  className="rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
-                >
-                  <X className="h-3 w-3" aria-hidden="true" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="zone">Zona</Label>
-          <Input id="zone" {...register("zone")} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="location">Ubicación de referencia</Label>
-          <Input id="location" {...register("location")} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="registeredOn">Fecha de registro</Label>
-          <Controller
-            control={control}
-            name="registeredOn"
-            render={({ field }) => (
+      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_320px] md:gap-10">
+        <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="field">
+              <Label htmlFor="name">Nombre</Label>
+              <Input id="name" {...register("name")} aria-invalid={Boolean(errors.name)} />
+              {errors.name && (
+                <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+                  <WarningIcon size={14} aria-hidden="true" />
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
+            <div className="field">
+              <Label htmlFor="nicknames">
+                Apodos <span className="text-neutral-700">· separados por coma</span>
+              </Label>
               <Input
-                id="registeredOn"
-                type="date"
-                value={
-                  field.value
-                    ? toDateInputValue(new Date(field.value as string | number | Date))
-                    : ""
-                }
-                onChange={(e) => field.onChange(new Date(e.target.value))}
+                id="nicknames"
+                value={nicknamesText}
+                onChange={(e) => handleNicknamesChange(e.target.value)}
+                placeholder="la tricolor, la de la fuente"
               />
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="ageEstimate">Edad estimada</Label>
-          <Input id="ageEstimate" placeholder="Ej: ~2 años" {...register("ageEstimate")} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="weightKg">Peso (kg)</Label>
-          <Input
-            id="weightKg"
-            type="number"
-            inputMode="decimal"
-            step="0.01"
-            min="0"
-            {...register("weightKg")}
-            aria-invalid={Boolean(errors.weightKg)}
-          />
-          {errors.weightKg && (
-            <p role="alert" className="text-label text-destructive">
-              El peso tiene que ser un número mayor a cero.
-            </p>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="status">Estado</Label>
-          <Controller
-            control={control}
-            name="status"
-            render={({ field }) => (
-              <Select value={field.value} onValueChange={field.onChange}>
-                <SelectTrigger id="status">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {PET_STATUS_OPTIONS.map((status) => (
-                    <SelectItem key={status} value={status}>
-                      {PET_STATUS_LABEL[status]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          />
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="description">Descripción</Label>
-        <Textarea id="description" {...register("description")} />
+          <SlugField
+            mode={props.mode}
+            name={name}
+            value={slugValue}
+            onChange={setSlugValue}
+            currentPetId={props.mode === "edit" ? props.petId : undefined}
+          />
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="field">
+              <Label htmlFor="zone">Zona</Label>
+              <Input id="zone" {...register("zone")} />
+            </div>
+            <div className="field">
+              <Label htmlFor="location">Ubicación exacta</Label>
+              <Input id="location" {...register("location")} />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="field">
+              <Label htmlFor="registeredOn">En el registro desde</Label>
+              <Controller
+                control={control}
+                name="registeredOn"
+                render={({ field }) => (
+                  <Input
+                    id="registeredOn"
+                    type="date"
+                    value={
+                      field.value
+                        ? toDateInputValue(new Date(field.value as string | number | Date))
+                        : ""
+                    }
+                    onChange={(e) => field.onChange(new Date(e.target.value))}
+                  />
+                )}
+              />
+            </div>
+            <div className="field">
+              <Label htmlFor="ageEstimate">Edad estimada</Label>
+              <Input id="ageEstimate" placeholder="texto libre" {...register("ageEstimate")} />
+            </div>
+            <div className="field">
+              <Label htmlFor="weightKg">Peso</Label>
+              <Input
+                id="weightKg"
+                type="number"
+                inputMode="decimal"
+                step="0.01"
+                min="0"
+                {...register("weightKg")}
+                aria-invalid={Boolean(errors.weightKg)}
+              />
+              {errors.weightKg && (
+                <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+                  <WarningIcon size={14} aria-hidden="true" />
+                  El peso tiene que ser un número mayor a cero.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="field">
+            <Label>Estado</Label>
+            <Controller
+              control={control}
+              name="status"
+              render={({ field }) => (
+                <div className="mt-1.5 flex flex-wrap gap-4">
+                  {PET_STATUS_OPTIONS.map((status) => (
+                    <Radio
+                      key={status}
+                      name="status"
+                      checked={field.value === status}
+                      onChange={() => field.onChange(status)}
+                    >
+                      {PET_STATUS_LABEL[status]}
+                    </Radio>
+                  ))}
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="field">
+            <Label htmlFor="description">Descripción</Label>
+            <Textarea id="description" {...register("description")} />
+          </div>
+        </div>
+
+        <PhotoField
+          petId={petId}
+          initialPhotoUrl={props.mode === "edit" ? props.initialPhotoUrl : null}
+          value={photoUrl}
+          onChange={setPhotoUrl}
+        />
       </div>
 
       {submitError && (
-        <p role="alert" className="text-label text-destructive">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+          <WarningIcon size={14} aria-hidden="true" />
           {submitError}
         </p>
       )}
 
+      <div className="divider-fade" />
+
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <Button type="button" variant="outline" onClick={handleCancel} disabled={isSubmitting}>
+        <Button type="button" variant="secondary" onClick={handleCancel} disabled={isSubmitting}>
           Cancelar
         </Button>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" variant="primary" disabled={isSubmitting}>
+          <CheckIcon size={15} aria-hidden="true" />
           {isSubmitting ? "Guardando…" : "Guardar"}
         </Button>
       </div>
@@ -317,15 +309,15 @@ export function PetForm(props: PetFormProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>¿Descartar cambios?</DialogTitle>
-            <DialogDescription>
-              Hay cambios sin guardar en este formulario. Si salís ahora, se pierden.
-            </DialogDescription>
           </DialogHeader>
+          <DialogDescription>
+            Hay cambios sin guardar en este formulario. Si salís ahora, se pierden.
+          </DialogDescription>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowLeaveConfirm(false)}>
+            <Button variant="secondary" onClick={() => setShowLeaveConfirm(false)}>
               Seguir editando
             </Button>
-            <Button variant="default" onClick={() => router.back()}>
+            <Button variant="primary" onClick={() => router.back()}>
               Descartar y salir
             </Button>
           </DialogFooter>

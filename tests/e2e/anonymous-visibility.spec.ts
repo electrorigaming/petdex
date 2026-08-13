@@ -17,7 +17,7 @@ test.describe("Visitante sin sesión (FR-022)", () => {
   test("no ve ningún control de edición en el catálogo", async ({ page }) => {
     await page.goto("/")
     await expect(page.getByRole("link", { name: "Iniciar sesión" })).toBeVisible()
-    await expect(page.getByRole("link", { name: "Dar de alta" })).toHaveCount(0)
+    await expect(page.getByRole("link", { name: "Agregar" })).toHaveCount(0)
     await expect(page.getByRole("button", { name: "Cerrar sesión" })).toHaveCount(0)
   })
 

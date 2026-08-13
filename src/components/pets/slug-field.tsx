@@ -47,31 +47,40 @@ export function SlugField({
   }, [value, mode, currentPetId])
 
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor="slug">Identificador de la URL</Label>
-      <Input
-        id="slug"
-        value={value}
-        readOnly={mode === "edit"}
-        onChange={(e) => {
-          setTouched(true)
-          onChange(e.target.value)
-        }}
-        aria-describedby={conflict ? "slug-conflict" : undefined}
-        aria-invalid={conflict}
-        className={mode === "edit" ? "bg-muted text-muted-foreground" : undefined}
-      />
+    <div className="field">
+      <Label htmlFor="slug">Dirección de la ficha</Label>
+      <div className="flex items-center">
+        <span className="whitespace-nowrap rounded-l-md border border-r-0 border-divider bg-sunken px-2.5 py-1.5 font-mono text-[13px] text-neutral-600">
+          petdex.app/mascotas/
+        </span>
+        <Input
+          id="slug"
+          value={value}
+          readOnly={mode === "edit"}
+          onChange={(e) => {
+            setTouched(true)
+            onChange(e.target.value)
+          }}
+          aria-describedby={conflict ? "slug-conflict" : undefined}
+          aria-invalid={conflict}
+          className={
+            mode === "edit"
+              ? "rounded-l-none font-mono text-[13px] text-neutral-500"
+              : "rounded-l-none font-mono text-[13px]"
+          }
+        />
+      </div>
       {mode === "edit" ? (
-        <p className="text-caption text-muted-foreground">
+        <p className="mt-1.5 text-legend text-neutral-600">
           No cambia al renombrar la mascota — las URLs ya compartidas siguen funcionando.
         </p>
       ) : (
-        <p className="text-caption text-muted-foreground">
+        <p className="mt-1.5 text-legend text-neutral-600">
           Va a ser parte de la URL pública: /mascotas/{value || "…"}
         </p>
       )}
       {conflict && (
-        <p id="slug-conflict" role="alert" className="text-label text-destructive">
+        <p id="slug-conflict" role="alert" className="mt-1.5 text-meta text-accent-400">
           Ese identificador ya está en uso por otra mascota. Corregilo antes de guardar.
         </p>
       )}
