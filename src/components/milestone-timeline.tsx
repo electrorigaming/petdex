@@ -38,6 +38,10 @@ export function MilestoneTimeline({
     setMilestones((prev) => prev.filter((m) => m.id !== milestoneId))
   }
 
+  function handleRestored(milestone: Milestone) {
+    setMilestones((prev) => [...prev, milestone])
+  }
+
   return (
     <section className="flex flex-col gap-3.5 md:max-w-[560px]">
       <div className="flex items-center justify-between">
@@ -96,6 +100,7 @@ export function MilestoneTimeline({
                       milestoneTitle={milestone.title}
                       petSlug={petSlug}
                       onDeleted={handleDeleted}
+                      onRestored={handleRestored}
                     />
                   </span>
                 )}

@@ -15,6 +15,7 @@ import {
   type UpdatePetInput,
 } from "@/lib/validation/pet-schema"
 import type { WriteResult } from "@/lib/pets"
+import type { Database } from "@/types/database"
 
 function toDateString(date: Date): string {
   return date.toISOString().slice(0, 10)
@@ -124,9 +125,21 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
   return { ok: true, slug: existing.slug }
 }
 
+export type PetSnapshot = {
+  pet: Database["public"]["Tables"]["pets"]["Row"]
+  milestones: Database["public"]["Tables"]["milestones"]["Row"][]
+  sightings: Database["public"]["Tables"]["sightings"]["Row"][]
+}
+
+// El borrado es inmediato (no diferido en el cliente con setTimeout: eso
+// dejaba la mascota "a medio borrar" si se recargaba o navegaba antes de que
+// el timer terminara — el timer muere con la pestaña y el borrado real nunca
+// llegaba a pasar, bug real reportado en producción). La franja de Deshacer
+// (<DeleteUndoProvider>) restaura desde esta copia en vez de cancelar una
+// acción pendiente.
 export async function deletePet(
   id: string
-): Promise<{ ok: true } | { ok: false; message: string }> {
+): Promise<{ ok: true; snapshot: PetSnapshot } | { ok: false; message: string }> {
   const supabase = await createClient()
   const {
     data: { user },
@@ -135,31 +148,67 @@ export async function deletePet(
     return { ok: false, message: "Iniciá sesión con una cuenta autorizada para continuar." }
   }
 
-  const { data: existing, error: fetchError } = await supabase
+  const { data: pet, error: fetchError } = await supabase
     .from("pets")
-    .select("photo_url")
+    .select("*")
     .eq("id", id)
     .maybeSingle()
 
-  if (fetchError || !existing) {
+  if (fetchError || !pet) {
     return { ok: false, message: mapPostgresError(fetchError) }
   }
+
+  const { data: milestones } = await supabase.from("milestones").select("*").eq("pet_id", id)
+  const { data: sightings } = await supabase.from("sightings").select("*").eq("pet_id", id)
 
   const { error } = await supabase.from("pets").delete().eq("id", id)
   if (error) {
     return { ok: false, message: mapPostgresError(error) }
   }
 
-  // La fila ya se borró (milestones/sightings caen con ella por `on delete
-  // cascade`) — recién ahora se borra la foto. Si esto falla, el peor caso es
-  // un archivo huérfano en el bucket, nunca una mascota a medio borrar.
-  if (existing.photo_url) {
-    const path = existing.photo_url.split("/pet-photos/")[1]
-    if (path) {
-      await supabase.storage.from("pet-photos").remove([path])
+  // La foto NO se borra del storage acá a propósito: si se restaura la
+  // mascota (Deshacer), la URL pública tiene que seguir sirviendo la misma
+  // imagen. El peor caso de no limpiarla es un archivo huérfano en el bucket
+  // cuando el borrado queda firme — mismo trade-off ya aceptado en
+  // updatePet() para el caso de reemplazo de foto.
+  revalidatePath("/")
+  return {
+    ok: true,
+    snapshot: { pet, milestones: milestones ?? [], sightings: sightings ?? [] },
+  }
+}
+
+export async function restorePet(
+  snapshot: PetSnapshot
+): Promise<{ ok: true; slug: string } | { ok: false; message: string }> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    return { ok: false, message: "Iniciá sesión con una cuenta autorizada para continuar." }
+  }
+
+  const { error: petError } = await supabase.from("pets").insert(snapshot.pet)
+  if (petError) {
+    return { ok: false, message: mapPostgresError(petError) }
+  }
+
+  if (snapshot.milestones.length > 0) {
+    const { error } = await supabase.from("milestones").insert(snapshot.milestones)
+    if (error) {
+      return { ok: false, message: mapPostgresError(error) }
+    }
+  }
+
+  if (snapshot.sightings.length > 0) {
+    const { error } = await supabase.from("sightings").insert(snapshot.sightings)
+    if (error) {
+      return { ok: false, message: mapPostgresError(error) }
     }
   }
 
   revalidatePath("/")
-  return { ok: true }
+  revalidatePath(`/mascotas/${snapshot.pet.slug}`, "page")
+  return { ok: true, slug: snapshot.pet.slug }
 }

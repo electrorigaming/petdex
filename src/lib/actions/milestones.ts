@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server"
 import { mapPostgresError } from "@/lib/errors"
 import { milestoneFieldsSchema, type MilestoneFormValues } from "@/lib/validation/milestone-schema"
 import type { Milestone, MilestoneWriteResult } from "@/lib/milestones"
+import type { Database } from "@/types/database"
 
 function toDateString(date: Date): string {
   return date.toISOString().slice(0, 10)
@@ -114,8 +115,43 @@ export async function updateMilestone(
   }
 }
 
+export type MilestoneSnapshot = Database["public"]["Tables"]["milestones"]["Row"]
+
+// Borrado inmediato (no diferido con setTimeout: un reload antes de que el
+// timer termine dejaba el hito nunca borrado de verdad — bug real
+// reportado en producción para el mismo patrón en <DeletePetButton>). La
+// franja de Deshacer restaura desde esta copia en vez de cancelar una
+// acción pendiente.
 export async function deleteMilestone(
   id: string,
+  petSlug: string
+): Promise<{ ok: true; snapshot: MilestoneSnapshot } | { ok: false; message: string }> {
+  const { supabase, user } = await requireAdminSession()
+  if (!user) {
+    return { ok: false, message: "Iniciá sesión con una cuenta autorizada para continuar." }
+  }
+
+  const { data: snapshot, error: fetchError } = await supabase
+    .from("milestones")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle()
+
+  if (fetchError || !snapshot) {
+    return { ok: false, message: mapPostgresError(fetchError) }
+  }
+
+  const { error } = await supabase.from("milestones").delete().eq("id", id)
+  if (error) {
+    return { ok: false, message: mapPostgresError(error) }
+  }
+
+  revalidatePath(`/mascotas/${petSlug}`, "page")
+  return { ok: true, snapshot }
+}
+
+export async function restoreMilestone(
+  snapshot: MilestoneSnapshot,
   petSlug: string
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   const { supabase, user } = await requireAdminSession()
@@ -123,7 +159,7 @@ export async function deleteMilestone(
     return { ok: false, message: "Iniciá sesión con una cuenta autorizada para continuar." }
   }
 
-  const { error } = await supabase.from("milestones").delete().eq("id", id)
+  const { error } = await supabase.from("milestones").insert(snapshot)
   if (error) {
     return { ok: false, message: mapPostgresError(error) }
   }

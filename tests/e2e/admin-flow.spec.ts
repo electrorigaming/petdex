@@ -194,18 +194,23 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     await expect(page.getByText("Primera vacuna E2E")).toBeVisible()
 
     // Eliminar la mascota: confirmación requerida, borra en cascada
-    // (hitos/avistamientos) y redirige a la cuadrícula.
+    // (hitos/avistamientos) y redirige a la cuadrícula. El borrado es
+    // inmediato (no diferido: un setTimeout no sobrevive a un reload — bug
+    // real encontrado en producción con la primera versión de este patrón),
+    // así que ya se puede verificar contra la base apenas se ve la franja.
     await page.getByRole("button", { name: `Eliminar a ${petName}` }).click()
     const deleteDialog = page.getByRole("dialog")
     await expect(deleteDialog).toBeVisible()
     await deleteDialog.getByRole("button", { name: "Sí, eliminar" }).click()
     await page.waitForURL("/")
-
-    // El borrado real está diferido 15s (franja de Deshacer, Nocturne 1k) —
-    // acá solo se verifica la redirección optimista y el aviso; el borrado
-    // efectivo en la base no es parte de este flujo (ver
-    // delete-undo-context.tsx).
     await expect(page.getByText(`Se eliminó a ${petName}.`)).toBeVisible()
+
+    const { data: deletedPet } = await sightingCheck
+      .from("pets")
+      .select("id")
+      .eq("slug", createdSlug)
+      .maybeSingle()
+    expect(deletedPet).toBeNull()
 
     // Cerrar sesión: los controles de admin desaparecen sin necesitar sesión
     // nueva para verlo.
@@ -213,5 +218,104 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     await page.waitForURL("/")
     await expect(page.getByRole("link", { name: "Iniciar sesión" })).toBeVisible()
     await expect(page.getByRole("link", { name: "Agregar" })).toHaveCount(0)
+  })
+})
+
+test.describe("Eliminar una mascota: borrado inmediato y Deshacer", () => {
+  // Regresión de un bug real en producción: la primera versión de este
+  // patrón difería el borrado real 15s con setTimeout para poder mostrar
+  // "Deshacer" — un reload (o simplemente cerrar la pestaña) antes de esos
+  // 15s mataba el timer sin que el borrado real llegara a pasar nunca,
+  // dejando la mascota "a medio borrar" de forma indefinida
+  // (delete-undo-context.tsx). Ahora el borrado es inmediato — estos tests
+  // verifican que una recarga apenas confirmado NO revive el registro, y
+  // que "Deshacer" restaura de verdad desde el servidor.
+  async function createAdminClient() {
+    const supabase = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    await supabase.auth.signInWithPassword({
+      email: process.env.TEST_ADMIN_EMAIL!,
+      password: process.env.TEST_ADMIN_PASSWORD!,
+    })
+    return supabase
+  }
+
+  async function createTestPet(admin: ReturnType<typeof createClient<Database>>, name: string) {
+    const slug = `e2e-delete-${Date.now()}-${Math.round(Math.random() * 1e6)}`
+    const { data } = await admin
+      .from("pets")
+      .insert({ id: crypto.randomUUID(), slug, name })
+      .select("id")
+      .single()
+    return { id: data!.id, slug }
+  }
+
+  test("recargar apenas confirmado el borrado no revive la mascota", async ({ page }) => {
+    const admin = await createAdminClient()
+    const pet = await createTestPet(admin, `E2E Delete Reload ${Date.now()}`)
+
+    try {
+      await page.goto(`/mascotas/${pet.slug}`)
+      await page.getByRole("button", { name: `Eliminar a` }).click()
+      await page.getByRole("dialog").getByRole("button", { name: "Sí, eliminar" }).click()
+      await page.waitForURL("/")
+
+      // Recarga inmediata, sin esperar la ventana de 15s de "Deshacer" — el
+      // borrado ya tiene que estar firme en el servidor en este punto.
+      await page.reload()
+
+      const { data } = await admin.from("pets").select("id").eq("id", pet.id).maybeSingle()
+      expect(data).toBeNull()
+    } finally {
+      await admin.from("pets").delete().eq("id", pet.id)
+      await admin.auth.signOut({ scope: "local" })
+    }
+  })
+
+  test('"Deshacer" restaura la mascota borrada, con sus hitos', async ({ page }) => {
+    const admin = await createAdminClient()
+    const petName = `E2E Delete Undo ${Date.now()}`
+    const pet = await createTestPet(admin, petName)
+    await admin.from("milestones").insert({
+      pet_id: pet.id,
+      title: "Hito de prueba",
+      occurred_on: todayLocalForTest(),
+    })
+
+    try {
+      await page.goto(`/mascotas/${pet.slug}`)
+      await page.getByRole("button", { name: `Eliminar a ${petName}` }).click()
+      await page.getByRole("dialog").getByRole("button", { name: "Sí, eliminar" }).click()
+      await page.waitForURL("/")
+
+      const { data: afterDelete } = await admin
+        .from("pets")
+        .select("id")
+        .eq("id", pet.id)
+        .maybeSingle()
+      expect(afterDelete).toBeNull()
+
+      await page.getByRole("button", { name: "Deshacer" }).click()
+      await page.waitForURL(new RegExp(`/mascotas/${pet.slug}$`))
+      await expect(page.getByRole("heading", { name: petName })).toBeVisible()
+
+      const { data: restored } = await admin
+        .from("pets")
+        .select("id")
+        .eq("id", pet.id)
+        .maybeSingle()
+      expect(restored).not.toBeNull()
+
+      const { count: milestoneCount } = await admin
+        .from("milestones")
+        .select("id", { count: "exact", head: true })
+        .eq("pet_id", pet.id)
+      expect(milestoneCount).toBe(1)
+    } finally {
+      await admin.from("pets").delete().eq("id", pet.id)
+      await admin.auth.signOut({ scope: "local" })
+    }
   })
 })
