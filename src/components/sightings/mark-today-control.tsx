@@ -121,7 +121,7 @@ function MarkTodayControlInner({
           onClick={() => handleMark(true)}
         >
           <CheckIcon size={17} aria-hidden="true" />
-          Vista hoy
+          Visto
         </Button>
         <Button
           type="button"
@@ -132,7 +132,7 @@ function MarkTodayControlInner({
           onClick={() => handleMark(false)}
         >
           <XIcon size={16} aria-hidden="true" />
-          Pasé y no estaba
+          No Visto
         </Button>
       </div>
       {isPending && (

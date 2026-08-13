@@ -78,8 +78,8 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     await expect(page.getByRole("heading", { name: petName })).toBeVisible()
     await expect(page.getByRole("img", { name: petName })).toBeVisible()
 
-    // Marcar el avistamiento de hoy (User Story 1): tocar "Vista hoy" lo
-    // registra; tocar "Pasé y no estaba" sobre el mismo día lo reemplaza en
+    // Marcar el avistamiento de hoy (User Story 1): tocar "Visto" lo
+    // registra; tocar "No Visto" sobre el mismo día lo reemplaza en
     // vez de duplicarlo (unique(pet_id, seen_on)). exact: true — <DayCell>
     // del día de hoy queda con aria-label "10 — revisado y no estaba" apenas
     // el calendario refetchea (mismo refreshKey de <PetSightingsSection>) y
@@ -87,8 +87,8 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     // el hook estable para saber cuál de los dos quedó activo (Nocturne: sin
     // una clase "bg-primary" fija, el estado activo se pinta con un tinte
     // condicional).
-    const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
-    const notThereButton = page.getByRole("button", { name: "Pasé y no estaba", exact: true })
+    const seenButton = page.getByRole("button", { name: "Visto", exact: true })
+    const notThereButton = page.getByRole("button", { name: "No Visto", exact: true })
 
     await seenButton.click()
     await expect(seenButton).toBeEnabled()
@@ -139,7 +139,7 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     const dialog = page.getByRole("dialog")
     await expect(dialog).toBeVisible()
     await expect(dialog.getByText("Sin registro. ¿Qué pasó ese día?")).toBeVisible()
-    await dialog.getByRole("button", { name: "La vi" }).click()
+    await dialog.getByRole("button", { name: "Visto", exact: true }).click()
     await expect(dialog).toBeHidden()
 
     // El total del mes ahora cuenta el día pasado (visto) — hoy sigue en
@@ -162,7 +162,7 @@ test.describe("Flujo de administradora: alta, edición, hito, logout", () => {
     await expect(manualDialog).toBeVisible()
     await expect(manualDialog.getByText("Corregir otro día", { exact: true })).toBeVisible()
     await manualDialog.getByLabel("Día").fill(manualDay)
-    await manualDialog.getByRole("button", { name: "La vi" }).click()
+    await manualDialog.getByRole("button", { name: "Visto", exact: true }).click()
     await expect(manualDialog).toBeHidden()
 
     // Ahora dos días "visto" en el mes (pastDay + manualDay).

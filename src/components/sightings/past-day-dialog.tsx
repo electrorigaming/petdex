@@ -118,7 +118,7 @@ export function PastDayDialog({
             onClick={() => handleMark(true)}
           >
             <CheckIcon size={15} aria-hidden="true" />
-            La vi
+            Visto
           </Button>
           <Button
             type="button"
@@ -128,7 +128,7 @@ export function PastDayDialog({
             onClick={() => handleMark(false)}
           >
             <XIcon size={15} aria-hidden="true" />
-            Pasé y no estaba
+            No Visto
           </Button>
         </div>
         <p className="flex items-center gap-1.5 text-meta text-neutral-600">

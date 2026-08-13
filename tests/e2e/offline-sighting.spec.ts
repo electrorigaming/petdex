@@ -57,7 +57,7 @@ test.describe("Marcado offline y sincronización (User Story 5)", () => {
 
     try {
       await page.goto(`/mascotas/${pet.slug}`)
-      const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
+      const seenButton = page.getByRole("button", { name: "Visto", exact: true })
       await expect(seenButton).toBeVisible({ timeout: 30000 })
 
       await context.setOffline(true)
@@ -114,9 +114,9 @@ test.describe("Marcado offline y sincronización (User Story 5)", () => {
 
     try {
       await page.goto(`/mascotas/${pet.slug}`)
-      const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
+      const seenButton = page.getByRole("button", { name: "Visto", exact: true })
       const notThereButton = page.getByRole("button", {
-        name: "Pasé y no estaba",
+        name: "No Visto",
         exact: true,
       })
       await expect(seenButton).toBeVisible({ timeout: 30000 })
@@ -152,7 +152,7 @@ test.describe("Marcado offline y sincronización (User Story 5)", () => {
 
     try {
       await page.goto(`/mascotas/${pet.slug}`)
-      const seenButton = page.getByRole("button", { name: "Vista hoy", exact: true })
+      const seenButton = page.getByRole("button", { name: "Visto", exact: true })
       await expect(seenButton).toBeVisible({ timeout: 30000 })
 
       await context.setOffline(true)
