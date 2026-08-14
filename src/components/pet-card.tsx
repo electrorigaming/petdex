@@ -3,6 +3,7 @@ import Link from "next/link"
 import { ImageSquareIcon } from "@phosphor-icons/react/dist/ssr/ImageSquare"
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr/MapPin"
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr/CheckCircle"
+import { GenderNeuterIcon } from "@phosphor-icons/react/dist/ssr/GenderNeuter"
 import { Badge } from "@/components/ui/badge"
 import { daysBetween, todayLocal } from "@/lib/dates"
 import type { PetSummary } from "@/lib/pets"
@@ -58,10 +59,28 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           </Badge>
         )
       )}
+      {pet.sterilized && (
+        <Badge
+          variant="neutral"
+          className="pet-card-tag absolute right-2 top-2"
+          aria-label="Esterilizada"
+        >
+          <GenderNeuterIcon size={12} aria-hidden="true" />
+        </Badge>
+      )}
 
       {/* Lista: nombre + apodo · zona a la izquierda, estado a la derecha. */}
       <div className="pet-card-row-text min-w-0 flex-1">
-        <div className="truncate text-[15px] font-medium text-text">{pet.name}</div>
+        <div className="flex items-center gap-1 text-[15px] font-medium text-text">
+          <span className="truncate">{pet.name}</span>
+          {pet.sterilized && (
+            <GenderNeuterIcon
+              size={13}
+              className="shrink-0 text-neutral-500"
+              aria-label="Esterilizada"
+            />
+          )}
+        </div>
         <div className="mt-0.5 truncate text-caption text-neutral-500">
           {[pet.nicknames[0], pet.zone].filter(Boolean).join(" · ")}
         </div>

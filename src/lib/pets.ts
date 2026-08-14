@@ -7,6 +7,8 @@ export type PetSummary = {
   nicknames: string[]
   photoUrl: string | null
   zone: string | null
+  status: PetStatus
+  sterilized: boolean
   seenToday: boolean
   lastSeenOn: string | null
 }
@@ -24,6 +26,7 @@ export type PetDetail = {
   description: string | null
   photoUrl: string | null
   status: PetStatus
+  sterilized: boolean
 }
 
 export type WriteResult = { ok: true; slug: string } | { ok: false; message: string }
@@ -32,7 +35,7 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("pets_overview")
-    .select("slug, name, nicknames, photo_url, zone, seen_today, last_seen_on")
+    .select("slug, name, nicknames, photo_url, zone, status, sterilized, seen_today, last_seen_on")
     .order("registered_on", { ascending: false })
 
   if (error) throw error
@@ -43,6 +46,8 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
     nicknames: row.nicknames ?? [],
     photoUrl: row.photo_url,
     zone: row.zone,
+    status: row.status as PetStatus,
+    sterilized: row.sterilized ?? false,
     seenToday: row.seen_today ?? false,
     lastSeenOn: row.last_seen_on,
   }))
@@ -66,7 +71,7 @@ export async function getPetBySlug(
   const { data, error } = await supabase
     .from("pets")
     .select(
-      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status"
+      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, sterilized"
     )
     .eq("slug", slug)
     .maybeSingle()
@@ -86,6 +91,7 @@ export async function getPetBySlug(
     description: data.description,
     photoUrl: data.photo_url,
     status: data.status as PetStatus,
+    sterilized: data.sterilized,
   }
 }
 

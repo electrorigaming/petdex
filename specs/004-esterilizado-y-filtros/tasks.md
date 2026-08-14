@@ -43,7 +43,7 @@ Sin estos dos pasos, T002–T004 no van a tipar correctamente contra
 
 **Purpose**: Migración de esquema — prerrequisito de todo lo demás
 
-- [ ] T001 Crear `supabase/migrations/20260814120000_add_sterilized_to_pets.sql`
+- [X] T001 Crear `supabase/migrations/20260814120000_add_sterilized_to_pets.sql`
   con `alter table public.pets add column sterilized boolean not null default
   false;` seguido de `create or replace view public.pets_overview as` con la
   definición exacta de research.md §1 (misma lista de columnas y subconsultas
@@ -61,16 +61,18 @@ gen:types` refleje la columna nueva.
 
 **⚠️ CRITICAL**: Ninguna historia de usuario puede empezar hasta que esta fase esté completa
 
-- [ ] T002 [P] Agregar `sterilized: z.boolean().default(false)` a
+- [X] T002 [P] Agregar `sterilized: z.boolean().default(false)` a
   `petFieldsSchema` en `src/lib/validation/pet-schema.ts` (sin `.optional()`,
   mismo criterio que `status` — data-model.md)
-- [ ] T003 [P] En `src/lib/pets.ts`: sumar `status: PetStatus` y `sterilized:
+- [X] T003 [P] En `src/lib/pets.ts`: sumar `status: PetStatus` y `sterilized:
   boolean` a `PetSummary`, sumar `sterilized: boolean` a `PetDetail`; actualizar
   `getPetSummaries()` para seleccionar `status, sterilized` de `pets_overview` y
   mapearlos; actualizar `getPetBySlug()` para seleccionar `sterilized` de `pets`
   y mapearlo (data-model.md)
-- [ ] T004 [P] En `src/lib/actions/pets.ts`: pasar `sterilized: values.sterilized`
-  en el `insert` de `createPet` y en el `update` de `updatePet` (contracts/mutations-delta.md)
+- [X] T004 [P] En `src/lib/actions/pets.ts`: pasar `sterilized: values.sterilized`
+  en el `insert` de `createPet` y en el `update` de `updatePet`
+  (contracts/mutations-delta.md). También ajustado `app/mascotas/[slug]/editar/page.tsx`,
+  que arma `initialValues` a mano y necesitaba el campo nuevo para tipar.
 
 **Checkpoint**: `npm run typecheck` pasa. La capa de datos expone `sterilized`
 de punta a punta — las historias de usuario pueden empezar en paralelo.
@@ -89,18 +91,19 @@ con "No" y confirmar que ambos desaparecen (quickstart.md, Escenarios 1–2).
 
 ### Implementation for User Story 1
 
-- [ ] T005 [P] [US1] En `src/components/pets/pet-form.tsx`: agregar un campo
+- [X] T005 [P] [US1] En `src/components/pets/pet-form.tsx`: agregar un campo
   "Esterilizado" con dos `<Radio>` (Sí/No), mismo patrón visual y de
   `Controller` que ya usa el campo "Estado"; default `false` en modo alta
   (spec.md FR-002)
-- [ ] T006 [P] [US1] En `src/components/pet-detail.tsx`: agregar un
+- [X] T006 [P] [US1] En `src/components/pet-detail.tsx`: agregar un
   `<Badge variant="outline">` para "Esterilizada"/"No esterilizada" junto al
   badge de Estado, visible siempre (spec.md FR-003)
-- [ ] T007 [P] [US1] En `src/components/pet-card.tsx`: agregar un indicador
-  (badge/ícono chico) que se muestra únicamente cuando `pet.sterilized ===
-  true`, tanto en el overlay de la vista grid (esquina superior derecha,
-  libre porque "Hoy"/"Ayer" usa la izquierda) como en la fila de la vista
-  lista; no se muestra nada cuando es `false` (spec.md FR-004)
+- [X] T007 [P] [US1] En `src/components/pet-card.tsx`: agregar un indicador
+  (`GenderNeuterIcon` de Phosphor) que se muestra únicamente cuando
+  `pet.sterilized === true`, tanto en el overlay de la vista grid (esquina
+  superior derecha, libre porque "Hoy"/"Ayer" usa la izquierda) como inline
+  junto al nombre en la fila de la vista lista; no se muestra nada cuando es
+  `false` (spec.md FR-004)
 
 **Checkpoint**: User Story 1 funcional de punta a punta — el dato se carga,
 persiste y se ve, con y sin sesión.
@@ -120,26 +123,28 @@ Escenario 3).
 
 ### Tests for User Story 2
 
-- [ ] T008 [P] [US2] Crear `tests/unit/pet-filters.test.ts` con casos para
+- [X] T008 [P] [US2] Crear `tests/unit/pet-filters.test.ts` con casos para
   `matchesFilters()` (T010): ningún filtro activo = todo pasa; un solo chip de
   Estado; dos chips de Estado (OR intra-grupo); Estado + Esterilizado
   combinados (AND entre-grupos); todos los chips de un grupo activos ==
-  ninguno activo (spec.md Edge Cases)
+  ninguno activo (spec.md Edge Cases) — 5/5 tests pasan
 
 ### Implementation for User Story 2
 
-- [ ] T009 [P] [US2] Crear `src/components/ui/filter-chip.tsx`: botón
+- [X] T009 [P] [US2] Crear `src/components/ui/filter-chip.tsx`: botón
   `aria-pressed` con la estética de `RadioChip` (borde/texto acento cuando
   está activo) para selección múltiple independiente (research.md §3)
-- [ ] T010 [US2] Crear `src/lib/pet-filters.ts` con la función pura
+- [X] T010 [US2] Crear `src/lib/pet-filters.ts` con la función pura
   `matchesFilters(pet, filters)` descrita en research.md §4 (satisface T008)
-- [ ] T011 [US2] En `src/components/pet-grid.tsx`: agregar estado local
+- [X] T011 [US2] En `src/components/pet-grid.tsx`: agregar estado local
   `PetFilters` (data-model.md), un botón "Filtros (N)" junto al `<Select>` de
   Zona que expande/colapsa un panel con los chips de Estado (4, usando T009) y
   Esterilizado (2, usando T009), y aplicar `matchesFilters` (T010) dentro del
   `useMemo` existente junto a los filtros de zona/búsqueda ya implementados
-  (spec.md FR-005 a FR-010)
-- [ ] T012 [US2] En `src/components/pet-grid.tsx`: extender `clearFilters()`
+  (spec.md FR-005 a FR-010). También corregido el texto de "resultados con
+  filtros activos" para el caso zona=todas + solo filtros de Estado/Esterilizado
+  activos, que antes mostraba mal el literal interno de "todas las zonas"
+- [X] T012 [US2] En `src/components/pet-grid.tsx`: extender `clearFilters()`
   para limpiar también Estado y Esterilizado, y confirmar que
   `<NoResultsState>` sigue disparándose correctamente cuando la combinación no
   arroja resultados (spec.md FR-011)
@@ -151,10 +156,37 @@ independiente entre sí.
 
 ## Phase 5: Polish & Cross-Cutting Concerns
 
-- [ ] T013 Correr `npm run typecheck` y confirmar que pasa con los tipos
-  regenerados
-- [ ] T014 Correr las validaciones manuales de `quickstart.md` (Escenarios 1–4
-  y checklist final de CLAUDE.md) de punta a punta y registrar el resultado
+- [X] T013 Correr `npm run typecheck` y confirmar que pasa con los tipos
+  regenerados — pasa
+- [X] T014 Correr las validaciones manuales de `quickstart.md` (Escenarios 1–4
+  y checklist final de CLAUDE.md) de punta a punta y registrar el resultado —
+  verificado en el navegador con sesión de admin real (`/test/login`) contra
+  el proyecto de Supabase real:
+  - Escenario 1: editar Firulais → "Esterilizado: Sí" → Guardar → la ficha
+    pública muestra "Esterilizada"; revertido a "No" al terminar para no
+    dejar datos de prueba alterados.
+  - Escenario 2: con `sterilized = true`, la tarjeta muestra el ícono tanto
+    en grid (esquina superior derecha) como en lista (junto al nombre); con
+    `false` no se muestra nada en ninguna vista.
+  - Escenario 3: panel "Filtros" — un chip de Estado reduce el resultado, un
+    segundo chip del mismo grupo lo amplía (OR intra-grupo), sumar
+    Esterilizado lo acota más (AND entre grupos), contador "Filtros (N)"
+    correcto, cero resultados dispara `<NoResultsState>` con "Limpiar
+    filtros" que resetea todo (zona, búsqueda, estado, esterilizado).
+  - Escenario 4 / RLS: confirmado indirectamente vía
+    `tests/integration/rls-pets-write.test.ts` (update de anon no modifica
+    la fila) — sigue pasando sin cambios, cubre `sterilized` por ser RLS a
+    nivel de fila.
+  - Bug encontrado y corregido en el camino: el mensaje de resultados
+    filtrados mostraba mal el caso "solo hay filtros de Estado/Esterilizado
+    activos, sin zona ni búsqueda" (mostraba el literal interno de zona en
+    vez de un texto genérico) — corregido en `pet-grid.tsx`.
+  - Ajuste adicional de robustez: se agregó `flex-wrap` a la fila de
+    controles (Zona + Filtros + ViewToggle) para que en pantallas angostas
+    los controles pasen a una segunda línea en vez de comprimirse — no se
+    pudo verificar visualmente a 375px exacto en esta sesión porque la
+    herramienta de redimensionar el navegador no tomó efecto (el viewport
+    quedó fijo), así que esto se apoya en revisión del CSS, no en captura.
 
 ---
 

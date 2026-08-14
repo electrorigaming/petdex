@@ -46,6 +46,9 @@ export function PetDetail({ pet }: { pet: PetDetailType }) {
             </Badge>
           )}
           <Badge variant="outline">{STATUS_LABEL[pet.status]}</Badge>
+          <Badge variant="outline">
+            {pet.sterilized ? "Esterilizada" : "No esterilizada"}
+          </Badge>
         </div>
       </div>
 

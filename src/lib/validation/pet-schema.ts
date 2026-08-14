@@ -29,6 +29,7 @@ export const petFieldsSchema = z.object({
   ).nullable(),
   description: z.string().trim().max(2000).optional(),
   status: z.enum(PET_STATUS_OPTIONS),
+  sterilized: z.boolean().default(false),
 })
 
 export const slugSchema = z

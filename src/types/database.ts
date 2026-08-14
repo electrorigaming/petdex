@@ -87,6 +87,7 @@ export type Database = {
           registered_on: string
           slug: string
           status: string
+          sterilized: boolean
           updated_at: string
           weight_kg: number | null
           zone: string | null
@@ -103,6 +104,7 @@ export type Database = {
           registered_on?: string
           slug: string
           status?: string
+          sterilized?: boolean
           updated_at?: string
           weight_kg?: number | null
           zone?: string | null
@@ -119,6 +121,7 @@ export type Database = {
           registered_on?: string
           slug?: string
           status?: string
+          sterilized?: boolean
           updated_at?: string
           weight_kg?: number | null
           zone?: string | null
@@ -181,6 +184,7 @@ export type Database = {
           seen_today: boolean | null
           slug: string | null
           status: string | null
+          sterilized: boolean | null
           total_sightings: number | null
           zone: string | null
         }
@@ -195,6 +199,7 @@ export type Database = {
           seen_today?: never
           slug?: string | null
           status?: string | null
+          sterilized?: boolean | null
           total_sightings?: never
           zone?: string | null
         }
@@ -209,6 +214,7 @@ export type Database = {
           seen_today?: never
           slug?: string | null
           status?: string | null
+          sterilized?: boolean | null
           total_sightings?: never
           zone?: string | null
         }

@@ -50,6 +50,7 @@ export async function createPet(input: CreatePetInput): Promise<WriteResult> {
     weight_kg: values.weightKg ?? null,
     description: values.description || null,
     status: values.status,
+    sterilized: values.sterilized,
     photo_url: values.photoUrl ?? null,
   })
 
@@ -100,6 +101,7 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
       weight_kg: values.weightKg ?? null,
       description: values.description || null,
       status: values.status,
+      sterilized: values.sterilized,
       // undefined = no tocar la foto; string = reemplazo; null = quitarla
       // sin reemplazo (FR-013) — ambos casos actualizan photo_url igual.
       ...(values.photoUrl !== undefined ? { photo_url: values.photoUrl } : {}),

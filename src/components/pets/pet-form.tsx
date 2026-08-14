@@ -96,6 +96,7 @@ export function PetForm(props: PetFormProps) {
             weightKg: null,
             description: "",
             status: "activo",
+            sterilized: false,
           },
   })
 
@@ -267,6 +268,32 @@ export function PetForm(props: PetFormProps) {
                       {PET_STATUS_LABEL[status]}
                     </Radio>
                   ))}
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="field">
+            <Label>Esterilizado</Label>
+            <Controller
+              control={control}
+              name="sterilized"
+              render={({ field }) => (
+                <div className="mt-1.5 flex flex-wrap gap-4">
+                  <Radio
+                    name="sterilized"
+                    checked={field.value === true}
+                    onChange={() => field.onChange(true)}
+                  >
+                    Sí
+                  </Radio>
+                  <Radio
+                    name="sterilized"
+                    checked={field.value === false}
+                    onChange={() => field.onChange(false)}
+                  >
+                    No
+                  </Radio>
                 </div>
               )}
             />
