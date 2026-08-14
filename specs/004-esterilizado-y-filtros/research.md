@@ -20,7 +20,6 @@ SELECT id,
     photo_url,
     zone,
     status,
-    sterilized,
     registered_on,
     (EXISTS ( SELECT 1
            FROM sightings s
@@ -33,9 +32,18 @@ SELECT id,
           WHERE s.pet_id = p.id AND s.seen) AS last_seen_on,
     ( SELECT count(*) AS count
            FROM milestones m
-          WHERE m.pet_id = p.id) AS milestone_count
+          WHERE m.pet_id = p.id) AS milestone_count,
+    sterilized
    FROM pets p;
 ```
+
+`sterilized` va al final de la lista, no intercalada entre columnas
+existentes: `CREATE OR REPLACE VIEW` compara por posición contra la vista
+vieja, así que insertarla en el medio corre de lugar a todo lo que sigue y
+Postgres lo rechaza como un intento de renombrar la columna que quedó en esa
+posición (`42P16`). Es el mismo motivo que ya explica el Rationale de abajo,
+aplicado correctamente acá tras un primer intento fallido con `sterilized`
+ubicada después de `status`.
 
 La migración completa (`supabase/migrations/20260814120000_add_sterilized_to_pets.sql`):
 
