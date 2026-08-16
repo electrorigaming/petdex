@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import type { Milestone } from "@/lib/milestones"
+import type { PetVisibility } from "@/lib/validation/pet-schema"
 
 export type PetSummary = {
   slug: string
@@ -9,6 +10,7 @@ export type PetSummary = {
   zone: string | null
   status: PetStatus
   sterilized: boolean
+  visibility: PetVisibility
   seenToday: boolean
   lastSeenOn: string | null
 }
@@ -35,7 +37,9 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("pets_overview")
-    .select("slug, name, nicknames, photo_url, zone, status, sterilized, seen_today, last_seen_on")
+    .select(
+      "slug, name, nicknames, photo_url, zone, status, sterilized, visibility, seen_today, last_seen_on"
+    )
     .order("registered_on", { ascending: false })
 
   if (error) throw error
@@ -48,6 +52,7 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
     zone: row.zone,
     status: row.status as PetStatus,
     sterilized: row.sterilized ?? false,
+    visibility: (row.visibility ?? "publico") as PetVisibility,
     seenToday: row.seen_today ?? false,
     lastSeenOn: row.last_seen_on,
   }))

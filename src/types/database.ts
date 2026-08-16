@@ -78,6 +78,7 @@ export type Database = {
         Row: {
           age_estimate: string | null
           created_at: string
+          created_by: string | null
           description: string | null
           id: string
           location: string | null
@@ -89,12 +90,14 @@ export type Database = {
           status: string
           sterilized: boolean
           updated_at: string
+          visibility: string
           weight_kg: number | null
           zone: string | null
         }
         Insert: {
           age_estimate?: string | null
           created_at?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           location?: string | null
@@ -106,12 +109,14 @@ export type Database = {
           status?: string
           sterilized?: boolean
           updated_at?: string
+          visibility?: string
           weight_kg?: number | null
           zone?: string | null
         }
         Update: {
           age_estimate?: string | null
           created_at?: string
+          created_by?: string | null
           description?: string | null
           id?: string
           location?: string | null
@@ -123,6 +128,7 @@ export type Database = {
           status?: string
           sterilized?: boolean
           updated_at?: string
+          visibility?: string
           weight_kg?: number | null
           zone?: string | null
         }
@@ -186,6 +192,7 @@ export type Database = {
           status: string | null
           sterilized: boolean | null
           total_sightings: number | null
+          visibility: string | null
           zone: string | null
         }
         Insert: {
@@ -201,6 +208,7 @@ export type Database = {
           status?: string | null
           sterilized?: boolean | null
           total_sightings?: never
+          visibility?: string | null
           zone?: string | null
         }
         Update: {
@@ -216,6 +224,7 @@ export type Database = {
           status?: string | null
           sterilized?: boolean | null
           total_sightings?: never
+          visibility?: string | null
           zone?: string | null
         }
         Relationships: []

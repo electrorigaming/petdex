@@ -4,6 +4,7 @@ import { ImageSquareIcon } from "@phosphor-icons/react/dist/ssr/ImageSquare"
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr/MapPin"
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr/CheckCircle"
 import { GenderNeuterIcon } from "@phosphor-icons/react/dist/ssr/GenderNeuter"
+import { LockSimpleIcon } from "@phosphor-icons/react/dist/ssr/LockSimple"
 import { Badge } from "@/components/ui/badge"
 import { daysBetween, todayLocal } from "@/lib/dates"
 import type { PetSummary } from "@/lib/pets"
@@ -59,14 +60,19 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           </Badge>
         )
       )}
-      {pet.sterilized && (
-        <Badge
-          variant="neutral"
-          className="pet-card-tag absolute right-2 top-2"
-          aria-label="Esterilizada"
-        >
-          <GenderNeuterIcon size={12} aria-hidden="true" />
-        </Badge>
+      {(pet.sterilized || pet.visibility === "privado") && (
+        <div className="pet-card-tag absolute right-2 top-2 flex flex-col items-end gap-1">
+          {pet.sterilized && (
+            <Badge variant="neutral" aria-label="Esterilizada">
+              <GenderNeuterIcon size={12} aria-hidden="true" />
+            </Badge>
+          )}
+          {pet.visibility === "privado" && (
+            <Badge variant="neutral" aria-label="Privada">
+              <LockSimpleIcon size={12} aria-hidden="true" />
+            </Badge>
+          )}
+        </div>
       )}
 
       {/* Lista: nombre + apodo · zona a la izquierda, estado a la derecha. */}
@@ -79,6 +85,9 @@ export function PetCard({ pet }: { pet: PetSummary }) {
               className="shrink-0 text-neutral-500"
               aria-label="Esterilizada"
             />
+          )}
+          {pet.visibility === "privado" && (
+            <LockSimpleIcon size={13} className="shrink-0 text-neutral-500" aria-label="Privada" />
           )}
         </div>
         <div className="mt-0.5 truncate text-caption text-neutral-500">

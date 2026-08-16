@@ -14,9 +14,16 @@ import {
 import { FilterChip } from "@/components/ui/filter-chip"
 import { ViewToggle } from "@/components/view-toggle"
 import { useCatalogSearch } from "@/components/catalog-search-context"
+import { useSession } from "@/hooks/use-session"
 import { normalizeSearchText } from "@/lib/search"
 import { matchesFilters, countActiveFilters, EMPTY_PET_FILTERS, type PetFilters } from "@/lib/pet-filters"
-import { PET_STATUS_OPTIONS, PET_STATUS_LABEL } from "@/lib/validation/pet-schema"
+import {
+  PET_STATUS_OPTIONS,
+  PET_STATUS_LABEL,
+  PET_VISIBILITY_OPTIONS,
+  PET_VISIBILITY_LABEL,
+  type PetVisibility,
+} from "@/lib/validation/pet-schema"
 import type { PetSummary, PetStatus } from "@/lib/pets"
 
 export type PetGridProps = {
@@ -50,6 +57,7 @@ function FilterablePetGrid({
   const [zone, setZoneState] = useState(ALL_ZONES)
   const [filters, setFilters] = useState<PetFilters>(EMPTY_PET_FILTERS)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const { isAdmin } = useSession()
 
   const filtered = useMemo(() => {
     const normalizedQuery = normalizeSearchText(query.trim())
@@ -86,6 +94,13 @@ function FilterablePetGrid({
       esterilizado: f.esterilizado.includes(value)
         ? f.esterilizado.filter((v) => v !== value)
         : [...f.esterilizado, value],
+    }))
+  }
+
+  function toggleTipo(value: PetVisibility) {
+    setFilters((f) => ({
+      ...f,
+      tipo: f.tipo.includes(value) ? f.tipo.filter((v) => v !== value) : [...f.tipo, value],
     }))
   }
 
@@ -174,6 +189,22 @@ function FilterablePetGrid({
               </FilterChip>
             </div>
           </div>
+          {isAdmin && (
+            <div>
+              <p className="mb-1.5 text-legend uppercase tracking-wide text-neutral-600">Tipo</p>
+              <div className="flex flex-wrap gap-2">
+                {PET_VISIBILITY_OPTIONS.map((visibility) => (
+                  <FilterChip
+                    key={visibility}
+                    aria-pressed={filters.tipo.includes(visibility)}
+                    onClick={() => toggleTipo(visibility)}
+                  >
+                    {PET_VISIBILITY_LABEL[visibility]}
+                  </FilterChip>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

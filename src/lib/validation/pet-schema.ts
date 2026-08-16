@@ -9,6 +9,18 @@ export const PET_STATUS_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], strin
   fallecido: "Fallecido",
 }
 
+// De solo lectura desde la app — el Tipo nunca viaja en petFieldsSchema ni
+// en createPetSchema/updatePetSchema. Se cambia únicamente por SQL directo
+// en Supabase (specs/005-tipo-privado-publico/spec.md FR-003).
+export const PET_VISIBILITY_OPTIONS = ["publico", "privado"] as const
+
+export type PetVisibility = (typeof PET_VISIBILITY_OPTIONS)[number]
+
+export const PET_VISIBILITY_LABEL: Record<PetVisibility, string> = {
+  publico: "Público",
+  privado: "Privado",
+}
+
 const nicknameSchema = z.string().trim().min(1)
 
 // Campos comunes a alta y edición. El slug se valida por separado porque en
