@@ -4,7 +4,7 @@ export const PET_STATUS_OPTIONS = ["activo", "sin_ver", "adoptado", "fallecido"]
 
 export const PET_STATUS_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], string> = {
   activo: "Activo",
-  sin_ver: "Sin ver",
+  sin_ver: "Desaparecido",
   adoptado: "Adoptado",
   fallecido: "Fallecido",
 }
@@ -13,7 +13,7 @@ export const PET_STATUS_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], strin
 // que son las etiquetas del formulario/filtros.
 export const PET_STATUS_DISPLAY_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], string> = {
   activo: "Activa",
-  sin_ver: "Sin ver hace tiempo",
+  sin_ver: "Desaparecida",
   adoptado: "Adoptada",
   fallecido: "Fallecida",
 }
@@ -25,6 +25,16 @@ export type PetVisibility = (typeof PET_VISIBILITY_OPTIONS)[number]
 export const PET_VISIBILITY_LABEL: Record<PetVisibility, string> = {
   publico: "Público",
   privado: "Privado",
+}
+
+export const PET_GENDER_OPTIONS = ["macho", "hembra", "desconocido"] as const
+
+export type PetGender = (typeof PET_GENDER_OPTIONS)[number]
+
+export const PET_GENDER_LABEL: Record<PetGender, string> = {
+  macho: "Macho",
+  hembra: "Hembra",
+  desconocido: "Desconocido",
 }
 
 const nicknameSchema = z.string().trim().min(1)
@@ -49,6 +59,7 @@ export const petFieldsSchema = z.object({
   status: z.enum(PET_STATUS_OPTIONS),
   sterilized: z.boolean().default(false),
   visibility: z.enum(PET_VISIBILITY_OPTIONS).default("publico"),
+  gender: z.enum(PET_GENDER_OPTIONS).default("desconocido"),
 })
 
 export const slugSchema = z

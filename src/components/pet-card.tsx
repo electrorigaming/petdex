@@ -4,11 +4,25 @@ import { ImageSquareIcon } from "@phosphor-icons/react/dist/ssr/ImageSquare"
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr/MapPin"
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr/CheckCircle"
 import { GenderNeuterIcon } from "@phosphor-icons/react/dist/ssr/GenderNeuter"
+import { GenderMaleIcon } from "@phosphor-icons/react/dist/ssr/GenderMale"
+import { GenderFemaleIcon } from "@phosphor-icons/react/dist/ssr/GenderFemale"
 import { LockSimpleIcon } from "@phosphor-icons/react/dist/ssr/LockSimple"
 import { Badge } from "@/components/ui/badge"
 import { daysBetween, todayLocal } from "@/lib/dates"
 import type { PetSummary } from "@/lib/pets"
-import { PET_STATUS_DISPLAY_LABEL } from "@/lib/validation/pet-schema"
+import { PET_STATUS_DISPLAY_LABEL, PET_GENDER_LABEL } from "@/lib/validation/pet-schema"
+
+// Sin ícono para "desconocido" — no ocupa espacio visual, mismo criterio
+// que el resto de los indicadores de tarjeta.
+function GenderIcon({ gender, size }: { gender: PetSummary["gender"]; size: number }) {
+  if (gender === "macho") {
+    return <GenderMaleIcon size={size} aria-label={PET_GENDER_LABEL[gender]} />
+  }
+  if (gender === "hembra") {
+    return <GenderFemaleIcon size={size} aria-label={PET_GENDER_LABEL[gender]} />
+  }
+  return null
+}
 
 // Un solo árbol de DOM sirve para las dos vistas (cuadrícula = retrato 4:5
 // con overlay, lista = fila con thumb) — el layout lo decide app/globals.css
@@ -61,10 +75,18 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           </Badge>
         )
       )}
-      {(pet.status !== "activo" || pet.sterilized || pet.visibility === "privado") && (
+      {(pet.status !== "activo" ||
+        pet.gender !== "desconocido" ||
+        pet.sterilized ||
+        pet.visibility === "privado") && (
         <div className="pet-card-tag absolute right-2 top-2 flex flex-col items-end gap-1">
           {pet.status !== "activo" && (
             <Badge variant="neutral">{PET_STATUS_DISPLAY_LABEL[pet.status]}</Badge>
+          )}
+          {pet.gender !== "desconocido" && (
+            <Badge variant="neutral">
+              <GenderIcon gender={pet.gender} size={12} />
+            </Badge>
           )}
           {pet.sterilized && (
             <Badge variant="neutral" aria-label="Esterilizada">
@@ -83,6 +105,11 @@ export function PetCard({ pet }: { pet: PetSummary }) {
       <div className="pet-card-row-text min-w-0 flex-1">
         <div className="flex items-center gap-1 text-[15px] font-medium text-text">
           <span className="truncate">{pet.name}</span>
+          {pet.gender !== "desconocido" && (
+            <span className="shrink-0 text-neutral-500">
+              <GenderIcon gender={pet.gender} size={13} />
+            </span>
+          )}
           {pet.sterilized && (
             <GenderNeuterIcon
               size={13}

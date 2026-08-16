@@ -3,7 +3,7 @@ import { ImageSquareIcon } from "@phosphor-icons/react/dist/ssr/ImageSquare"
 import { MapPinIcon } from "@phosphor-icons/react/dist/ssr/MapPin"
 import { Badge } from "@/components/ui/badge"
 import type { PetDetail as PetDetailType } from "@/lib/pets"
-import { PET_STATUS_DISPLAY_LABEL } from "@/lib/validation/pet-schema"
+import { PET_STATUS_DISPLAY_LABEL, PET_GENDER_LABEL } from "@/lib/validation/pet-schema"
 
 export function PetDetail({ pet }: { pet: PetDetailType }) {
   return (
@@ -40,6 +40,7 @@ export function PetDetail({ pet }: { pet: PetDetailType }) {
             </Badge>
           )}
           <Badge variant="outline">{PET_STATUS_DISPLAY_LABEL[pet.status]}</Badge>
+          <Badge variant="outline">{PET_GENDER_LABEL[pet.gender]}</Badge>
           <Badge variant="outline">
             {pet.sterilized ? "Esterilizada" : "No esterilizada"}
           </Badge>

@@ -80,6 +80,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
+          gender: string
           id: string
           location: string | null
           name: string
@@ -99,6 +100,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          gender?: string
           id?: string
           location?: string | null
           name: string
@@ -118,6 +120,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          gender?: string
           id?: string
           location?: string | null
           name?: string
@@ -180,6 +183,7 @@ export type Database = {
     Views: {
       pets_overview: {
         Row: {
+          gender: string | null
           id: string | null
           last_seen_on: string | null
           milestone_count: number | null
@@ -196,6 +200,7 @@ export type Database = {
           zone: string | null
         }
         Insert: {
+          gender?: string | null
           id?: string | null
           last_seen_on?: never
           milestone_count?: never
@@ -212,6 +217,7 @@ export type Database = {
           zone?: string | null
         }
         Update: {
+          gender?: string | null
           id?: string | null
           last_seen_on?: never
           milestone_count?: never

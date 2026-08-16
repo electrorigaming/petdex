@@ -27,7 +27,10 @@ import {
   PET_STATUS_LABEL,
   PET_VISIBILITY_OPTIONS,
   PET_VISIBILITY_LABEL,
+  PET_GENDER_OPTIONS,
+  PET_GENDER_LABEL,
   type PetVisibility,
+  type PetGender,
 } from "@/lib/validation/pet-schema"
 import type { PetSummary, PetStatus } from "@/lib/pets"
 
@@ -45,7 +48,12 @@ const AUTO_REFRESH_INTERVAL_MS = 15 * 60 * 1000
 // Vista inicial: activas y públicas. "Limpiar filtros" sigue llevando a
 // EMPTY_PET_FILTERS (ver todo) — este es solo el punto de partida al cargar
 // la pantalla, no el significado de "sin filtros".
-const DEFAULT_PET_FILTERS: PetFilters = { estado: ["activo"], esterilizado: [], tipo: ["publico"] }
+const DEFAULT_PET_FILTERS: PetFilters = {
+  estado: ["activo"],
+  esterilizado: [],
+  tipo: ["publico"],
+  genero: [],
+}
 
 export function PetGrid({ pets, total }: PetGridProps) {
   const { query, setQuery } = useCatalogSearch()
@@ -134,6 +142,13 @@ function FilterablePetGrid({
     setFilters((f) => ({
       ...f,
       tipo: f.tipo.includes(value) ? f.tipo.filter((v) => v !== value) : [...f.tipo, value],
+    }))
+  }
+
+  function toggleGenero(value: PetGender) {
+    setFilters((f) => ({
+      ...f,
+      genero: f.genero.includes(value) ? f.genero.filter((v) => v !== value) : [...f.genero, value],
     }))
   }
 
@@ -245,6 +260,20 @@ function FilterablePetGrid({
               >
                 No esterilizado
               </FilterChip>
+            </div>
+          </div>
+          <div>
+            <p className="mb-1.5 text-legend uppercase tracking-wide text-neutral-600">Género</p>
+            <div className="flex flex-wrap gap-2">
+              {PET_GENDER_OPTIONS.map((gender) => (
+                <FilterChip
+                  key={gender}
+                  aria-pressed={filters.genero.includes(gender)}
+                  onClick={() => toggleGenero(gender)}
+                >
+                  {PET_GENDER_LABEL[gender]}
+                </FilterChip>
+              ))}
             </div>
           </div>
           {isAdmin && (

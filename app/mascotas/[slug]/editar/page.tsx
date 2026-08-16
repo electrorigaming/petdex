@@ -25,6 +25,7 @@ export default async function EditPetPage({
     status: pet.status,
     sterilized: pet.sterilized,
     visibility: pet.visibility,
+    gender: pet.gender,
   }
 
   return (

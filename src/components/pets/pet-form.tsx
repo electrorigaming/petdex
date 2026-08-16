@@ -14,6 +14,8 @@ import {
   PET_STATUS_LABEL,
   PET_VISIBILITY_OPTIONS,
   PET_VISIBILITY_LABEL,
+  PET_GENDER_OPTIONS,
+  PET_GENDER_LABEL,
   type PetFormValues,
 } from "@/lib/validation/pet-schema"
 
@@ -100,6 +102,7 @@ export function PetForm(props: PetFormProps) {
             status: "activo",
             sterilized: false,
             visibility: "publico",
+            gender: "desconocido",
           },
   })
 
@@ -269,6 +272,28 @@ export function PetForm(props: PetFormProps) {
                       onChange={() => field.onChange(status)}
                     >
                       {PET_STATUS_LABEL[status]}
+                    </Radio>
+                  ))}
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="field">
+            <Label>Género</Label>
+            <Controller
+              control={control}
+              name="gender"
+              render={({ field }) => (
+                <div className="mt-1.5 flex flex-wrap gap-4">
+                  {PET_GENDER_OPTIONS.map((gender) => (
+                    <Radio
+                      key={gender}
+                      name="gender"
+                      checked={field.value === gender}
+                      onChange={() => field.onChange(gender)}
+                    >
+                      {PET_GENDER_LABEL[gender]}
                     </Radio>
                   ))}
                 </div>

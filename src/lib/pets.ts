@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import type { Milestone } from "@/lib/milestones"
-import type { PetVisibility } from "@/lib/validation/pet-schema"
+import type { PetGender, PetVisibility } from "@/lib/validation/pet-schema"
 
 export type PetSummary = {
   slug: string
@@ -11,6 +11,7 @@ export type PetSummary = {
   status: PetStatus
   sterilized: boolean
   visibility: PetVisibility
+  gender: PetGender
   seenToday: boolean
   lastSeenOn: string | null
 }
@@ -30,6 +31,7 @@ export type PetDetail = {
   status: PetStatus
   sterilized: boolean
   visibility: PetVisibility
+  gender: PetGender
 }
 
 export type WriteResult = { ok: true; slug: string } | { ok: false; message: string }
@@ -39,7 +41,7 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
   const { data, error } = await supabase
     .from("pets_overview")
     .select(
-      "slug, name, nicknames, photo_url, zone, status, sterilized, visibility, seen_today, last_seen_on"
+      "slug, name, nicknames, photo_url, zone, status, sterilized, visibility, gender, seen_today, last_seen_on"
     )
     .order("registered_on", { ascending: false })
 
@@ -54,6 +56,7 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
     status: row.status as PetStatus,
     sterilized: row.sterilized ?? false,
     visibility: (row.visibility ?? "publico") as PetVisibility,
+    gender: (row.gender ?? "desconocido") as PetGender,
     seenToday: row.seen_today ?? false,
     lastSeenOn: row.last_seen_on,
   }))
@@ -77,7 +80,7 @@ export async function getPetBySlug(
   const { data, error } = await supabase
     .from("pets")
     .select(
-      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, sterilized, visibility"
+      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, sterilized, visibility, gender"
     )
     .eq("slug", slug)
     .maybeSingle()
@@ -99,6 +102,7 @@ export async function getPetBySlug(
     status: data.status as PetStatus,
     sterilized: data.sterilized,
     visibility: data.visibility as PetVisibility,
+    gender: data.gender as PetGender,
   }
 }
 
