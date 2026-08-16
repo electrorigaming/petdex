@@ -144,25 +144,16 @@ describe("RLS: visibilidad Privado/Público (pets, milestones, sightings)", () =
     expect(milestone?.title).toBe("Hito privado")
   })
 
-  it("el Tipo no se puede cambiar desde la app, ni siquiera por la dueña de la fila", async () => {
-    // La motivación original de este trigger (research.md §3.1) es que una
-    // admin B no dueña podría privatizar y autoasignarse una mascota
-    // pública de la admin A. Ese caso puntual (dueño "ajeno") NO se prueba
-    // acá empíricamente: created_by tiene FK a auth.users(id), así que un
-    // UUID inventado para simular otra cuenta viola la FK (23503) antes de
-    // llegar siquiera a evaluarse contra RLS/el trigger, y no hay una
-    // segunda cuenta real disponible (research.md §5). Lo que SÍ prueba
-    // este test — que ni la propia dueña puede cambiar Tipo vía la API —
-    // ejercita exactamente la misma rama del trigger: su condición no
-    // referencia ownership en absoluto, bloquea el cambio de
-    // visibility/created_by por igual sin importar quién sea el dueño
-    // (viejo o nuevo). Se mantiene pública y borrable durante todo el test.
+  it("guardar como Privado asigna como dueña a quien guarda (FR-004)", async () => {
+    // Sin pets_lock_visibility_trigger (eliminado en 006-tipo-editable-formulario),
+    // pets_admin_update por sí sola ya garantiza esto: WITH CHECK exige
+    // created_by = auth.uid() cuando la fila nueva queda en 'privado'.
     const { data: publicPet, error: insertError } = await admin
       .from("pets")
       .insert({
         id: crypto.randomUUID(),
-        slug: `rls-visibility-hijack-test-${Date.now()}`,
-        name: "RLS hijack test",
+        slug: `rls-visibility-editable-test-${Date.now()}`,
+        name: "RLS editable test",
         visibility: "publico",
         created_by: adminUserId,
       })
@@ -170,25 +161,91 @@ describe("RLS: visibilidad Privado/Público (pets, milestones, sightings)", () =
       .single()
     expect(insertError).toBeNull()
 
-    const { data: hijacked, error: hijackError } = await admin
+    const { data: privatized, error: privatizeError } = await admin
       .from("pets")
-      .update({ visibility: "privado" })
+      .update({ visibility: "privado", created_by: adminUserId })
       .eq("id", publicPet!.id)
       .select()
+      .single()
+    expect(privatizeError).toBeNull()
+    expect(privatized?.visibility).toBe("privado")
 
-    // A diferencia de RLS (que filtra filas en silencio), un trigger que
-    // hace RAISE EXCEPTION aborta el statement entero: acá sí hay error,
-    // no una selección vacía.
-    expect(hijackError?.code).toBe("42501")
-    expect(hijacked).toBeNull()
+    const { data: seenByAnon } = await anon.from("pets").select("id").eq("id", publicPet!.id)
+    expect(seenByAnon).toEqual([])
+
+    await admin.from("pets").delete().eq("id", publicPet!.id)
+  })
+
+  it("no se puede dejar una fila en Privado con una dueña que no es quien ejecuta (FR-006)", async () => {
+    // Un UUID inventado para created_by fallaría por la FK a auth.users
+    // antes de llegar a RLS (23503) — no sirve para esta prueba. `null` sí
+    // es un valor válido para la FK, así que la sentencia llega hasta
+    // WITH CHECK, donde `created_by = auth.uid()` evalúa null = '<uuid>',
+    // que nunca es true (research.md §7).
+    const { data: pet, error: insertError } = await admin
+      .from("pets")
+      .insert({
+        id: crypto.randomUUID(),
+        slug: `rls-visibility-orphan-test-${Date.now()}`,
+        name: "RLS orphan test",
+        visibility: "publico",
+        created_by: adminUserId,
+      })
+      .select()
+      .single()
+    expect(insertError).toBeNull()
+
+    // A diferencia de un USING que oculta filas en silencio (0 filas, sin
+    // error), acá la fila SÍ es visible/editable para quien ejecuta (es
+    // pública) — lo que falla es WITH CHECK sobre la fila resultante, y eso
+    // Postgres lo reporta como error explícito, no como una selección vacía.
+    const { data: rejected, error: rejectError } = await admin
+      .from("pets")
+      .update({ visibility: "privado", created_by: null })
+      .eq("id", pet!.id)
+      .select()
+    expect(rejectError?.code).toBe("42501")
+    expect(rejected).toBeNull()
 
     const { data: stillPublic } = await admin
       .from("pets")
-      .select("visibility, created_by")
-      .eq("id", publicPet!.id)
+      .select("visibility")
+      .eq("id", pet!.id)
       .single()
     expect(stillPublic?.visibility).toBe("publico")
 
-    await admin.from("pets").delete().eq("id", publicPet!.id)
+    await admin.from("pets").delete().eq("id", pet!.id)
+  })
+
+  it("volver una fila de Privado a Público la hace visible de nuevo (FR-005)", async () => {
+    const { data: pet, error: insertError } = await admin
+      .from("pets")
+      .insert({
+        id: crypto.randomUUID(),
+        slug: `rls-visibility-revert-test-${Date.now()}`,
+        name: "RLS revert test",
+        visibility: "privado",
+        created_by: adminUserId,
+      })
+      .select()
+      .single()
+    expect(insertError).toBeNull()
+
+    const { data: seenByAnonBefore } = await anon.from("pets").select("id").eq("id", pet!.id)
+    expect(seenByAnonBefore).toEqual([])
+
+    const { data: reverted, error: revertError } = await admin
+      .from("pets")
+      .update({ visibility: "publico", created_by: null })
+      .eq("id", pet!.id)
+      .select()
+      .single()
+    expect(revertError).toBeNull()
+    expect(reverted?.visibility).toBe("publico")
+
+    const { data: seenByAnonAfter } = await anon.from("pets").select("id").eq("id", pet!.id)
+    expect(seenByAnonAfter).toHaveLength(1)
+
+    await admin.from("pets").delete().eq("id", pet!.id)
   })
 })

@@ -12,6 +12,8 @@ import {
   petFieldsSchema,
   PET_STATUS_OPTIONS,
   PET_STATUS_LABEL,
+  PET_VISIBILITY_OPTIONS,
+  PET_VISIBILITY_LABEL,
   type PetFormValues,
 } from "@/lib/validation/pet-schema"
 
@@ -97,6 +99,7 @@ export function PetForm(props: PetFormProps) {
             description: "",
             status: "activo",
             sterilized: false,
+            visibility: "publico",
           },
   })
 
@@ -294,6 +297,28 @@ export function PetForm(props: PetFormProps) {
                   >
                     No
                   </Radio>
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="field">
+            <Label>Tipo</Label>
+            <Controller
+              control={control}
+              name="visibility"
+              render={({ field }) => (
+                <div className="mt-1.5 flex flex-wrap gap-4">
+                  {PET_VISIBILITY_OPTIONS.map((visibility) => (
+                    <Radio
+                      key={visibility}
+                      name="visibility"
+                      checked={field.value === visibility}
+                      onChange={() => field.onChange(visibility)}
+                    >
+                      {PET_VISIBILITY_LABEL[visibility]}
+                    </Radio>
+                  ))}
                 </div>
               )}
             />

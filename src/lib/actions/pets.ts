@@ -51,6 +51,8 @@ export async function createPet(input: CreatePetInput): Promise<WriteResult> {
     description: values.description || null,
     status: values.status,
     sterilized: values.sterilized,
+    visibility: values.visibility,
+    created_by: values.visibility === "privado" ? user.id : null,
     photo_url: values.photoUrl ?? null,
   })
 
@@ -102,6 +104,11 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
       description: values.description || null,
       status: values.status,
       sterilized: values.sterilized,
+      visibility: values.visibility,
+      // Se recalcula en cada guardado a partir de lo que mandó el
+      // formulario, sin leer quién era la dueña antes — "privado" siempre
+      // pertenece a quien acaba de guardar (spec.md FR-004).
+      created_by: values.visibility === "privado" ? user.id : null,
       // undefined = no tocar la foto; string = reemplazo; null = quitarla
       // sin reemplazo (FR-013) — ambos casos actualizan photo_url igual.
       ...(values.photoUrl !== undefined ? { photo_url: values.photoUrl } : {}),

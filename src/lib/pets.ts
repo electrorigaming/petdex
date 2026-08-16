@@ -29,6 +29,7 @@ export type PetDetail = {
   photoUrl: string | null
   status: PetStatus
   sterilized: boolean
+  visibility: PetVisibility
 }
 
 export type WriteResult = { ok: true; slug: string } | { ok: false; message: string }
@@ -76,7 +77,7 @@ export async function getPetBySlug(
   const { data, error } = await supabase
     .from("pets")
     .select(
-      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, sterilized"
+      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, sterilized, visibility"
     )
     .eq("slug", slug)
     .maybeSingle()
@@ -97,6 +98,7 @@ export async function getPetBySlug(
     photoUrl: data.photo_url,
     status: data.status as PetStatus,
     sterilized: data.sterilized,
+    visibility: data.visibility as PetVisibility,
   }
 }
 
