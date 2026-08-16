@@ -1,6 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useTransition } from "react"
+import { useRouter } from "next/navigation"
+import { ArrowsClockwiseIcon } from "@phosphor-icons/react/dist/ssr/ArrowsClockwise"
 import { FunnelSimpleIcon } from "@phosphor-icons/react/dist/ssr/FunnelSimple"
 import { EmptyState, NoResultsState } from "@/components/empty-states"
 import { PetCard } from "@/components/pet-card"
@@ -15,6 +17,8 @@ import { FilterChip } from "@/components/ui/filter-chip"
 import { ViewToggle } from "@/components/view-toggle"
 import { useCatalogSearch } from "@/components/catalog-search-context"
 import { useSession } from "@/hooks/use-session"
+import { useOnlineStatus } from "@/hooks/use-online-status"
+import { usePageVisibility } from "@/hooks/use-page-visibility"
 import { normalizeSearchText } from "@/lib/search"
 import { matchesFilters, countActiveFilters, EMPTY_PET_FILTERS, type PetFilters } from "@/lib/pet-filters"
 import {
@@ -32,6 +36,15 @@ export type PetGridProps = {
 }
 
 const ALL_ZONES = "__all__"
+
+// Silencioso a propósito (sin indicador de "actualizado hace N min") — el
+// mismo criterio minimalista que ya usa el resto de la cuadrícula.
+const AUTO_REFRESH_INTERVAL_MS = 15 * 60 * 1000
+
+// Vista inicial: activas y públicas. "Limpiar filtros" sigue llevando a
+// EMPTY_PET_FILTERS (ver todo) — este es solo el punto de partida al cargar
+// la pantalla, no el significado de "sin filtros".
+const DEFAULT_PET_FILTERS: PetFilters = { estado: ["activo"], esterilizado: [], tipo: ["publico"] }
 
 export function PetGrid({ pets, total }: PetGridProps) {
   const { query, setQuery } = useCatalogSearch()
@@ -55,9 +68,28 @@ function FilterablePetGrid({
   // El estado de la zona no se comparte con el header (a diferencia del
   // buscador) — solo tiene sentido en esta pantalla, así que se queda local.
   const [zone, setZoneState] = useState(ALL_ZONES)
-  const [filters, setFilters] = useState<PetFilters>(EMPTY_PET_FILTERS)
+  const [filters, setFilters] = useState<PetFilters>(DEFAULT_PET_FILTERS)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const { isAdmin } = useSession()
+
+  const router = useRouter()
+  const [isRefreshing, startRefresh] = useTransition()
+  const isOnline = useOnlineStatus()
+  const isPageVisible = usePageVisibility()
+
+  function refresh() {
+    startRefresh(() => router.refresh())
+  }
+
+  // Pausado sin conexión y con la pestaña en segundo plano — mismo criterio
+  // event-driven que <OfflineSyncProvider>, no un timer incondicional.
+  useEffect(() => {
+    if (!isOnline || !isPageVisible) return
+    const id = setInterval(() => {
+      startRefresh(() => router.refresh())
+    }, AUTO_REFRESH_INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [isOnline, isPageVisible, router, startRefresh])
 
   const filtered = useMemo(() => {
     const normalizedQuery = normalizeSearchText(query.trim())
@@ -152,6 +184,21 @@ function FilterablePetGrid({
         >
           <FunnelSimpleIcon size={15} aria-hidden="true" />
           Filtros{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+        </button>
+        <button
+          type="button"
+          onClick={refresh}
+          disabled={isRefreshing || !isOnline}
+          aria-label="Actualizar registro"
+          title={isOnline ? "Actualizar" : "Sin conexión"}
+          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-divider px-3 text-label text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50"
+        >
+          <ArrowsClockwiseIcon
+            size={15}
+            aria-hidden="true"
+            className={isRefreshing ? "animate-spin" : undefined}
+          />
+          Actualizar
         </button>
         <ViewToggle className="md:ml-auto" />
       </div>
