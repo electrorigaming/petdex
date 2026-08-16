@@ -62,6 +62,13 @@
    misma sentencia pasaría las políticas de `update` y le robaría la mascota
    pública a su dueña original.
 
+   > **Superseded por `006-tipo-editable-formulario`**: este paso 3 describe
+   > el comportamiento previo a 006. Ahora esa misma sentencia **sí tiene
+   > éxito** — es exactamente el mecanismo con el que cualquier admin puede
+   > tomar como propia una mascota pública ajena desde el formulario
+   > (`006`, spec.md Acceptance Scenario 4). El trigger que la bloqueaba ya
+   > no existe.
+
 ## Escenario 3 — Filtro de Tipo en el catálogo (User Story 2)
 
 1. Sin sesión, tocar el botón "Filtros" en `/` — **esperado**: se ven los

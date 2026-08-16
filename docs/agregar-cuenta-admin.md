@@ -92,6 +92,10 @@ Porque la garantía tiene que vivir en la base, no en el código (Principio I
 de `CLAUDE.md`). Un panel de "gestión de administradoras" dentro de la app
 sería, en los hechos, una admin pudiendo darle permisos a cualquier otra
 cuenta — un vector de escalada de privilegios que hoy no existe porque el
-único camino es tener acceso directo al dashboard de Supabase. Es la misma
-razón por la que el campo Tipo (Privado/Público) de las mascotas tampoco se
-edita desde ningún formulario.
+único camino es tener acceso directo al dashboard de Supabase.
+
+(A diferencia de esto, el campo Tipo Privado/Público de las mascotas sí es
+editable desde el formulario desde `006-tipo-editable-formulario` — ahí la
+garantía sigue viviendo en una política RLS, no en el código, así que no es
+una excepción a este mismo principio, solo un caso donde el dato en sí no
+es un permiso de acceso a la aplicación.)

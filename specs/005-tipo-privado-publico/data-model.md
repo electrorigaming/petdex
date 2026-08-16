@@ -40,6 +40,11 @@ cualquier cambio a `visibility`/`created_by` hecho por los roles `authenticated`
 (el camino de la API), dejando pasar el camino de edición manual por SQL Editor. Este
 trigger es la garantía real de FR-003, no la ausencia de un campo en el formulario.
 
+> **Superseded por `006-tipo-editable-formulario`**: este trigger se eliminó — FR-003
+> quedó derogado, Tipo ahora es editable desde el formulario, y `pets_admin_update`
+> (sin cambios) pasó a ser la garantía real de que "privado" solo puede autoasignarse
+> quien ejecuta el guardado.
+
 **Guard adicional de la vista**: la migración fuerza explícitamente
 `alter view public.pets_overview set (security_invoker = on);` — sin esto, si la opción
 se hubiera perdido en algún `CREATE OR REPLACE VIEW` anterior, la cuadrícula filtraría

@@ -30,6 +30,12 @@ garantiza FR-003 a nivel de base — no la ausencia de un campo en el
 formulario. Solo una conexión con otro rol (SQL Editor de Supabase) puede
 cambiarlas.
 
+> **Superseded por `006-tipo-editable-formulario`**: este párrafo describe el
+> comportamiento previo a 006. FR-003 fue derogado — `pets_lock_visibility_trigger`
+> ya no existe, y `visibility`/`created_by` sí son editables vía la API para quien
+> ya tiene permiso de editar esa fila (`pets_admin_update`/`pets_admin_insert`, sin
+> cambios respecto de acá). Ver `006-tipo-editable-formulario/contracts/mutations-delta.md`.
+
 ## `milestones` / `sightings`
 
 Misma tabla de arriba, pero la condición de `visibility`/`created_by` se

@@ -110,6 +110,13 @@ política que reemplaza.
 
 ### 3.1 Por qué las políticas de arriba NO alcanzan para FR-003 — falta un trigger
 
+> **Superseded por `006-tipo-editable-formulario`**: FR-003 (Tipo de solo lectura
+> desde la app) fue derogado — el trigger `pets_lock_visibility_trigger` que describe
+> esta sección se eliminó en 006. La política `pets_admin_update` descripta abajo no
+> cambió: es exactamente la que ahora garantiza, sin el trigger, que "privado" siempre
+> pertenezca a quien guarda (006, research.md §2). Esta sección queda como registro
+> histórico de por qué existió el trigger.
+
 `pets_admin_update` evalúa `USING` sobre la fila *vieja* y `WITH CHECK` sobre la fila
 *nueva*, cada una por separado. Para una mascota pública creada por la admin A, la
 admin B (no dueña) sí pasa `USING` (`visibility = 'publico'` en la fila vieja). Si B
