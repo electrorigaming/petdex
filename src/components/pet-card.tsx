@@ -8,6 +8,7 @@ import { LockSimpleIcon } from "@phosphor-icons/react/dist/ssr/LockSimple"
 import { Badge } from "@/components/ui/badge"
 import { daysBetween, todayLocal } from "@/lib/dates"
 import type { PetSummary } from "@/lib/pets"
+import { PET_STATUS_DISPLAY_LABEL } from "@/lib/validation/pet-schema"
 
 // Un solo árbol de DOM sirve para las dos vistas (cuadrícula = retrato 4:5
 // con overlay, lista = fila con thumb) — el layout lo decide app/globals.css
@@ -60,8 +61,11 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           </Badge>
         )
       )}
-      {(pet.sterilized || pet.visibility === "privado") && (
+      {(pet.status !== "activo" || pet.sterilized || pet.visibility === "privado") && (
         <div className="pet-card-tag absolute right-2 top-2 flex flex-col items-end gap-1">
+          {pet.status !== "activo" && (
+            <Badge variant="neutral">{PET_STATUS_DISPLAY_LABEL[pet.status]}</Badge>
+          )}
           {pet.sterilized && (
             <Badge variant="neutral" aria-label="Esterilizada">
               <GenderNeuterIcon size={12} aria-hidden="true" />
@@ -94,7 +98,10 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           {[pet.nicknames[0], pet.zone].filter(Boolean).join(" · ")}
         </div>
       </div>
-      <span className="pet-card-row-status shrink-0 items-center gap-1 text-legend">
+      <span className="pet-card-row-status shrink-0 flex-col items-end gap-1 text-legend">
+        {pet.status !== "activo" && (
+          <Badge variant="neutral">{PET_STATUS_DISPLAY_LABEL[pet.status]}</Badge>
+        )}
         {pet.seenToday ? (
           <span className="flex items-center gap-1 text-accent-400">
             <CheckCircleIcon size={14} aria-hidden="true" />

@@ -9,6 +9,15 @@ export const PET_STATUS_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], strin
   fallecido: "Fallecido",
 }
 
+// Forma para prosa/UI (ficha, tarjetas) — distinta de PET_STATUS_LABEL,
+// que son las etiquetas del formulario/filtros.
+export const PET_STATUS_DISPLAY_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], string> = {
+  activo: "Activa",
+  sin_ver: "Sin ver hace tiempo",
+  adoptado: "Adoptada",
+  fallecido: "Fallecida",
+}
+
 export const PET_VISIBILITY_OPTIONS = ["publico", "privado"] as const
 
 export type PetVisibility = (typeof PET_VISIBILITY_OPTIONS)[number]
