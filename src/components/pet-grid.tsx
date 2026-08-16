@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { ArrowsClockwiseIcon } from "@phosphor-icons/react/dist/ssr/ArrowsClockwise"
 import { FunnelSimpleIcon } from "@phosphor-icons/react/dist/ssr/FunnelSimple"
+import { XIcon } from "@phosphor-icons/react/dist/ssr/X"
 import { EmptyState, NoResultsState } from "@/components/empty-states"
 import { PetCard } from "@/components/pet-card"
 import {
@@ -185,6 +186,16 @@ function FilterablePetGrid({
           <FunnelSimpleIcon size={15} aria-hidden="true" />
           Filtros{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
         </button>
+        {isFiltered && (
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-label text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            <XIcon size={15} aria-hidden="true" />
+            Limpiar filtros
+          </button>
+        )}
         <button
           type="button"
           onClick={refresh}
