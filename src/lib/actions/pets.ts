@@ -49,7 +49,7 @@ export async function createPet(input: CreatePetInput): Promise<WriteResult> {
     age_estimate: values.ageEstimate || null,
     weight_kg: values.weightKg ?? null,
     description: values.description || null,
-    status: values.status,
+    status: values.outcome,
     sterilized: values.sterilized,
     visibility: values.visibility,
     created_by: values.visibility === "privado" ? user.id : null,
@@ -103,7 +103,7 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
       age_estimate: values.ageEstimate || null,
       weight_kg: values.weightKg ?? null,
       description: values.description || null,
-      status: values.status,
+      status: values.outcome,
       sterilized: values.sterilized,
       visibility: values.visibility,
       // Se recalcula en cada guardado a partir de lo que mandó el

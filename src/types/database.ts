@@ -88,7 +88,7 @@ export type Database = {
           photo_url: string | null
           registered_on: string
           slug: string
-          status: string
+          status: string | null
           sterilized: boolean
           updated_at: string
           visibility: string
@@ -108,7 +108,7 @@ export type Database = {
           photo_url?: string | null
           registered_on?: string
           slug: string
-          status?: string
+          status?: string | null
           sterilized?: boolean
           updated_at?: string
           visibility?: string
@@ -128,7 +128,7 @@ export type Database = {
           photo_url?: string | null
           registered_on?: string
           slug?: string
-          status?: string
+          status?: string | null
           sterilized?: boolean
           updated_at?: string
           visibility?: string
@@ -183,12 +183,16 @@ export type Database = {
     Views: {
       pets_overview: {
         Row: {
+          age_estimate: string | null
+          description: string | null
           gender: string | null
           id: string | null
           last_seen_on: string | null
+          location: string | null
           milestone_count: number | null
           name: string | null
           nicknames: string[] | null
+          outcome: string | null
           photo_url: string | null
           registered_on: string | null
           seen_today: boolean | null
@@ -197,40 +201,51 @@ export type Database = {
           sterilized: boolean | null
           total_sightings: number | null
           visibility: string | null
+          weight_kg: number | null
           zone: string | null
         }
         Insert: {
+          age_estimate?: string | null
+          description?: string | null
           gender?: string | null
           id?: string | null
           last_seen_on?: never
+          location?: string | null
           milestone_count?: never
           name?: string | null
           nicknames?: string[] | null
+          outcome?: string | null
           photo_url?: string | null
           registered_on?: string | null
           seen_today?: never
           slug?: string | null
-          status?: string | null
+          status?: never
           sterilized?: boolean | null
           total_sightings?: never
           visibility?: string | null
+          weight_kg?: number | null
           zone?: string | null
         }
         Update: {
+          age_estimate?: string | null
+          description?: string | null
           gender?: string | null
           id?: string | null
           last_seen_on?: never
+          location?: string | null
           milestone_count?: never
           name?: string | null
           nicknames?: string[] | null
+          outcome?: string | null
           photo_url?: string | null
           registered_on?: string | null
           seen_today?: never
           slug?: string | null
-          status?: string | null
+          status?: never
           sterilized?: boolean | null
           total_sightings?: never
           visibility?: string | null
+          weight_kg?: number | null
           zone?: string | null
         }
         Relationships: []
@@ -260,6 +275,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      today_local: { Args: never; Returns: string }
     }
     Enums: {
       [_ in never]: never

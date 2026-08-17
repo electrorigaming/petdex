@@ -10,8 +10,9 @@ import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
 import { createPet, updatePet } from "@/lib/actions/pets"
 import {
   petFieldsSchema,
-  PET_STATUS_OPTIONS,
   PET_STATUS_LABEL,
+  PET_OUTCOME_OPTIONS,
+  PET_OUTCOME_NONE_LABEL,
   PET_VISIBILITY_OPTIONS,
   PET_VISIBILITY_LABEL,
   PET_GENDER_OPTIONS,
@@ -99,7 +100,7 @@ export function PetForm(props: PetFormProps) {
             ageEstimate: "",
             weightKg: null,
             description: "",
-            status: "activo",
+            outcome: null,
             sterilized: false,
             visibility: "publico",
             gender: "desconocido",
@@ -259,19 +260,30 @@ export function PetForm(props: PetFormProps) {
 
           <div className="field">
             <Label>Estado</Label>
+            {/* Activo/Desaparecido ya no se eligen acá: los calcula
+                pets_overview según los últimos avistamientos (migración
+                20260817120000). Solo el desenlace queda a mano, y solo
+                gana por sobre ese cálculo si no es "Ninguno". */}
             <Controller
               control={control}
-              name="status"
+              name="outcome"
               render={({ field }) => (
                 <div className="mt-1.5 flex flex-wrap gap-4">
-                  {PET_STATUS_OPTIONS.map((status) => (
+                  <Radio
+                    name="outcome"
+                    checked={field.value === null}
+                    onChange={() => field.onChange(null)}
+                  >
+                    {PET_OUTCOME_NONE_LABEL}
+                  </Radio>
+                  {PET_OUTCOME_OPTIONS.map((outcome) => (
                     <Radio
-                      key={status}
-                      name="status"
-                      checked={field.value === status}
-                      onChange={() => field.onChange(status)}
+                      key={outcome}
+                      name="outcome"
+                      checked={field.value === outcome}
+                      onChange={() => field.onChange(outcome)}
                     >
-                      {PET_STATUS_LABEL[status]}
+                      {PET_STATUS_LABEL[outcome]}
                     </Radio>
                   ))}
                 </div>

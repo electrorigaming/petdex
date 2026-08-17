@@ -22,7 +22,7 @@ export default async function EditPetPage({
     ageEstimate: pet.ageEstimate ?? undefined,
     weightKg: pet.weightKg,
     description: pet.description ?? undefined,
-    status: pet.status,
+    outcome: pet.outcome,
     sterilized: pet.sterilized,
     visibility: pet.visibility,
     gender: pet.gender,

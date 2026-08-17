@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import type { Milestone } from "@/lib/milestones"
-import type { PetGender, PetVisibility } from "@/lib/validation/pet-schema"
+import type { PetGender, PetOutcome, PetVisibility } from "@/lib/validation/pet-schema"
 
 export type PetSummary = {
   slug: string
@@ -29,6 +29,7 @@ export type PetDetail = {
   description: string | null
   photoUrl: string | null
   status: PetStatus
+  outcome: PetOutcome
   sterilized: boolean
   visibility: PetVisibility
   gender: PetGender
@@ -73,14 +74,18 @@ export async function getPetCount(): Promise<number> {
   return count ?? 0
 }
 
+// pets_overview (no la tabla base): el status Activo/Desaparecido se
+// calcula ahí a partir de los avistamientos (migración
+// 20260817120000_derive_status_from_sightings) — leer directo de `pets`
+// solo daría el desenlace manual crudo, nunca ese cálculo.
 export async function getPetBySlug(
   slug: string
 ): Promise<(PetDetail & { id: string }) | null> {
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from("pets")
+    .from("pets_overview")
     .select(
-      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, sterilized, visibility, gender"
+      "id, name, nicknames, zone, location, registered_on, age_estimate, weight_kg, description, photo_url, status, outcome, sterilized, visibility, gender"
     )
     .eq("slug", slug)
     .maybeSingle()
@@ -89,20 +94,21 @@ export async function getPetBySlug(
   if (!data) return null
 
   return {
-    id: data.id,
-    name: data.name,
+    id: data.id!,
+    name: data.name!,
     nicknames: data.nicknames ?? [],
     zone: data.zone,
     location: data.location,
-    registeredOn: data.registered_on,
+    registeredOn: data.registered_on!,
     ageEstimate: data.age_estimate,
     weightKg: data.weight_kg,
     description: data.description,
     photoUrl: data.photo_url,
     status: data.status as PetStatus,
-    sterilized: data.sterilized,
-    visibility: data.visibility as PetVisibility,
-    gender: data.gender as PetGender,
+    outcome: data.outcome as PetOutcome,
+    sterilized: data.sterilized ?? false,
+    visibility: (data.visibility ?? "publico") as PetVisibility,
+    gender: (data.gender ?? "desconocido") as PetGender,
   }
 }
 
