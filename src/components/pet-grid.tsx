@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState, useTransition } from "react"
+import { useEffect, useMemo, useRef, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { ArrowsClockwiseIcon } from "@phosphor-icons/react/dist/ssr/ArrowsClockwise"
 import { FunnelSimpleIcon } from "@phosphor-icons/react/dist/ssr/FunnelSimple"
@@ -46,13 +46,47 @@ const ALL_ZONES = "__all__"
 const AUTO_REFRESH_INTERVAL_MS = 15 * 60 * 1000
 
 // Vista inicial: activas y públicas. "Limpiar filtros" sigue llevando a
-// EMPTY_PET_FILTERS (ver todo) — este es solo el punto de partida al cargar
-// la pantalla, no el significado de "sin filtros".
+// EMPTY_PET_FILTERS (ver todo) — este es solo el punto de partida la primera
+// vez que se abre la pantalla, antes de que haya algo guardado en
+// localStorage (FILTERS_STORAGE_KEY).
 const DEFAULT_PET_FILTERS: PetFilters = {
   estado: ["activo"],
   esterilizado: [],
   tipo: ["publico"],
   genero: [],
+}
+
+// Filtros elegidos a mano: se recuerdan entre visitas (mismo criterio que
+// petdex:view para la vista grid/lista). Se lee después del primer render
+// (no en el estado inicial) para que el HTML del cliente coincida con el
+// del servidor y no dispare un warning de hidratación — el filtro guardado
+// se aplica un instante después, como un segundo render.
+const FILTERS_STORAGE_KEY = "petdex:filters"
+
+function isPetFilters(value: unknown): value is PetFilters {
+  if (typeof value !== "object" || value === null) return false
+  const v = value as Record<string, unknown>
+  return (
+    Array.isArray(v.estado) &&
+    v.estado.every((s) => PET_STATUS_OPTIONS.includes(s)) &&
+    Array.isArray(v.esterilizado) &&
+    v.esterilizado.every((s) => typeof s === "boolean") &&
+    Array.isArray(v.tipo) &&
+    v.tipo.every((s) => PET_VISIBILITY_OPTIONS.includes(s)) &&
+    Array.isArray(v.genero) &&
+    v.genero.every((s) => PET_GENDER_OPTIONS.includes(s))
+  )
+}
+
+function loadStoredFilters(): PetFilters | null {
+  try {
+    const raw = localStorage.getItem(FILTERS_STORAGE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    return isPetFilters(parsed) ? parsed : null
+  } catch {
+    return null
+  }
 }
 
 export function PetGrid({ pets, total }: PetGridProps) {
@@ -89,6 +123,26 @@ function FilterablePetGrid({
   function refresh() {
     startRefresh(() => router.refresh())
   }
+
+  // Se lee recién en un efecto (no en el estado inicial) para que el primer
+  // render del cliente coincida con el del servidor. skipNextPersist evita
+  // que el efecto de guardado de abajo corra con el valor por defecto
+  // todavía en `filters` antes de que el setFilters de acá se aplique — sin
+  // el guard, esa escritura pisa el valor recién leído de localStorage.
+  const skipNextPersist = useRef(true)
+
+  useEffect(() => {
+    const stored = loadStoredFilters()
+    if (stored) setFilters(stored)
+  }, [])
+
+  useEffect(() => {
+    if (skipNextPersist.current) {
+      skipNextPersist.current = false
+      return
+    }
+    localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters))
+  }, [filters])
 
   // Pausado sin conexión y con la pestaña en segundo plano — mismo criterio
   // event-driven que <OfflineSyncProvider>, no un timer incondicional.
