@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 // Control de un toque para marcar el día de hoy (FR-010/FR-011). Un fallo
 // con código de error (RLS, FK) se muestra como error inline; un fallo sin
@@ -6,7 +6,7 @@
 // FR-019/020/021) — misma función callMarkSighting que reintenta
 // src/lib/offline/sync.ts, research.md §6. Copy y botones per Nocturne 1g:
 // "Vista hoy" (btn-primary) / "Pasé y no estaba" (btn-secondary) — el
-// tratamiento relleno adicional (bg-accent-800 / bg-text/7) marca cuál de
+// tratamiento relleno adicional (bg-accent-fill / bg-text/7) marca cuál de
 // los dos está confirmado hoy, sin abandonar el lenguaje de botón delineado.
 
 import { useEffect, useState } from "react"
@@ -116,7 +116,7 @@ function MarkTodayControlInner({
           type="button"
           variant="primary"
           aria-pressed={seenIsActive}
-          className={cn("min-h-12 flex-1 text-[15px]", seenIsActive && "bg-accent-800")}
+          className={cn("min-h-12 flex-1 text-[15px]", seenIsActive && "bg-accent-fill")}
           disabled={isSaving}
           onClick={() => handleMark(true)}
         >
@@ -136,13 +136,13 @@ function MarkTodayControlInner({
         </Button>
       </div>
       {isPending && (
-        <p role="status" className="flex items-center gap-1.5 text-meta text-neutral-500">
+        <p role="status" className="flex items-center gap-1.5 text-meta text-text-secondary">
           <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
           Marcada hoy sin conexión — se sincroniza sola cuando vuelva la señal.
         </p>
       )}
       {state.status === "error" && (
-        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-text">
           <WarningIcon size={14} aria-hidden="true" />
           {state.message}
         </p>

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 // Corrección de un día pasado (User Story 3, FR-014). Siempre requiere
 // conexión: un fallo se muestra inline y el diálogo no se cierra solo — no
@@ -104,7 +104,7 @@ export function PastDayDialog({
           <DialogDescription>Sin registro. ¿Qué pasó ese día?</DialogDescription>
         )}
         {error && (
-          <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+          <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-text">
             <WarningIcon size={14} aria-hidden="true" />
             {error}
           </p>
@@ -131,7 +131,7 @@ export function PastDayDialog({
             No Visto
           </Button>
         </div>
-        <p className="flex items-center gap-1.5 text-meta text-neutral-600">
+        <p className="flex items-center gap-1.5 text-meta text-text-secondary">
           <WifiHighIcon size={14} aria-hidden="true" />
           Corregir días pasados requiere conexión.
         </p>

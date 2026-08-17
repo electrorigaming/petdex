@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 // Aviso global de falla permanente de sincronización (FR-023/024,
 // data-model.md "Dónde se ve un failed"). Montado junto a
@@ -7,8 +7,8 @@
 // de la mascota afectada — por eso no vive dentro de <MarkTodayControl> ni
 // de <SightingCalendar>. petSlug/petName vienen del propio evento (ya
 // denormalizados en PendingSighting, contracts/offline-queue.md), sin
-// consulta adicional. Nocturne no tiene color de peligro: el ícono de
-// advertencia usa accent-400, nunca rojo.
+// consulta adicional. Esta paleta no tiene color de peligro: el ícono de
+// advertencia usa accent-text, nunca rojo.
 
 import { useEffect, useState } from "react"
 import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
@@ -56,13 +56,13 @@ export function SyncFailureBanner() {
   if (failures.length === 0) return null
 
   return (
-    <div className="flex flex-col gap-1.5 bg-sunken px-3.5 py-2">
+    <div className="flex flex-col gap-1.5 border-b border-hairline bg-surface px-3.5 py-2">
       {failures.map((failure) => (
-        <div key={failure.key} role="alert" className="flex items-center gap-2.5 text-meta text-neutral-300">
-          <WarningIcon size={15} className="shrink-0 text-accent-400" aria-hidden="true" />
+        <div key={failure.key} role="alert" className="flex items-center gap-2.5 text-meta text-text">
+          <WarningIcon size={15} className="shrink-0 text-accent-text" aria-hidden="true" />
           <span className="flex-1">
             No se pudo guardar el avistamiento de{" "}
-            <Link href={`/mascotas/${failure.petSlug}`} className="text-accent hover:underline">
+            <Link href={`/mascotas/${failure.petSlug}`} className="text-accent-text hover:underline">
               {failure.petName}
             </Link>{" "}
             — {failure.reason}
@@ -75,7 +75,7 @@ export function SyncFailureBanner() {
             onClick={() => handleDiscard(failure.key)}
             aria-label={`Descartar aviso de ${failure.petName}`}
           >
-            <XIcon size={14} className="text-neutral-600" aria-hidden="true" />
+            <XIcon size={14} className="text-text-tertiary" aria-hidden="true" />
           </Button>
         </div>
       ))}

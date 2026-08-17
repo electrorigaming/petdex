@@ -28,7 +28,7 @@ export function PetAdminActions({
   return (
     <div className="flex items-center justify-end gap-1">
       <EditPetButton slug={slug} />
-      <span className="mx-1.5 h-[18px] w-px bg-neutral-800" aria-hidden="true" />
+      <span className="mx-1.5 h-[18px] w-px bg-divider" aria-hidden="true" />
       <DeletePetButton petId={petId} petName={petName} />
     </div>
   )

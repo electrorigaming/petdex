@@ -26,11 +26,11 @@ function EmptyFigure({
 }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-md bg-card px-6 py-8 text-center shadow-sm">
-      <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border border-dashed border-neutral-800">
+      <span className="flex h-[72px] w-[72px] items-center justify-center rounded-full border border-dashed border-hairline">
         {icon}
       </span>
       <div className="text-[17px] font-medium text-card-foreground">{title}</div>
-      <p className="text-caption text-neutral-500">{description}</p>
+      <p className="text-caption text-text-secondary">{description}</p>
       {children}
     </div>
   )
@@ -41,7 +41,7 @@ export function EmptyState() {
 
   return (
     <EmptyFigure
-      icon={<PawPrintIcon size={30} className="text-neutral-700" aria-hidden="true" />}
+      icon={<PawPrintIcon size={30} className="text-text-tertiary" aria-hidden="true" />}
       title="Todavía no hay ninguna mascota"
       description="Empezá por la que más ves: nombre, zona y una foto alcanzan."
     >
@@ -66,7 +66,7 @@ export function NoResultsState({
 }) {
   return (
     <EmptyFigure
-      icon={<MagnifyingGlassIcon size={28} className="text-neutral-700" aria-hidden="true" />}
+      icon={<MagnifyingGlassIcon size={28} className="text-text-tertiary" aria-hidden="true" />}
       title={query ? `Nada con "${query}"` : "Sin resultados para tu búsqueda"}
       description="Probá con un apodo, o mirá todas las zonas."
     >

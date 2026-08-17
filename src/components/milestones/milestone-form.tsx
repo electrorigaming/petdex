@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -69,7 +69,7 @@ export function MilestoneForm(props: MilestoneFormProps) {
         <Label htmlFor="title">Título</Label>
         <Input id="title" {...register("title")} aria-invalid={Boolean(errors.title)} />
         {errors.title && (
-          <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+          <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-text">
             <WarningIcon size={14} aria-hidden="true" />
             {errors.title.message}
           </p>
@@ -127,13 +127,13 @@ export function MilestoneForm(props: MilestoneFormProps) {
 
       <div className="field">
         <Label htmlFor="note">
-          Nota <span className="text-neutral-700">· opcional</span>
+          Nota <span className="text-text-tertiary">· opcional</span>
         </Label>
         <Textarea id="note" placeholder="Un par de líneas para el contexto" {...register("note")} />
       </div>
 
       {submitError && (
-        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-text">
           <WarningIcon size={14} aria-hidden="true" />
           {submitError}
         </p>
@@ -153,7 +153,7 @@ export function MilestoneForm(props: MilestoneFormProps) {
           {isSubmitting ? "Guardando…" : "Guardar hito"}
         </Button>
       </div>
-      <p className="text-center text-legend text-neutral-600">
+      <p className="text-center text-legend text-text-secondary">
         Los hitos son públicos: los ve cualquiera que abra la ficha.
       </p>
     </form>

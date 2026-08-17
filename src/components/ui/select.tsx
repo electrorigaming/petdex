@@ -24,7 +24,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <CaretDownIcon size={14} className="text-neutral-600" aria-hidden="true" />
+      <CaretDownIcon size={14} className="text-text-tertiary" aria-hidden="true" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))

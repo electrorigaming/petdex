@@ -3,14 +3,15 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// Nocturne .tag: rótulo chico tintado de una rampa — nunca del color de
-// peligro (no existe en esta paleta).
+// Rótulo chico tintado — nunca del color de peligro (no existe en esta
+// paleta). "neutral" lleva hairline propio porque suele flotar sobre una
+// foto, no sobre --color-bg: sin borde se mimetizaría con el fondo claro.
 const badgeVariants = cva("inline-flex items-center rounded-sm px-2.5 py-0.5 text-legend", {
   variants: {
     variant: {
-      accent: "bg-accent-800 text-accent-100",
-      neutral: "bg-neutral-800 text-neutral-100",
-      outline: "border border-accent text-accent",
+      accent: "bg-accent-fill text-accent-fill-text",
+      neutral: "border border-hairline bg-surface text-text-secondary",
+      outline: "border border-accent text-accent-text",
     },
   },
   defaultVariants: {

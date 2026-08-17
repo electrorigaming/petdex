@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -165,7 +165,7 @@ export function PetForm(props: PetFormProps) {
         <h3 className="text-h3 text-text">
           {props.mode === "edit" ? `Editar a ${props.initialValues.name}` : "Agregar una mascota"}
         </h3>
-        <p className="mt-1 text-meta text-neutral-600">Los campos vacíos no se muestran en la ficha.</p>
+        <p className="mt-1 text-meta text-text-secondary">Los campos vacíos no se muestran en la ficha.</p>
       </div>
 
       <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,1fr)_320px] md:gap-10">
@@ -175,7 +175,7 @@ export function PetForm(props: PetFormProps) {
               <Label htmlFor="name">Nombre</Label>
               <Input id="name" {...register("name")} aria-invalid={Boolean(errors.name)} />
               {errors.name && (
-                <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+                <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-text">
                   <WarningIcon size={14} aria-hidden="true" />
                   {errors.name.message}
                 </p>
@@ -183,7 +183,7 @@ export function PetForm(props: PetFormProps) {
             </div>
             <div className="field">
               <Label htmlFor="nicknames">
-                Apodos <span className="text-neutral-700">· separados por coma</span>
+                Apodos <span className="text-text-tertiary">· separados por coma</span>
               </Label>
               <Input
                 id="nicknames"
@@ -249,7 +249,7 @@ export function PetForm(props: PetFormProps) {
                 aria-invalid={Boolean(errors.weightKg)}
               />
               {errors.weightKg && (
-                <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+                <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-text">
                   <WarningIcon size={14} aria-hidden="true" />
                   El peso tiene que ser un número mayor a cero.
                 </p>
@@ -364,7 +364,7 @@ export function PetForm(props: PetFormProps) {
       </div>
 
       {submitError && (
-        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-text">
           <WarningIcon size={14} aria-hidden="true" />
           {submitError}
         </p>

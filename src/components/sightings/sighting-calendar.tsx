@@ -137,7 +137,7 @@ export function SightingCalendar({
           >
             <CaretLeftIcon size={14} aria-hidden="true" />
           </Button>
-          <span className="min-w-[88px] text-center text-meta text-neutral-400">
+          <span className="min-w-[88px] text-center text-meta text-text-secondary">
             {monthLabel(year, month)}
           </span>
           <Button
@@ -160,7 +160,7 @@ export function SightingCalendar({
         aria-label={`Calendario de avistamientos de ${monthLabel(year, month)}`}
       >
         {WEEKDAY_LABELS.map((label, i) => (
-          <span key={i} className="text-kicker text-neutral-600" aria-hidden="true">
+          <span key={i} className="text-kicker text-text-secondary" aria-hidden="true">
             {label}
           </span>
         ))}
@@ -172,21 +172,21 @@ export function SightingCalendar({
         ))}
       </div>
 
-      <div className="flex flex-wrap gap-x-3.5 gap-y-2 text-legend text-neutral-500">
+      <div className="flex flex-wrap gap-x-3.5 gap-y-2 text-legend text-text-secondary">
         <span className="flex items-center gap-1.5">
-          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-accent-800">
-            <CheckIcon weight="bold" size={7} className="text-accent-300" aria-hidden="true" />
+          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-accent bg-accent-fill">
+            <CheckIcon weight="bold" size={7} className="text-accent-fill-text" aria-hidden="true" />
           </span>
           vista
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-neutral-700">
-            <XIcon size={7} className="text-neutral-500" aria-hidden="true" />
+          <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-text-tertiary">
+            <XIcon size={7} className="text-text-tertiary" aria-hidden="true" />
           </span>
           revisada, no estaba
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-3.5 w-3.5 rounded-full border border-dashed border-neutral-800" />
+          <span className="h-3.5 w-3.5 rounded-full border border-dashed border-hairline" />
           sin registro
         </span>
         <span className="flex items-center gap-1.5">

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 // Mismo motivo que <EditPetButton>: arma su propio JSX del lado del
 // cliente, no lo recibe como children de un Server Component (evita la
@@ -79,12 +79,12 @@ export function DeletePetButton({ petId, petName }: { petId: string; petName: st
           title="Eliminar"
           aria-label={`Eliminar a ${petName}`}
         >
-          <TrashIcon size={16} className="text-neutral-500" aria-hidden="true" />
+          <TrashIcon size={16} className="text-text-tertiary" aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <TrashIcon size={20} className="text-accent-400" aria-hidden="true" />
+          <TrashIcon size={20} className="text-accent-text" aria-hidden="true" />
           <DialogTitle>¿Eliminar a {petName}?</DialogTitle>
         </DialogHeader>
         <DialogDescription>
@@ -92,7 +92,7 @@ export function DeletePetButton({ petId, petName }: { petId: string; petName: st
           confirmar.
         </DialogDescription>
         {error && (
-          <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+          <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-text">
             <WarningIcon size={14} aria-hidden="true" />
             {error}
           </p>

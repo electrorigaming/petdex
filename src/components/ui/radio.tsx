@@ -30,7 +30,7 @@ const RadioChip = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<H
   ({ className, children, ...props }, ref) => (
     <label
       className={cn(
-        "inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-divider px-3.5 py-2 text-label text-text transition-colors duration-150 has-[:checked]:border-accent has-[:checked]:text-accent has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring",
+        "inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-divider px-3.5 py-2 text-label text-text transition-colors duration-150 has-[:checked]:border-accent has-[:checked]:text-accent-text has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ring",
         className
       )}
     >

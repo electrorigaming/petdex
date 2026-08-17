@@ -40,7 +40,7 @@ export function DayCell({
         isInteractive && "cursor-pointer"
       )}
     >
-      <span className="text-kicker leading-none text-neutral-600" aria-hidden="true">
+      <span className="text-kicker leading-none text-text-secondary" aria-hidden="true">
         {dayNumber}
       </span>
       <span
@@ -63,7 +63,7 @@ export function DayCell({
       </span>
       {day.pending && (
         <span
-          className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-accent shadow-[0_0_0_2px_rgb(22,24,38)] md:right-2 md:top-2"
+          className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-accent shadow-[0_0_0_2px_rgb(var(--color-bg))] md:right-2 md:top-2"
           aria-hidden="true"
         />
       )}
@@ -78,13 +78,13 @@ const STATE_LABEL: Record<CalendarDay["value"], string> = {
 }
 
 const MARK_CLASSES: Record<CalendarDay["value"], string> = {
-  visto: "bg-accent-800 border border-accent",
-  revisado_no_estaba: "border border-neutral-700",
-  sin_registro: "border border-dashed border-neutral-800",
+  visto: "bg-accent-fill border border-accent",
+  revisado_no_estaba: "border border-text-tertiary",
+  sin_registro: "border border-dashed border-hairline",
 }
 
 const STATE_ICON: Record<CalendarDay["value"], ReactNode> = {
-  visto: <CheckIcon weight="bold" size={11} className="text-accent-300" aria-hidden="true" />,
-  revisado_no_estaba: <XIcon size={11} className="text-neutral-500" aria-hidden="true" />,
+  visto: <CheckIcon weight="bold" size={11} className="text-accent-fill-text" aria-hidden="true" />,
+  revisado_no_estaba: <XIcon size={11} className="text-text-tertiary" aria-hidden="true" />,
   sin_registro: null,
 }

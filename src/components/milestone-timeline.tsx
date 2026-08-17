@@ -69,13 +69,13 @@ export function MilestoneTimeline({
         </div>
       </div>
       {sorted.length === 0 ? (
-        <p className="text-caption text-neutral-500">Todavía no hay hitos registrados para esta mascota.</p>
+        <p className="text-caption text-text-secondary">Todavía no hay hitos registrados para esta mascota.</p>
       ) : (
         <ol className="flex flex-col gap-3">
           {sorted.map((milestone) => (
             <li key={milestone.id} className="flex flex-col gap-1.5 rounded-md bg-card p-3">
               <div className="flex items-center gap-2.5">
-                <span className="flex items-center gap-1.5 text-caption text-neutral-600">
+                <span className="flex items-center gap-1.5 text-caption text-text-secondary">
                   <CalendarBlankIcon size={12} aria-hidden="true" />
                   {milestone.occurredOn}
                 </span>
@@ -106,7 +106,7 @@ export function MilestoneTimeline({
                 )}
               </div>
               <p className="text-[16px] font-medium text-card-foreground">{milestone.title}</p>
-              {milestone.note && <p className="text-meta text-neutral-500">{milestone.note}</p>}
+              {milestone.note && <p className="text-meta text-text-secondary">{milestone.note}</p>}
             </li>
           ))}
         </ol>

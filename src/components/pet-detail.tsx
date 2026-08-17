@@ -8,7 +8,7 @@ import { PET_STATUS_DISPLAY_LABEL, PET_GENDER_LABEL } from "@/lib/validation/pet
 export function PetDetail({ pet }: { pet: PetDetailType }) {
   return (
     <div className="flex flex-col gap-6">
-      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-md bg-sunken">
+      <div className="relative aspect-[3/2] w-full overflow-hidden rounded-md bg-surface">
         {pet.photoUrl ? (
           <Image
             src={pet.photoUrl}
@@ -20,7 +20,7 @@ export function PetDetail({ pet }: { pet: PetDetailType }) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <ImageSquareIcon size={40} className="text-neutral-700" aria-label="Sin foto" />
+            <ImageSquareIcon size={40} className="text-text-tertiary" aria-label="Sin foto" />
           </div>
         )}
       </div>
@@ -28,7 +28,7 @@ export function PetDetail({ pet }: { pet: PetDetailType }) {
       <div>
         <h1 className="text-h3 md:text-h2 mb-1 text-foreground">{pet.name}</h1>
         {pet.nicknames.length > 0 && (
-          <p className="text-label text-neutral-500">
+          <p className="text-label text-text-secondary">
             {pet.nicknames.map((n) => `"${n}"`).join(", ")}
           </p>
         )}
@@ -50,24 +50,24 @@ export function PetDetail({ pet }: { pet: PetDetailType }) {
       <dl className="grid grid-cols-2 gap-x-3.5 gap-y-3.5">
         {pet.location && (
           <div>
-            <dt className="text-legend uppercase tracking-wide text-neutral-600">Ubicación</dt>
+            <dt className="text-legend uppercase tracking-wide text-text-secondary">Ubicación</dt>
             <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.location}</dd>
           </div>
         )}
         {pet.ageEstimate && (
           <div>
-            <dt className="text-legend uppercase tracking-wide text-neutral-600">Edad estimada</dt>
+            <dt className="text-legend uppercase tracking-wide text-text-secondary">Edad estimada</dt>
             <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.ageEstimate}</dd>
           </div>
         )}
         {pet.weightKg !== null && (
           <div>
-            <dt className="text-legend uppercase tracking-wide text-neutral-600">Peso</dt>
+            <dt className="text-legend uppercase tracking-wide text-text-secondary">Peso</dt>
             <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.weightKg} kg</dd>
           </div>
         )}
         <div>
-          <dt className="text-legend uppercase tracking-wide text-neutral-600">En el registro</dt>
+          <dt className="text-legend uppercase tracking-wide text-text-secondary">En el registro</dt>
           <dd className="mt-0.5 text-[15px] text-card-foreground">{pet.registeredOn}</dd>
         </div>
       </dl>

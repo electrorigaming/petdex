@@ -16,15 +16,15 @@ export function NotAdminScreen() {
 
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center gap-4 px-4 py-6">
-      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-dashed border-neutral-800">
-        <ProhibitIcon size={24} className="text-neutral-600" aria-hidden="true" />
+      <span className="flex h-14 w-14 items-center justify-center rounded-full border border-dashed border-hairline">
+        <ProhibitIcon size={24} className="text-text-tertiary" aria-hidden="true" />
       </span>
       <div>
         <h4 className="mb-1.5 text-h4 text-text">Esta cuenta no tiene acceso</h4>
-        <p className="text-body text-neutral-500">
+        <p className="text-body text-text-secondary">
           {email ? (
             <>
-              Entraste como <span className="text-neutral-300">{email}</span>, pero no está en la
+              Entraste como <span className="text-text">{email}</span>, pero no está en la
               lista de personas que pueden editar el registro.
             </>
           ) : (
@@ -37,7 +37,7 @@ export function NotAdminScreen() {
         <LogoutButton />
         <Link
           href="/"
-          className="inline-flex min-h-[42px] items-center rounded-md px-2 text-label text-accent hover:bg-accent/10"
+          className="inline-flex min-h-[42px] items-center rounded-md px-2 text-label text-accent-text hover:bg-accent/10"
         >
           Ver el registro
         </Link>

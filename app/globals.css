@@ -3,22 +3,66 @@
 @tailwind utilities;
 
 /*
- * Nocturne (design-system/design_handoff_v1) — interfaz oscura, acento
- * blurple único, tokens tomados literalmente de
- * design-system/design_handoff_v1/mockups/nocturne.css. Canales RGB (no
- * hex) en los roles base para habilitar los modificadores de opacidad de
- * Tailwind (bg-accent/50, etc.) vía rgb(var(--x) / <alpha-value>) en
- * tailwind.config.ts; los pasos de rampa (accent-100..900, neutral-100..900)
- * van directo en hex en tailwind.config.ts — cada paso ya es un tinte fijo,
- * no necesita opacidad encima.
+ * Paleta naranja (design-system/design_handoff_v2) — dos temas, claro y
+ * oscuro, sobre un único set de tokens. Reemplaza la paleta Nocturne
+ * blurple de v1 (design_handoff_v1), que era oscuro-único.
+ *
+ * Canales RGB (no hex) en los roles que necesitan opacidad vía Tailwind
+ * (bg-accent/50, etc.) — rgb(var(--x) / <alpha-value>) en
+ * tailwind.config.ts. La rampa fija neutral-100..900/accent-100..900 de v1
+ * se eliminó: no puede ser reactiva a [data-theme] por ser hex compilado en
+ * el config, así que todo el código que la usaba pasa a los tokens
+ * semánticos de acá.
+ *
+ * --color-accent-fill-text y --photo-overlay(-text) no vienen nombrados en
+ * el prompt de diseño, pero sus valores sí: el prompt da el par fill/texto
+ * de los tags ("oscuro #4a2a16 con #ffe2cd") sin nombrar el segundo, y el
+ * overlay de PetCard ("texto blanco encima" sobre #2a1d15/#100c09) sin
+ * nombrar ninguno de los dos. Se nombran acá para poder tokenizarlos, sin
+ * inventar ni redondear ningún valor.
  */
 :root {
-  --color-bg: 22 24 38; /* #161826 */
-  --color-surface: 35 37 50; /* #232532 */
-  --color-text: 233 233 237; /* #e9e9ed */
-  --color-accent: 145 132 217; /* #9184d9 */
-  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
-  --color-sunken: 30 32 48; /* #1e2030 — banners, placeholders rayados */
+  --color-bg: 255 253 251; /* #fffdfb — blanco cálido, nunca #fff puro */
+  --color-surface: 255 246 240; /* #fff6f0 — cards, inputs */
+  --color-text: 42 29 21; /* #2a1d15 — tinta cálida */
+  --color-text-secondary: 122 106 95; /* #7a6a5f — 5.1:1, apodos/metadatos/mail */
+  --color-text-tertiary: 163 144 127; /* #a3907f — 3.0:1, SOLO íconos y decoración */
+  --color-accent: 224 87 11; /* #e0570b */
+  --color-accent-text: 138 58 6; /* #8a3a06 — acento en texto de párrafo */
+  --color-accent-fill: 253 227 207; /* #fde3cf — fondo de tag/marca */
+  --color-accent-fill-text: 138 58 6; /* #8a3a06 — texto sobre accent-fill (= accent-text acá) */
+  --color-divider: #ecdcd0;
+  --color-hairline: #efe1d7;
+  --shadow-sm: 0 0 0 1px #f0e2d8;
+  --shadow-md: 0 0 0 1px #efe1d7, 0 8px 24px rgba(90, 45, 15, 0.14);
+  /* Trama de placeholder de foto (dropzone, card sin foto). */
+  --photo-placeholder: repeating-linear-gradient(135deg, #fbeee5 0 6px, #fff6f0 6px 12px);
+  /* Overlay de nombre/zona sobre la foto de <PetCard> — mismo tratamiento
+     en los dos temas (la foto siempre queda oscura debajo del texto). */
+  --photo-overlay: linear-gradient(to top, #2a1d15 14%, rgba(42, 29, 21, 0.7) 58%, transparent);
+  /* Fijo entre temas: texto blanco sobre el overlay, siempre oscuro. Reusa
+     el --color-text del tema oscuro en vez de inventar un blanco puro. */
+  --photo-overlay-text: #fdf6f1;
+}
+
+[data-theme="dark"] {
+  --color-bg: 23 18 15; /* #17120f */
+  --color-surface: 36 28 23; /* #241c17 */
+  --color-text: 253 246 241; /* #fdf6f1 */
+  --color-text-secondary: 184 168 156; /* #b8a89c */
+  --color-text-tertiary: 140 123 110; /* #8c7b6e */
+  /* #e0570b da 2.9:1 en oscuro — el acento cambia entre temas, nunca se
+     reutiliza el mismo hex. */
+  --color-accent: 255 122 51; /* #ff7a33 */
+  --color-accent-text: 255 122 51; /* #ff7a33 — en oscuro el acento ya sirve para texto (7.2:1) */
+  --color-accent-fill: 74 42 22; /* #4a2a16 */
+  --color-accent-fill-text: 255 226 205; /* #ffe2cd — distinto de accent-text, ver nota arriba */
+  --color-divider: #3b2f26;
+  --color-hairline: #4a3b30;
+  --shadow-sm: 0 0 0 1px #3b2f26;
+  --shadow-md: 0 0 0 1px #4a3b30, 0 6px 18px rgba(0, 0, 0, 0.55);
+  --photo-placeholder: repeating-linear-gradient(135deg, #2e241d 0 6px, #241c17 6px 12px);
+  --photo-overlay: linear-gradient(to top, #100c09 14%, rgba(16, 12, 9, 0.7) 58%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -78,11 +122,7 @@ html[data-view="list"] .pet-collection {
 
 .pet-card-media {
   aspect-ratio: 4 / 5;
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgb(var(--color-surface)) 0 6px,
-    rgb(var(--color-sunken)) 6px 12px
-  );
+  background-image: var(--photo-placeholder);
 }
 
 html[data-view="list"] .pet-card-media {
@@ -135,8 +175,20 @@ html[data-view="list"] .pet-card-row-status {
 
 /* Cada foto de contenido pasa por acá (README "Assets") — mix-blend-mode
    lighten hace que los valores más oscuros que el fondo desaparezcan,
-   integrando la foto al fondo oscuro en vez de recortarla con un borde. */
+   integrando la foto al fondo oscuro en vez de recortarla con un borde.
+   Solo tiene sentido en oscuro: en claro el fondo es casi blanco y
+   "lighten" lavaría la foto entera. */
 .lighten {
-  mix-blend-mode: lighten;
   background-color: transparent;
+}
+
+html[data-theme="dark"] .lighten {
+  mix-blend-mode: lighten;
+}
+
+/* Overlay de nombre/zona de <PetCard> (variante grid) — mismo tratamiento
+   en los dos temas, ver --photo-overlay/-text en el bloque de tokens. */
+.pet-card-overlay {
+  background-image: var(--photo-overlay);
+  color: var(--photo-overlay-text);
 }

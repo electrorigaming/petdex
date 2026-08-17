@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 // Mismo patrón que <DeletePetButton>: confirmar borra de verdad ya
 // (deleteMilestone trae una copia antes de borrar) — el hito desaparece de
@@ -82,12 +82,12 @@ export function DeleteMilestoneDialog({
           className="h-[30px] w-[30px]"
           aria-label={`Borrar el hito ${milestoneTitle}`}
         >
-          <TrashIcon size={15} className="text-neutral-500" aria-hidden="true" />
+          <TrashIcon size={15} className="text-text-tertiary" aria-hidden="true" />
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <TrashIcon size={18} className="text-accent-400" aria-hidden="true" />
+          <TrashIcon size={18} className="text-accent-text" aria-hidden="true" />
           <DialogTitle className="text-[18px]">¿Eliminar &quot;{milestoneTitle}&quot;?</DialogTitle>
         </DialogHeader>
         <DialogDescription>

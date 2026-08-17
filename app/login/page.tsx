@@ -17,13 +17,13 @@ export default async function LoginPage({
       </div>
       <div>
         <h4 className="mb-1.5 text-h4 text-text">Entrar para editar</h4>
-        <p className="text-body text-neutral-500">
+        <p className="text-body text-text-secondary">
           Mirar el registro no necesita cuenta. Solo las personas autorizadas del barrio pueden
           agregar mascotas y marcar avistamientos.
         </p>
       </div>
       <LoginButton next={next} />
-      <Link href="/" className="text-center text-meta text-neutral-500 hover:text-text">
+      <Link href="/" className="text-center text-meta text-text-secondary hover:text-text">
         Volver al registro
       </Link>
     </main>

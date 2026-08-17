@@ -78,9 +78,9 @@ export function DeleteUndoProvider({ children }: { children: ReactNode }) {
     <DeleteUndoContext.Provider value={{ announceUndo }}>
       {children}
       {pending && (
-        <div className="fixed inset-x-0 bottom-4 z-50 mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-2.5 rounded-md bg-sunken px-3.5 py-2.5 shadow-sm">
+        <div className="fixed inset-x-0 bottom-4 z-50 mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-2.5 rounded-md bg-surface px-3.5 py-2.5 shadow-sm">
           <CheckCircleIcon size={17} className="shrink-0 text-accent" aria-hidden="true" />
-          <span className="flex-1 text-meta text-neutral-300">{pending.message}</span>
+          <span className="flex-1 text-meta text-text">{pending.message}</span>
           <Button
             type="button"
             variant="ghost"
@@ -99,7 +99,7 @@ export function DeleteUndoProvider({ children }: { children: ReactNode }) {
             disabled={restoring}
             aria-label="Descartar aviso"
           >
-            <XIcon size={14} className="text-neutral-600" aria-hidden="true" />
+            <XIcon size={14} className="text-text-tertiary" aria-hidden="true" />
           </Button>
         </div>
       )}

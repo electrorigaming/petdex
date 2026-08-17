@@ -31,7 +31,7 @@ export default async function PetPage({
     <main className="mx-auto max-w-[1180px] px-4 py-5 md:px-14 md:py-6">
       <Link
         href="/"
-        className="mb-5 inline-flex w-fit items-center gap-1.5 text-meta text-neutral-500 hover:text-text"
+        className="mb-5 inline-flex w-fit items-center gap-1.5 text-meta text-text-secondary hover:text-text"
       >
         <CaretLeftIcon size={14} aria-hidden="true" />
         Registro

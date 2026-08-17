@@ -24,7 +24,7 @@ export function OfflineBanner() {
   })
 
   return (
-    <div role="status" className="flex items-center gap-2 bg-sunken px-3.5 py-2 text-meta text-neutral-400">
+    <div role="status" className="flex items-center gap-2 border-b border-hairline bg-surface px-3.5 py-2 text-meta text-text-secondary">
       <WifiSlashIcon size={15} className="text-accent" aria-hidden="true" />
       {time
         ? `Sin conexión — mostrando datos de las ${time}`

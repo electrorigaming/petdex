@@ -25,13 +25,13 @@ export function MonthSummary({
       <dl className="flex gap-8">
         <div>
           <dd className="text-stat md:text-stat-lg text-text">{totalSeenThisMonth}</dd>
-          <dt className="mt-1 text-meta text-neutral-500">vistas este mes</dt>
+          <dt className="mt-1 text-meta text-text-secondary">vistas este mes</dt>
         </div>
         <div>
           <dd className="text-stat md:text-stat-lg text-text">
-            {streak} <span className="text-[15px] text-neutral-500">{streak === 1 ? "día" : "días"}</span>
+            {streak} <span className="text-[15px] text-text-secondary">{streak === 1 ? "día" : "días"}</span>
           </dd>
-          <dt className="mt-1 text-meta text-neutral-500">racha actual</dt>
+          <dt className="mt-1 text-meta text-text-secondary">racha actual</dt>
         </div>
       </dl>
       {onCorrectDay && (

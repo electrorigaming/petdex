@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { GoogleLogoIcon } from "@phosphor-icons/react/dist/ssr/GoogleLogo"
@@ -41,7 +41,7 @@ export function LoginButton({ next }: { next?: string }) {
         {loading ? "Redirigiendo…" : "Continuar con Google"}
       </Button>
       {error && (
-        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-400">
+        <p role="alert" className="flex items-center gap-1.5 text-meta text-accent-text">
           <WarningIcon size={14} aria-hidden="true" />
           {error}
         </p>

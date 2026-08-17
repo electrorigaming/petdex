@@ -43,22 +43,18 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           <Image src={pet.photoUrl} alt={pet.name} fill unoptimized className="lighten object-cover" />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            <ImageSquareIcon size={22} className="text-neutral-800" aria-label="Sin foto" />
+            <ImageSquareIcon size={22} className="text-text-tertiary" aria-label="Sin foto" />
           </div>
         )}
       </div>
 
-      {/* Cuadrícula: nombre/zona sobre un degradado encima de la foto. */}
-      <div
-        className="pet-card-overlay absolute inset-x-0 bottom-0 px-2.5 pb-2.5 pt-8"
-        style={{
-          background:
-            "linear-gradient(to top, #12131f 12%, rgba(18,19,31,.7) 55%, transparent)",
-        }}
-      >
-        <div className="text-[15px] font-medium text-text">{pet.name}</div>
+      {/* Cuadrícula: nombre/zona sobre un degradado encima de la foto — el
+          texto siempre queda blanco acá (ver --photo-overlay-text), no
+          reacciona al tema como el resto de la tarjeta. */}
+      <div className="pet-card-overlay absolute inset-x-0 bottom-0 px-2.5 pb-2.5 pt-8">
+        <div className="text-[15px] font-medium">{pet.name}</div>
         {pet.zone && (
-          <div className="mt-0.5 flex items-center gap-1 text-caption text-neutral-300">
+          <div className="mt-0.5 flex items-center gap-1 text-caption opacity-80">
             <MapPinIcon size={12} aria-hidden="true" />
             {pet.zone}
           </div>
@@ -106,22 +102,22 @@ export function PetCard({ pet }: { pet: PetSummary }) {
         <div className="flex items-center gap-1 text-[15px] font-medium text-text">
           <span className="truncate">{pet.name}</span>
           {pet.gender !== "desconocido" && (
-            <span className="shrink-0 text-neutral-500">
+            <span className="shrink-0 text-text-tertiary">
               <GenderIcon gender={pet.gender} size={13} />
             </span>
           )}
           {pet.sterilized && (
             <GenderNeuterIcon
               size={13}
-              className="shrink-0 text-neutral-500"
+              className="shrink-0 text-text-tertiary"
               aria-label="Esterilizada"
             />
           )}
           {pet.visibility === "privado" && (
-            <LockSimpleIcon size={13} className="shrink-0 text-neutral-500" aria-label="Privada" />
+            <LockSimpleIcon size={13} className="shrink-0 text-text-tertiary" aria-label="Privada" />
           )}
         </div>
-        <div className="mt-0.5 truncate text-caption text-neutral-500">
+        <div className="mt-0.5 truncate text-caption text-text-secondary">
           {[pet.nicknames[0], pet.zone].filter(Boolean).join(" · ")}
         </div>
       </div>
@@ -130,14 +126,14 @@ export function PetCard({ pet }: { pet: PetSummary }) {
           <Badge variant="neutral">{PET_STATUS_DISPLAY_LABEL[pet.status]}</Badge>
         )}
         {pet.seenToday ? (
-          <span className="flex items-center gap-1 text-accent-400">
+          <span className="flex items-center gap-1 text-accent-text">
             <CheckCircleIcon size={14} aria-hidden="true" />
             hoy
           </span>
         ) : daysSinceSeen === 1 ? (
-          <span className="text-neutral-600">ayer</span>
+          <span className="text-text-secondary">ayer</span>
         ) : daysSinceSeen !== null ? (
-          <span className="text-neutral-600">hace {daysSinceSeen} días</span>
+          <span className="text-text-secondary">hace {daysSinceSeen} días</span>
         ) : null}
       </span>
     </Link>

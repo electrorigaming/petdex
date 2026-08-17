@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useEffect, useRef, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -50,7 +50,7 @@ export function SlugField({
     <div className="field">
       <Label htmlFor="slug">Dirección de la ficha</Label>
       <div className="flex items-center">
-        <span className="whitespace-nowrap rounded-l-md border border-r-0 border-divider bg-sunken px-2.5 py-1.5 font-mono text-[13px] text-neutral-600">
+        <span className="whitespace-nowrap rounded-l-md border border-r-0 border-divider bg-surface px-2.5 py-1.5 font-mono text-[13px] text-text-secondary">
           petdex.app/mascotas/
         </span>
         <Input
@@ -65,22 +65,22 @@ export function SlugField({
           aria-invalid={conflict}
           className={
             mode === "edit"
-              ? "rounded-l-none font-mono text-[13px] text-neutral-500"
+              ? "rounded-l-none font-mono text-[13px] text-text-secondary"
               : "rounded-l-none font-mono text-[13px]"
           }
         />
       </div>
       {mode === "edit" ? (
-        <p className="mt-1.5 text-legend text-neutral-600">
+        <p className="mt-1.5 text-legend text-text-secondary">
           No cambia al renombrar la mascota — las URLs ya compartidas siguen funcionando.
         </p>
       ) : (
-        <p className="mt-1.5 text-legend text-neutral-600">
+        <p className="mt-1.5 text-legend text-text-secondary">
           Va a ser parte de la URL pública: /mascotas/{value || "…"}
         </p>
       )}
       {conflict && (
-        <p id="slug-conflict" role="alert" className="mt-1.5 text-meta text-accent-400">
+        <p id="slug-conflict" role="alert" className="mt-1.5 text-meta text-accent-text">
           Ese identificador ya está en uso por otra mascota. Corregilo antes de guardar.
         </p>
       )}

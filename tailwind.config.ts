@@ -5,12 +5,13 @@ function withOpacity(variable: string) {
   return `rgb(var(${variable}) / <alpha-value>)`
 }
 
-// Nocturne (design-system/design_handoff_v1/mockups/nocturne.css) — tokens
-// portados literalmente. "background"/"foreground"/"card"/"muted"/"border"/
-// "ring" se mantienen como alias semánticos de los roles de Nocturne para no
-// tener que tocar cada className existente que ya los usa; los pasos de
-// rampa (accent-100..900, neutral-100..900) quedan disponibles directo para
-// el código nuevo que necesita un tinte puntual (bg-accent-800, etc.).
+// Paleta naranja (design-system/design_handoff_v2) — dos temas sobre un
+// único set de tokens semánticos, ver app/globals.css. Sin rampa fija
+// accent-100..900/neutral-100..900 de v1: un hex compilado acá no puede
+// reaccionar a [data-theme], así que todo tinte puntual sale de un token
+// semántico (text-secondary/tertiary, accent-fill, hairline, etc.).
+// "background"/"foreground"/"card"/"muted"/"border"/"ring" se mantienen como
+// alias para no reescribir cada className existente que ya los usa.
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -22,31 +23,20 @@ const config: Config = {
       colors: {
         bg: withOpacity("--color-bg"),
         surface: withOpacity("--color-surface"),
-        text: withOpacity("--color-text"),
-        sunken: withOpacity("--color-sunken"),
+        text: {
+          DEFAULT: withOpacity("--color-text"),
+          secondary: withOpacity("--color-text-secondary"),
+          tertiary: withOpacity("--color-text-tertiary"),
+        },
         divider: "var(--color-divider)",
+        hairline: "var(--color-hairline)",
         accent: {
           DEFAULT: withOpacity("--color-accent"),
-          100: "#f5f4ff",
-          200: "#e7e5fe",
-          300: "#d2cefd",
-          400: "#b5abfc",
-          500: "#968ae0",
-          600: "#796cbf",
-          700: "#5d5294",
-          800: "#423a6a",
-          900: "#2b2741",
-        },
-        neutral: {
-          100: "#f3f5fe",
-          200: "#e4e7f5",
-          300: "#cfd3e5",
-          400: "#b2b6ca",
-          500: "#9397ab",
-          600: "#75798c",
-          700: "#595d6c",
-          800: "#3f424d",
-          900: "#292b31",
+          text: withOpacity("--color-accent-text"),
+          fill: {
+            DEFAULT: withOpacity("--color-accent-fill"),
+            text: withOpacity("--color-accent-fill-text"),
+          },
         },
         // Alias semánticos (evitan reescribir cada className existente).
         background: withOpacity("--color-bg"),
@@ -56,8 +46,8 @@ const config: Config = {
           foreground: withOpacity("--color-text"),
         },
         muted: {
-          DEFAULT: withOpacity("--color-sunken"),
-          foreground: "#9397ab", // neutral-500, "texto secundario" de Nocturne
+          DEFAULT: withOpacity("--color-surface"),
+          foreground: withOpacity("--color-text-secondary"),
         },
         border: "var(--color-divider)",
         ring: withOpacity("--color-accent"),
@@ -102,10 +92,12 @@ const config: Config = {
         md: "8px",
         lg: "14px",
       },
+      // Dos niveles nomás (sm/md) — el prompt de diseño no da un tercer
+      // tier "lg"; el diálogo (única pantalla que pedía shadow-lg) pasa a
+      // shadow-md, que ya es el tier "elevado" en este sistema.
       boxShadow: {
-        sm: "0 0 0 1px #3f424d",
-        md: "0 0 0 1px #595d6c, 0 6px 18px rgba(0,0,0,0.55)",
-        lg: "0 0 0 1px #9397ab, 0 16px 40px rgba(0,0,0,0.65)",
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
       },
       transitionDuration: {
         DEFAULT: "150ms",

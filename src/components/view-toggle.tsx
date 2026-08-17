@@ -40,7 +40,9 @@ export function ViewToggle({ className }: { className?: string }) {
         onClick={() => select("grid")}
         className={cn(
           "flex h-9 w-9 items-center justify-center transition-colors duration-150",
-          view === "grid" ? "text-accent shadow-[inset_0_0_0_1px_#9184d9]" : "text-neutral-500 hover:bg-text/[.07]"
+          view === "grid"
+            ? "text-accent shadow-[inset_0_0_0_1px_rgb(var(--color-accent))]"
+            : "text-text-tertiary hover:bg-text/[.07]"
         )}
       >
         <SquaresFourIcon size={16} aria-hidden="true" />
@@ -52,7 +54,9 @@ export function ViewToggle({ className }: { className?: string }) {
         onClick={() => select("list")}
         className={cn(
           "flex h-9 w-9 items-center justify-center border-l border-divider transition-colors duration-150",
-          view === "list" ? "text-accent shadow-[inset_0_0_0_1px_#9184d9]" : "text-neutral-500 hover:bg-text/[.07]"
+          view === "list"
+            ? "text-accent shadow-[inset_0_0_0_1px_rgb(var(--color-accent))]"
+            : "text-text-tertiary hover:bg-text/[.07]"
         )}
       >
         <RowsIcon size={16} aria-hidden="true" />

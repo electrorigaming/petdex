@@ -25,6 +25,23 @@ const VIEW_PREFERENCE_SCRIPT = `
 })();
 `
 
+// localStorage > prefers-color-scheme del SO > claro por defecto. Corre
+// antes de la hidratación (mismo mecanismo que VIEW_PREFERENCE_SCRIPT) para
+// no flashear el tema equivocado; use-theme.ts solo LEE lo que este script
+// ya decidió, nunca lo recalcula.
+const THEME_PREFERENCE_SCRIPT = `
+(function () {
+  try {
+    var stored = localStorage.getItem('petdex-theme');
+    var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (dark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#17120f');
+    }
+  } catch (e) {}
+})();
+`
+
 export const metadata: Metadata = {
   title: "PetDex",
   description: "Registro y seguimiento de animales callejeros del barrio",
@@ -32,6 +49,12 @@ export const metadata: Metadata = {
   // inicio (contracts/service-worker.md) — se referencia aparte acá.
   icons: {
     apple: "/icons/apple-touch-icon.png",
+  },
+  // Valor por defecto (tema claro); THEME_PREFERENCE_SCRIPT lo pisa antes
+  // de pintar si corresponde oscuro, y use-theme.ts lo mantiene sincronizado
+  // después de cada toggle manual.
+  other: {
+    "theme-color": "#fffdfb",
   },
 }
 
@@ -41,12 +64,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={inter.variable}>
+    <html lang="es" className={inter.variable} suppressHydrationWarning>
       <body className="font-sans">
         <Script
           id="view-preference"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: VIEW_PREFERENCE_SCRIPT }}
+        />
+        <Script
+          id="theme-preference"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: THEME_PREFERENCE_SCRIPT }}
         />
         <SessionProvider>
           <CatalogSearchProvider>

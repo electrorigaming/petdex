@@ -18,6 +18,7 @@ import { useSession } from "@/hooks/use-session"
 import { useCatalogSearch } from "@/components/catalog-search-context"
 import { LogoutButton } from "@/components/auth/logout-button"
 import { AddPetButton } from "@/components/pets/add-pet-button"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 function SearchField({ className }: { className?: string }) {
   const pathname = usePathname()
@@ -34,7 +35,7 @@ function SearchField({ className }: { className?: string }) {
       <div className="relative flex flex-1 items-center">
         <MagnifyingGlassIcon
           size={14}
-          className="pointer-events-none absolute left-2.5 text-neutral-600"
+          className="pointer-events-none absolute left-2.5 text-text-tertiary"
           aria-hidden="true"
         />
         <input
@@ -43,7 +44,7 @@ function SearchField({ className }: { className?: string }) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Buscar por nombre o apodo"
           aria-label="Buscar mascota por nombre o apodo"
-          className="min-h-9 w-full rounded-md border border-divider bg-card py-1.5 pl-8 pr-2.5 text-label text-card-foreground caret-accent placeholder:text-neutral-600 hover:border-text/45 focus-visible:border-accent focus-visible:outline-0"
+          className="min-h-9 w-full rounded-md border border-divider bg-card py-1.5 pl-8 pr-2.5 text-label text-card-foreground caret-accent placeholder:text-text-secondary hover:border-text/45 focus-visible:border-accent focus-visible:outline-0"
         />
       </div>
     </form>
@@ -74,7 +75,7 @@ export function AppHeader() {
               <>
                 <AddPetButton />
                 {email && (
-                  <span className="hidden text-meta text-neutral-600 md:inline">{email}</span>
+                  <span className="hidden text-meta text-text-secondary md:inline">{email}</span>
                 )}
                 <LogoutButton iconOnly />
               </>
@@ -88,6 +89,8 @@ export function AppHeader() {
             )}
           </>
         )}
+
+        <ThemeToggle />
       </nav>
 
       {isCatalog && <SearchField className="px-4 pb-2.5 md:hidden" />}

@@ -158,7 +158,7 @@ function FilterablePetGrid({
         {isFiltered ? (
           <>
             <p className="text-counter md:text-counter-lg text-foreground">{filtered.length}</p>
-            <p className="mt-1 text-meta text-neutral-500">
+            <p className="mt-1 text-meta text-text-secondary">
               {trimmedQuery
                 ? `resultados para "${trimmedQuery}"${zone !== ALL_ZONES ? ` en ${zone}` : ""}`
                 : zone !== ALL_ZONES
@@ -169,7 +169,7 @@ function FilterablePetGrid({
         ) : (
           <>
             <p className="text-counter md:text-counter-lg text-foreground">{total}</p>
-            <p className="mt-1 text-meta text-neutral-500">mascotas en el registro</p>
+            <p className="mt-1 text-meta text-text-secondary">mascotas en el registro</p>
           </>
         )}
       </div>
@@ -195,7 +195,7 @@ function FilterablePetGrid({
           aria-pressed={filtersOpen}
           aria-expanded={filtersOpen}
           onClick={() => setFiltersOpen((open) => !open)}
-          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-divider px-3 text-label text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-[active=true]:border-accent data-[active=true]:text-accent"
+          className="inline-flex h-9 items-center gap-1.5 rounded-md border border-divider px-3 text-label text-text transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-[active=true]:border-accent data-[active=true]:text-accent-text"
           data-active={activeFilterCount > 0}
         >
           <FunnelSimpleIcon size={15} aria-hidden="true" />
@@ -205,7 +205,7 @@ function FilterablePetGrid({
           <button
             type="button"
             onClick={clearFilters}
-            className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-label text-accent transition-colors duration-150 hover:bg-accent/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="inline-flex h-9 items-center gap-1.5 rounded-md px-3 text-label text-accent-text transition-colors duration-150 hover:bg-accent/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             <XIcon size={15} aria-hidden="true" />
             Limpiar filtros
@@ -232,7 +232,7 @@ function FilterablePetGrid({
       {filtersOpen && (
         <div className="flex flex-col gap-3 rounded-md border border-divider p-3">
           <div>
-            <p className="mb-1.5 text-legend uppercase tracking-wide text-neutral-600">Estado</p>
+            <p className="mb-1.5 text-legend uppercase tracking-wide text-text-secondary">Estado</p>
             <div className="flex flex-wrap gap-2">
               {PET_STATUS_OPTIONS.map((status) => (
                 <FilterChip
@@ -246,7 +246,7 @@ function FilterablePetGrid({
             </div>
           </div>
           <div>
-            <p className="mb-1.5 text-legend uppercase tracking-wide text-neutral-600">Esterilizado</p>
+            <p className="mb-1.5 text-legend uppercase tracking-wide text-text-secondary">Esterilizado</p>
             <div className="flex flex-wrap gap-2">
               <FilterChip
                 aria-pressed={filters.esterilizado.includes(true)}
@@ -263,7 +263,7 @@ function FilterablePetGrid({
             </div>
           </div>
           <div>
-            <p className="mb-1.5 text-legend uppercase tracking-wide text-neutral-600">Género</p>
+            <p className="mb-1.5 text-legend uppercase tracking-wide text-text-secondary">Género</p>
             <div className="flex flex-wrap gap-2">
               {PET_GENDER_OPTIONS.map((gender) => (
                 <FilterChip
@@ -278,7 +278,7 @@ function FilterablePetGrid({
           </div>
           {isAdmin && (
             <div>
-              <p className="mb-1.5 text-legend uppercase tracking-wide text-neutral-600">Tipo</p>
+              <p className="mb-1.5 text-legend uppercase tracking-wide text-text-secondary">Tipo</p>
               <div className="flex flex-wrap gap-2">
                 {PET_VISIBILITY_OPTIONS.map((visibility) => (
                   <FilterChip

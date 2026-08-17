@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useRef, useState } from "react"
 import Image from "next/image"
@@ -82,7 +82,7 @@ export function PhotoField({
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="relative aspect-[3/2] w-full overflow-hidden rounded-md border border-dashed border-neutral-800 bg-sunken disabled:opacity-70"
+        className="relative aspect-[3/2] w-full overflow-hidden rounded-md border border-dashed border-hairline bg-surface disabled:opacity-70"
       >
         {displayedPhoto ? (
           <Image
@@ -95,17 +95,17 @@ export function PhotoField({
           />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-1.5 px-4 text-center">
-            <ImageSquareIcon size={26} className="text-neutral-700" aria-hidden="true" />
-            <span className="text-caption text-neutral-500">Arrastrá una foto o elegí un archivo</span>
-            <span className="font-mono text-[10px] text-neutral-700">se comprime a 1600px · webp</span>
+            <ImageSquareIcon size={26} className="text-text-tertiary" aria-hidden="true" />
+            <span className="text-caption text-text-secondary">Arrastrá una foto o elegí un archivo</span>
+            <span className="font-mono text-[10px] text-text-tertiary">se comprime a 1600px · webp</span>
           </div>
         )}
       </button>
 
       {uploading && (
-        <div className="mt-2 flex items-center gap-2.5 rounded-md bg-sunken px-3 py-2.5">
+        <div className="mt-2 flex items-center gap-2.5 rounded-md bg-surface px-3 py-2.5">
           <ArrowClockwiseIcon size={16} className="animate-spin text-accent" aria-hidden="true" />
-          <span className="flex-1 text-meta text-neutral-400">Subiendo foto…</span>
+          <span className="flex-1 text-meta text-text-secondary">Subiendo foto…</span>
         </div>
       )}
 
@@ -132,7 +132,7 @@ export function PhotoField({
       />
 
       {error && (
-        <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-400">
+        <p role="alert" className="mt-1.5 flex items-center gap-1.5 text-meta text-accent-text">
           <WarningIcon size={14} aria-hidden="true" />
           {error}
         </p>
