@@ -12,13 +12,13 @@
 import { type FormEvent } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { PawPrintIcon } from "@phosphor-icons/react/dist/ssr/PawPrint"
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass"
 import { useSession } from "@/hooks/use-session"
 import { useCatalogSearch } from "@/components/catalog-search-context"
 import { LogoutButton } from "@/components/auth/logout-button"
 import { AddPetButton } from "@/components/pets/add-pet-button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { Logo } from "@/components/logo"
 
 function SearchField({ className }: { className?: string }) {
   const pathname = usePathname()
@@ -59,12 +59,8 @@ export function AppHeader() {
   return (
     <div>
       <nav className="flex items-center gap-3 px-4 py-2.5 md:gap-3.5 md:px-14 md:py-3">
-        <Link
-          href="/"
-          className="mr-auto flex items-center gap-2 text-[18px] font-medium text-text md:text-[19px]"
-        >
-          <PawPrintIcon weight="fill" size={19} className="text-accent" aria-hidden="true" />
-          PetDex
+        <Link href="/" className="mr-auto">
+          <Logo variant="lockup" size={27} />
         </Link>
 
         <SearchField className="hidden max-w-[380px] flex-1 md:block" />

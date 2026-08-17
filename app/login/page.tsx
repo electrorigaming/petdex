@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { PawPrintIcon } from "@phosphor-icons/react/dist/ssr/PawPrint"
 import { LoginButton } from "@/components/auth/login-button"
+import { Logo } from "@/components/logo"
 
 export default async function LoginPage({
   searchParams,
@@ -11,9 +11,8 @@ export default async function LoginPage({
 
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center gap-5 px-4 py-6">
-      <div className="flex items-center gap-2.5">
-        <PawPrintIcon weight="fill" size={26} className="text-accent" aria-hidden="true" />
-        <span className="text-h4 text-text">PetDex</span>
+      <div className="flex justify-center">
+        <Logo variant="symbol" size={128} />
       </div>
       <div>
         <h4 className="mb-1.5 text-h4 text-text">Entrar para editar</h4>

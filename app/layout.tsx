@@ -45,9 +45,17 @@ const THEME_PREFERENCE_SCRIPT = `
 export const metadata: Metadata = {
   title: "PetDex",
   description: "Registro y seguimiento de animales callejeros del barrio",
-  // iOS no lee manifest.json para el ícono de instalación a pantalla de
-  // inicio (contracts/service-worker.md) — se referencia aparte acá.
   icons: {
+    // SVG primero: cambia de tema solo vía prefers-color-scheme (embebido
+    // en el propio archivo, ver logo/README.md). El .ico es el fallback
+    // para el puñado de navegadores/crawlers que todavía no soportan
+    // favicons SVG.
+    icon: [
+      { url: "/icons/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/favicon.ico", sizes: "32x32" },
+    ],
+    // iOS no lee manifest.json para el ícono de instalación a pantalla de
+    // inicio (contracts/service-worker.md) — se referencia aparte acá.
     apple: "/icons/apple-touch-icon.png",
   },
   // Valor por defecto (tema claro); THEME_PREFERENCE_SCRIPT lo pisa antes

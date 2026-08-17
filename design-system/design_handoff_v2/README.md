@@ -406,6 +406,7 @@ queda como está descrito en `referencia/CURRENT_STATE.md`.
 - `mockups/support.js` — runtime necesario para abrir el mockup en el navegador; no forma
   parte del diseño.
 - `referencia/CURRENT_STATE.md` — inventario de la UI actual (rutas, componentes, reglas).
+- `logo/` — los SVG del logo (símbolo, marca corta, favicon, íconos de PWA) y su README.
 - `referencia/nocturne-readme.md` — guía del sistema Nocturne (dirección, color, tipo, do/don't).
 
 ## Paleta naranja y temas claro/oscuro
@@ -416,6 +417,13 @@ Los valores exactos, las reglas de contraste y el comportamiento del `ThemeToggl
 en **`PROMPT-claude-code.md`**, pensado para pegar directo en Claude Code.
 Las pantallas del turno 1 siguen siendo la referencia de layout y comportamiento: solo
 hay que releer sus colores desde los tokens nuevos.
+
+## Logo
+
+Marca elegida: **4c "chapita"** (turno 4 del mockup). Los SVG fuente, las reglas de uso
+y el prompt de implementación están en **`logo/README.md`**.
+Reemplaza al ícono `paw-print` de Phosphor que los mockups usan como marca provisoria en
+el header.
 
 ## Decisiones tomadas
 

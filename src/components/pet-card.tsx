@@ -8,6 +8,7 @@ import { GenderMaleIcon } from "@phosphor-icons/react/dist/ssr/GenderMale"
 import { GenderFemaleIcon } from "@phosphor-icons/react/dist/ssr/GenderFemale"
 import { LockSimpleIcon } from "@phosphor-icons/react/dist/ssr/LockSimple"
 import { Badge } from "@/components/ui/badge"
+import { Logo } from "@/components/logo"
 import { daysBetween, todayLocal } from "@/lib/dates"
 import type { PetSummary } from "@/lib/pets"
 import { PET_STATUS_DISPLAY_LABEL, PET_GENDER_LABEL } from "@/lib/validation/pet-schema"
@@ -42,9 +43,28 @@ export function PetCard({ pet }: { pet: PetSummary }) {
         {pet.photoUrl ? (
           <Image src={pet.photoUrl} alt={pet.name} fill unoptimized className="lighten object-cover" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <ImageSquareIcon size={22} className="text-text-tertiary" aria-label="Sin foto" />
-          </div>
+          <>
+            {/* Cuadrícula: mismo ícono neutro de siempre. Lista: la marca
+                corta como avatar por defecto (logo/README.md, paso 5) — dos
+                bloques en el DOM, visibilidad la decide data-view en
+                <html> (mismo criterio que .pet-card-row-text/-status). */}
+            <div
+              role="img"
+              aria-label="Sin foto"
+              className="pet-card-placeholder-grid flex h-full w-full items-center justify-center"
+            >
+              <ImageSquareIcon size={22} className="text-text-tertiary" aria-hidden="true" />
+            </div>
+            <div
+              role="img"
+              aria-label="Sin foto"
+              className="pet-card-placeholder-list hidden h-full w-full items-center justify-center"
+            >
+              <span aria-hidden="true">
+                <Logo variant="mark" size={20} />
+              </span>
+            </div>
+          </>
         )}
       </div>
 

@@ -1,12 +1,12 @@
 # Prompt para Claude Code — paleta naranja + toggle claro/oscuro
 
 Copiá el bloque de abajo tal cual en Claude Code, dentro del repo de PetDex, con la
-carpeta `design-system/design_handoff_v2/` disponible.
+carpeta `design_handoff_petdex_ui/` disponible.
 
 ---
 
-Contexto: tenés en `design-system/design_handoff_v2/` el handoff de diseño de PetDex. Leé
-`design-system/design_handoff_v2/README.md` completo y abrí `design-system/design_handoff_v2/mockups/PetDex Mockups.dc.html`
+Contexto: tenés en `design_handoff_petdex_ui/` el handoff de diseño de PetDex. Leé
+`design_handoff_petdex_ui/README.md` completo y abrí `mockups/PetDex Mockups.dc.html`
 antes de escribir código. Los mockups están agrupados en turnos: el turno 1 (`1a`–`1n`)
 tiene TODAS las pantallas y es la referencia de layout, tipografía, espaciado y
 comportamiento; el turno 2 (`2a`, `2b`) y el turno 3 (`3a`, `3b`) muestran la pantalla
@@ -23,7 +23,6 @@ equivalente), con el tema claro en `:root` y el oscuro en `[data-theme="dark"]`.
 Estos son los valores; no inventes ni redondees ninguno.
 
 **Claro (turno 2)**
-
 ```
 --color-bg: #fffdfb;        /* blanco cálido, nunca #fff puro */
 --color-surface: #fff6f0;   /* cards, inputs */
@@ -42,7 +41,6 @@ Estos son los valores; no inventes ni redondees ninguno.
 ```
 
 **Oscuro (turno 3)**
-
 ```
 --color-bg: #17120f;
 --color-surface: #241c17;
@@ -60,7 +58,6 @@ Estos son los valores; no inventes ni redondees ninguno.
 ```
 
 Reglas de contraste que hay que respetar y que no son obvias:
-
 - El acento **cambia entre temas**. No uses el mismo hex en los dos.
 - `--color-text-tertiary` no llega a AA en ninguno de los dos: úsalo solo para íconos,
   el chip de URL y trama decorativa. Todo texto de 12-13px va en `-secondary`.
@@ -73,7 +70,6 @@ Reglas de contraste que hay que respetar y que no son obvias:
 ## 2. Reglas de estilo heredadas del sistema
 
 Se mantienen las del handoff, no las reinventes:
-
 - Botones **delineados**, nunca rellenos: el primario es borde + texto de acento sobre
   transparente. Hover `color-mix(in srgb, var(--color-accent) 12%, transparent)`,
   activo 22%.
@@ -96,7 +92,6 @@ oscuro. `aria-label` y `title` describiendo la acción ("Cambiar a modo oscuro" 
 "Cambiar a modo claro"), más `aria-pressed`.
 
 Comportamiento:
-
 - El tema se aplica con `data-theme="light" | "dark"` en `<html>`.
 - Sin elección previa, seguí `prefers-color-scheme` y seguí escuchando sus cambios.
 - Al hacer clic, guardá la elección en `localStorage` bajo `petdex-theme`; desde ahí la
