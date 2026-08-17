@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="nocturne.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>body{margin:0;background:#161826}</style>
+</helmet>
+
+<section id="t3" style="padding:40px 44px 8px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 6px">
+<a href="#t3" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#2b2741;color:#d2cefd;border-radius:4px;text-decoration:none">3</a>
+<span style="font-family:Inter,sans-serif;font-weight:500;font-size:15px;color:#e9e9ed">Modo oscuro de la paleta naranja</span>
+</div>
+<p style="max-width:760px;margin:0 0 4px;font-size:13px;line-height:1.6;color:#9397ab">El mismo tema del turno <a href="#t2" style="color:#b5abfc">2</a> con el ground invertido: tinta cálida casi negra, texto blanco cálido y el naranja levantado a <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#ff7a33">#FF7A33</span> — el <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b2b6ca">#E0570B</span> del tema claro se apaga sobre fondo oscuro (2,9:1) y hay que subirlo, igual que la rampa neutra se invierte. Un solo par de temas, los mismos componentes.</p>
+
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;margin-top:24px">
+
+<div id="3a" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#3a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">3a</a>Mobile 375 · admin</div>
+<div style="--color-bg:#17120f;--color-surface:#241c17;--color-text:#fdf6f1;--color-accent:#ff7a33;--color-divider:color-mix(in srgb,#fdf6f1 16%,transparent);--color-accent-800:#4a2a16;--color-accent-100:#ffe2cd;--color-neutral-800:#352a22;--color-neutral-100:#f0e3d9;--shadow-sm:0 0 0 1px #3b2f26;--shadow-md:0 0 0 1px #4a3b30,0 6px 18px rgba(0,0,0,.55);width:375px;border-radius:20px;background:#17120f;color:#fdf6f1;font-family:Inter,sans-serif;box-shadow:0 0 0 1px #4a3b30,0 6px 18px rgba(0,0,0,.55);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#c9b8ab"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 8px;gap:8px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:7px;margin-right:auto"><i class="ph-fill ph-paw-print" style="color:#ff7a33;font-size:19px"></i>PetDex</span>
+    <button class="btn btn-icon btn-primary" title="Agregar"><i class="ph ph-plus" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cambiar a modo claro"><i class="ph ph-sun" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="padding:0 17px 11px;position:relative;display:flex;align-items:center">
+    <i class="ph ph-magnifying-glass" style="position:absolute;left:27px;font-size:15px;color:#8c7b6e"></i>
+    <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:40px;padding-left:32px;font-size:15px">
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,#3b2f26 40px,#3b2f26 calc(100% - 40px),transparent)"></div>
+  <div style="padding:14px 17px 22px;display:flex;flex-direction:column;gap:17px">
+    <div>
+      <div style="font-weight:500;font-size:38px;line-height:1;letter-spacing:-.02em">27</div>
+      <div style="font-size:13px;color:#b8a89c;margin-top:4px">mascotas en el registro</div>
+    </div>
+    <div style="display:flex;gap:9px">
+      <select class="input" style="min-height:42px;font-size:14px;flex:1"><option>Todas las zonas</option></select>
+      <div class="seg" style="flex:none">
+        <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v11" defaultChecked="{{ true }}"><i class="ph ph-squares-four" style="font-size:16px"></i></label>
+        <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v11"><i class="ph ph-rows" style="font-size:16px"></i></label>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#2e241d 0 6px,#241c17 6px 12px)"></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#100c09 14%,rgba(16,12,9,.72) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px">Luna</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#e3d3c6;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Plaza Mitre</div>
+        </div>
+        <span class="tag tag-accent" style="position:absolute;top:8px;left:8px">Hoy</span>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#2e241d 0 6px,#241c17 6px 12px)"></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#100c09 14%,rgba(16,12,9,.72) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px">Tito</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#e3d3c6;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Estación</div>
+        </div>
+        <span class="tag tag-neutral" style="position:absolute;top:8px;left:8px">Ayer</span>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:#241c17;display:grid;place-items:center"><i class="ph ph-image-square" style="font-size:22px;color:#4a3b30"></i></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#100c09 14%,rgba(16,12,9,.72) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px">Canela</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#e3d3c6;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Barrio Norte</div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#2e241d 0 6px,#241c17 6px 12px)"></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#100c09 14%,rgba(16,12,9,.72) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px">Sombra</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#e3d3c6;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Parque Sur</div>
+        </div>
+        <span class="tag tag-accent" style="position:absolute;top:8px;left:8px">Hoy</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="3b" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#3b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">3b</a>Desktop 1440 · admin, vista lista</div>
+<div style="--color-bg:#17120f;--color-surface:#241c17;--color-text:#fdf6f1;--color-accent:#ff7a33;--color-divider:color-mix(in srgb,#fdf6f1 16%,transparent);--color-accent-800:#4a2a16;--color-accent-100:#ffe2cd;--color-neutral-800:#352a22;--color-neutral-100:#f0e3d9;--shadow-sm:0 0 0 1px #3b2f26;width:1440px;border-radius:12px;background:#17120f;color:#fdf6f1;font-family:Inter,sans-serif;box-shadow:0 0 0 1px #4a3b30,0 6px 18px rgba(0,0,0,.55);overflow:hidden">
+  <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;background:#1f1813">
+    <span style="display:flex;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:#4a3b30"></span><span style="width:9px;height:9px;border-radius:50%;background:#4a3b30"></span><span style="width:9px;height:9px;border-radius:50%;background:#4a3b30"></span></span>
+    <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#8c7b6e;background:#17120f;padding:4px 12px;border-radius:5px">petdex.app</span>
+  </div>
+  <div class="nav" style="padding:12px 56px;gap:14px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:8px;font-size:19px;margin-right:0"><i class="ph-fill ph-paw-print" style="color:#ff7a33;font-size:20px"></i>PetDex</span>
+    <div style="position:relative;display:flex;align-items:center;flex:1;max-width:380px;margin-left:10px">
+      <i class="ph ph-magnifying-glass" style="position:absolute;left:9px;font-size:14px;color:#8c7b6e"></i>
+      <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:34px;padding-left:29px;font-size:13px">
+    </div>
+    <button class="btn btn-primary" style="margin-left:auto"><i class="ph ph-plus" style="font-size:14px"></i>Agregar mascota</button>
+    <span style="font-size:13px;color:#b8a89c">martina@barrio.org</span>
+    <button class="btn btn-icon btn-secondary" title="Cambiar a modo claro"><i class="ph ph-sun" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,#3b2f26 48px,#3b2f26 calc(100% - 48px),transparent)"></div>
+  <div style="padding:28px 56px 44px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;align-items:baseline;gap:12px">
+      <span style="font-weight:500;font-size:46px;line-height:1;letter-spacing:-.02em">27</span>
+      <span style="font-size:15px;color:#b8a89c">mascotas en el registro · 19 vistas esta semana</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;max-width:1040px">
+      <select class="input" style="width:190px"><option>Todas las zonas</option></select>
+      <div class="seg" style="margin-left:auto">
+        <label class="seg-opt"><input type="radio" name="v12"><i class="ph ph-squares-four" style="font-size:15px"></i>Cuadrícula</label>
+        <label class="seg-opt"><input type="radio" name="v12" defaultChecked="{{ true }}"><i class="ph ph-rows" style="font-size:15px"></i>Lista</label>
+      </div>
+    </div>
+    <table class="table" style="max-width:1040px">
+      <thead><tr><th style="width:46%">Mascota</th><th>Zona</th><th>Último avistamiento</th><th style="text-align:right">Racha</th></tr></thead>
+      <tbody>
+        <sc-for list="{{ pets }}" as="p" hint-placeholder-count="6">
+          <tr>
+            <td style="padding-block:10px">
+              <span style="display:flex;align-items:center;gap:12px">
+                <span style="width:40px;height:40px;flex:none;border-radius:6px;background:repeating-linear-gradient(135deg,#2e241d 0 6px,#241c17 6px 12px);display:grid;place-items:center"><i class="ph ph-paw-print" style="font-size:15px;color:#4a3b30"></i></span>
+                <span><span style="display:block;font-weight:500">{{ p.name }}</span><span style="display:block;font-size:12px;color:#b8a89c">{{ p.alias }}</span></span>
+              </span>
+            </td>
+            <td style="color:#c9b8ab">{{ p.zone }}</td>
+            <td style="color:#c9b8ab">{{ p.last }}</td>
+            <td style="text-align:right;color:#c9b8ab">{{ p.streak }}</td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+</div>
+
+<p style="margin:26px 0 0;font-size:12px;line-height:1.6;color:#75798c;max-width:760px">Lo que cambia respecto del claro, además del ground: el acento sube de <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#e0570b</span> a <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#ff7a33</span> (7,2:1 sobre <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#17120f</span>, así que acá sí sirve para texto chico), la rampa neutra se invierte a cálidos claros (<span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#b8a89c</span> secundario, <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#8c7b6e</span> solo íconos), la elevación vuelve a ser hairline + oscuridad ambiente en vez de sombra de tinta, y <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">.lighten</span> vuelve a funcionar en las fotos. El <span style="color:#cfd3e5">toggle</span> vive en el header, como <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">btn-icon btn-secondary</span> entre el mail y salir (en 375, entre agregar y salir): luna cuando estás en claro, sol cuando estás en oscuro. Arranca en <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">prefers-color-scheme</span> y la elección explícita se guarda en <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">localStorage</span>. Es visible también para visitantes, no solo para admin.</p>
+</section>
+
+<section id="t2" style="padding:8px 44px 8px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 6px">
+<a href="#t2" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#2b2741;color:#d2cefd;border-radius:4px;text-decoration:none">2</a>
+<span style="font-family:Inter,sans-serif;font-weight:500;font-size:15px;color:#e9e9ed">Pantalla principal — paleta naranja y blanco</span>
+</div>
+<p style="max-width:760px;margin:0 0 4px;font-size:13px;line-height:1.6;color:#9397ab">El catálogo con el mismo layout, tipografía y densidad de Nocturne, pero con los tokens de color reasignados: fondo blanco cálido, texto tinta cálida y un solo acento naranja <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#e0570b">#E0570B</span>. Se mantienen las reglas del sistema — botones delineados y nunca rellenos, reglas que se desvanecen en las puntas, jerarquía por tamaño y no por peso. Los cambios viven todos en <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b2b6ca">:root</span>; el resto del mockup no se toca.</p>
+
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;margin-top:24px">
+
+<div id="2a" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#2a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">2a</a>Mobile 375 · admin</div>
+<div style="--color-bg:#fffdfb;--color-surface:#fff6f0;--color-text:#2a1d15;--color-accent:#e0570b;--color-divider:color-mix(in srgb,#2a1d15 14%,transparent);--color-accent-800:#fde3cf;--color-accent-100:#8a3a06;--color-neutral-800:#f3e7df;--color-neutral-100:#5c4a3e;--shadow-sm:0 0 0 1px #f0e2d8;--shadow-md:0 0 0 1px #efe1d7,0 8px 24px rgba(90,45,15,.14);width:375px;border-radius:20px;background:#fffdfb;color:#2a1d15;font-family:Inter,sans-serif;box-shadow:0 0 0 1px #efe1d7,0 8px 24px rgba(90,45,15,.14);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#5c4a3e"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 8px;gap:8px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:7px;margin-right:auto"><i class="ph-fill ph-paw-print" style="color:#e0570b;font-size:19px"></i>PetDex</span>
+    <button class="btn btn-icon btn-primary" title="Agregar"><i class="ph ph-plus" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cambiar a modo oscuro"><i class="ph ph-moon" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="padding:0 17px 11px;position:relative;display:flex;align-items:center">
+    <i class="ph ph-magnifying-glass" style="position:absolute;left:27px;font-size:15px;color:#a3907f"></i>
+    <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:40px;padding-left:32px;font-size:15px">
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,#ecdcd0 40px,#ecdcd0 calc(100% - 40px),transparent)"></div>
+  <div style="padding:14px 17px 22px;display:flex;flex-direction:column;gap:17px">
+    <div>
+      <div style="font-weight:500;font-size:38px;line-height:1;letter-spacing:-.02em">27</div>
+      <div style="font-size:13px;color:#7a6a5f;margin-top:4px">mascotas en el registro</div>
+    </div>
+    <div style="display:flex;gap:9px">
+      <select class="input" style="min-height:42px;font-size:14px;flex:1"><option>Todas las zonas</option></select>
+      <div class="seg" style="flex:none">
+        <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v9" defaultChecked="{{ true }}"><i class="ph ph-squares-four" style="font-size:16px"></i></label>
+        <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v9"><i class="ph ph-rows" style="font-size:16px"></i></label>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#fbeee5 0 6px,#fff6f0 6px 12px)"></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#2a1d15 14%,rgba(42,29,21,.66) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px;color:#fffdfb">Luna</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#f3e2d5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Plaza Mitre</div>
+        </div>
+        <span class="tag tag-accent" style="position:absolute;top:8px;left:8px">Hoy</span>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#fbeee5 0 6px,#fff6f0 6px 12px)"></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#2a1d15 14%,rgba(42,29,21,.66) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px;color:#fffdfb">Tito</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#f3e2d5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Estación</div>
+        </div>
+        <span class="tag tag-neutral" style="position:absolute;top:8px;left:8px">Ayer</span>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:#fbeee5;display:grid;place-items:center"><i class="ph ph-image-square" style="font-size:22px;color:#dcc6b4"></i></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#2a1d15 14%,rgba(42,29,21,.66) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px;color:#fffdfb">Canela</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#f3e2d5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Barrio Norte</div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#fbeee5 0 6px,#fff6f0 6px 12px)"></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#2a1d15 14%,rgba(42,29,21,.66) 58%,transparent)">
+          <div style="font-weight:500;font-size:15px;color:#fffdfb">Sombra</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#f3e2d5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Parque Sur</div>
+        </div>
+        <span class="tag tag-accent" style="position:absolute;top:8px;left:8px">Hoy</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="2b" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#2b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">2b</a>Desktop 1440 · admin, vista lista</div>
+<div style="--color-bg:#fffdfb;--color-surface:#fff6f0;--color-text:#2a1d15;--color-accent:#e0570b;--color-divider:color-mix(in srgb,#2a1d15 14%,transparent);--color-accent-800:#fde3cf;--color-accent-100:#8a3a06;--color-neutral-800:#f3e7df;--color-neutral-100:#5c4a3e;--shadow-sm:0 0 0 1px #f0e2d8;width:1440px;border-radius:12px;background:#fffdfb;color:#2a1d15;font-family:Inter,sans-serif;box-shadow:0 0 0 1px #efe1d7,0 8px 24px rgba(90,45,15,.14);overflow:hidden">
+  <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;background:#f7ece4">
+    <span style="display:flex;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:#e2cdbe"></span><span style="width:9px;height:9px;border-radius:50%;background:#e2cdbe"></span><span style="width:9px;height:9px;border-radius:50%;background:#e2cdbe"></span></span>
+    <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#a3907f;background:#fffdfb;padding:4px 12px;border-radius:5px">petdex.app</span>
+  </div>
+  <div class="nav" style="padding:12px 56px;gap:14px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:8px;font-size:19px;margin-right:0"><i class="ph-fill ph-paw-print" style="color:#e0570b;font-size:20px"></i>PetDex</span>
+    <div style="position:relative;display:flex;align-items:center;flex:1;max-width:380px;margin-left:10px">
+      <i class="ph ph-magnifying-glass" style="position:absolute;left:9px;font-size:14px;color:#a3907f"></i>
+      <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:34px;padding-left:29px;font-size:13px">
+    </div>
+    <button class="btn btn-primary" style="margin-left:auto"><i class="ph ph-plus" style="font-size:14px"></i>Agregar mascota</button>
+    <span style="font-size:13px;color:#7a6a5f">martina@barrio.org</span>
+    <button class="btn btn-icon btn-secondary" title="Cambiar a modo oscuro"><i class="ph ph-moon" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,#ecdcd0 48px,#ecdcd0 calc(100% - 48px),transparent)"></div>
+  <div style="padding:28px 56px 44px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;align-items:baseline;gap:12px">
+      <span style="font-weight:500;font-size:46px;line-height:1;letter-spacing:-.02em">27</span>
+      <span style="font-size:15px;color:#7a6a5f">mascotas en el registro · 19 vistas esta semana</span>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;max-width:1040px">
+      <select class="input" style="width:190px"><option>Todas las zonas</option></select>
+      <div class="seg" style="margin-left:auto">
+        <label class="seg-opt"><input type="radio" name="v10"><i class="ph ph-squares-four" style="font-size:15px"></i>Cuadrícula</label>
+        <label class="seg-opt"><input type="radio" name="v10" defaultChecked="{{ true }}"><i class="ph ph-rows" style="font-size:15px"></i>Lista</label>
+      </div>
+    </div>
+    <table class="table" style="max-width:1040px">
+      <thead><tr><th style="width:46%">Mascota</th><th>Zona</th><th>Último avistamiento</th><th style="text-align:right">Racha</th></tr></thead>
+      <tbody>
+        <sc-for list="{{ pets }}" as="p" hint-placeholder-count="6">
+          <tr>
+            <td style="padding-block:10px">
+              <span style="display:flex;align-items:center;gap:12px">
+                <span style="width:40px;height:40px;flex:none;border-radius:6px;background:repeating-linear-gradient(135deg,#fbeee5 0 6px,#fff6f0 6px 12px);display:grid;place-items:center"><i class="ph ph-paw-print" style="font-size:15px;color:#dcc6b4"></i></span>
+                <span><span style="display:block;font-weight:500">{{ p.name }}</span><span style="display:block;font-size:12px;color:#7a6a5f">{{ p.alias }}</span></span>
+              </span>
+            </td>
+            <td style="color:#5c4a3e">{{ p.zone }}</td>
+            <td style="color:#5c4a3e">{{ p.last }}</td>
+            <td style="text-align:right;color:#5c4a3e">{{ p.streak }}</td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+</div>
+
+<p style="margin:26px 0 0;font-size:12px;line-height:1.6;color:#75798c;max-width:760px">Los tokens que cambian: <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">--color-bg #fffdfb</span> · <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">--color-surface #fff6f0</span> · <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">--color-text #2a1d15</span> · <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">--color-accent #e0570b</span>, más la rampa neutra invertida (cálida) y sombras de tinta cálida en vez de la sombra ambiente oscura. Ojo con dos cosas: el naranja sobre blanco da 3,9:1, así que sirve para íconos, bordes y texto grande pero no para párrafos — ahí va <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#8a3a06</span>. El gris terciario del tema oscuro tampoco se traduce solo: <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#a3907f</span> da 3,0:1 y queda para íconos, así que los apodos y el mail usan <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">#7a6a5f</span> (5,1:1); y <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b2b6ca">.lighten</span> deja de funcionar sobre fondo claro (las fotos van sin blend). Si te gusta, lo aplico al resto de las pantallas y actualizo el handoff.</p>
+</section>
+
+<section id="t1" style="padding:8px 44px 40px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 6px">
+<a href="#t1" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#2b2741;color:#d2cefd;border-radius:4px;text-decoration:none">1</a>
+<span style="font-family:Inter,sans-serif;font-weight:500;font-size:15px;color:#e9e9ed">PetDex — mockups sobre Nocturne</span>
+</div>
+<p style="max-width:760px;margin:0 0 4px;font-size:13px;line-height:1.6;color:#9397ab">Registro de mascotas comunitarias callejeras. Mismo alcance funcional que <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#b2b6ca">CURRENT_STATE.md</span>, redibujado en el sistema oscuro Nocturne (acento #9184d9, Inter, escala de 0.7×, botones delineados). Cada pantalla en mobile 375 y desktop 1440, en sesión de visitante y de admin.</p>
+<p style="max-width:760px;margin:0 0 4px;font-size:13px;line-height:1.6;color:#9397ab">Refinamientos que resuelven el punto 5 del MD, marcados con <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#b5abfc">△</span> donde aparecen: estados vacíos con marca gráfica, celda de día menos densa (número + marca, punto de pendiente en vez de badge superpuesto), una sola affordance para corregir días pasados, y un único patrón de acciones destructivas.</p>
+
+<div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#75798c;margin:34px 0 14px">Catálogo — ruta /</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+<div id="1a" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1a" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1a</a>Mobile 375 · visitante</div>
+<div style="width:375px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 8px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:7px"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:19px"></i>PetDex</span>
+    <a href="#1a">Iniciar sesión</a>
+  </div>
+  <div style="padding:0 17px 11px;position:relative;display:flex;align-items:center">
+    <i class="ph ph-magnifying-glass" style="position:absolute;left:27px;font-size:15px;color:#75798c"></i>
+    <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:40px;padding-left:32px;font-size:15px">
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 40px,rgba(233,233,237,.16) calc(100% - 40px),transparent)"></div>
+  <div style="padding:6px 17px 22px;display:flex;flex-direction:column;gap:17px">
+    <div>
+      <div style="font-family:Inter,sans-serif;font-weight:500;font-size:38px;line-height:1;letter-spacing:-.02em">27</div>
+      <div style="font-size:13px;color:#9397ab;margin-top:4px">mascotas en el registro</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;gap:9px">
+        <select class="input" style="min-height:42px;font-size:14px;flex:1"><option>Todas las zonas</option></select>
+        <div class="seg" style="flex:none">
+          <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v1" defaultChecked="{{ true }}"><i class="ph ph-squares-four" style="font-size:16px"></i></label>
+          <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v1"><i class="ph ph-rows" style="font-size:16px"></i></label>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px)""></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#12131f 14%,rgba(18,19,31,.72) 58%,transparent)">
+          <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Luna</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#cfd3e5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Plaza Mitre</div>
+        </div>
+        <span class="tag tag-accent" style="position:absolute;top:8px;left:8px">Hoy</span>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px)""></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#12131f 14%,rgba(18,19,31,.72) 58%,transparent)">
+          <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Tito</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#cfd3e5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Estación</div>
+        </div>
+        <span class="tag tag-neutral" style="position:absolute;top:8px;left:8px">Ayer</span>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:#1e2030";display:grid;place-items:center" ><i class="ph ph-image-square" style="font-size:22px;color:#3f424d"></i></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#12131f 14%,rgba(18,19,31,.72) 58%,transparent)">
+          <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Canela</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#cfd3e5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Barrio Norte</div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+        <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px)""></div>
+        <div style="position:absolute;inset:auto 0 0 0;padding:30px 10px 10px;background:linear-gradient(to top,#12131f 14%,rgba(18,19,31,.72) 58%,transparent)">
+          <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Sombra</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#cfd3e5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Parque Sur</div>
+        </div>
+        <span class="tag tag-accent" style="position:absolute;top:8px;left:8px">Hoy</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="1b" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1b" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1b</a>Mobile 375 · admin, sin conexión</div>
+<div style="width:375px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph ph-wifi-slash"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 8px;gap:8px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:7px;margin-right:auto"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:19px"></i>PetDex</span>
+    <button class="btn btn-icon btn-primary" title="Agregar"><i class="ph ph-plus" style="font-size:16px"></i></button>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="padding:0 17px 11px;position:relative;display:flex;align-items:center">
+    <i class="ph ph-magnifying-glass" style="position:absolute;left:27px;font-size:15px;color:#75798c"></i>
+    <input class="input" type="search" value="lun" style="min-height:40px;padding-left:32px;font-size:15px">
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 40px,rgba(233,233,237,.16) calc(100% - 40px),transparent)"></div>
+  <div style="display:flex;align-items:center;gap:7px;padding:7px 17px;background:#1e2030;font-size:12px;color:#b2b6ca"><i class="ph ph-wifi-slash" style="font-size:14px;color:#9184d9"></i>Sin conexión — datos de las 9:12</div>
+  <div style="padding:14px 17px 22px;display:flex;flex-direction:column;gap:17px">
+    <div>
+      <div style="font-family:Inter,sans-serif;font-weight:500;font-size:38px;line-height:1;letter-spacing:-.02em">2</div>
+      <div style="font-size:13px;color:#9397ab;margin-top:4px">resultados para “lun” en Plaza Mitre</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;gap:9px">
+        <select class="input" style="min-height:42px;font-size:14px;flex:1"><option>Plaza Mitre</option></select>
+        <div class="seg" style="flex:none">
+          <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v2"><i class="ph ph-squares-four" style="font-size:16px"></i></label>
+          <label class="seg-opt" style="padding:9px 12px"><input type="radio" name="v2" defaultChecked="{{ true }}"><i class="ph ph-rows" style="font-size:16px"></i></label>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div class="card" style="flex-direction:row;align-items:center;gap:11px;padding:9px">
+        <div style="width:52px;height:52px;flex:none;border-radius:6px;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px);display:grid;place-items:center"><i class="ph ph-paw-print" style="font-size:16px;color:#595d6c"></i></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Luna</div>
+          <div style="font-size:12px;color:#9397ab;margin-top:1px">la tricolor · Plaza Mitre</div>
+        </div>
+        <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#b5abfc"><i class="ph ph-check-circle" style="font-size:14px"></i>hoy</span>
+      </div>
+      <div class="card" style="flex-direction:row;align-items:center;gap:11px;padding:9px">
+        <div style="width:52px;height:52px;flex:none;border-radius:6px;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px);display:grid;place-items:center"><i class="ph ph-paw-print" style="font-size:16px;color:#595d6c"></i></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Pelusa</div>
+          <div style="font-size:12px;color:#9397ab;margin-top:1px">Plaza Mitre</div>
+        </div>
+        <span style="font-size:11px;color:#75798c">hace 4 días</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="1c" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1c" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1c</a>Desktop 1440 · admin, vista lista</div>
+<div style="width:1440px;border-radius:12px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;background:#1b1d2b">
+    <span style="display:flex;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:#3f424d"></span><span style="width:9px;height:9px;border-radius:50%;background:#3f424d"></span><span style="width:9px;height:9px;border-radius:50%;background:#3f424d"></span></span>
+    <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#75798c;background:#161826;padding:4px 12px;border-radius:5px">petdex.app</span>
+  </div>
+  <div class="nav" style="padding:12px 56px;gap:14px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:8px;font-size:19px;margin-right:0"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:20px"></i>PetDex</span>
+    <div style="position:relative;display:flex;align-items:center;flex:1;max-width:380px;margin-left:10px">
+      <i class="ph ph-magnifying-glass" style="position:absolute;left:9px;font-size:14px;color:#75798c"></i>
+      <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:34px;padding-left:29px;font-size:13px">
+    </div>
+    <button class="btn btn-primary" style="margin-left:auto"><i class="ph ph-plus" style="font-size:14px"></i>Agregar mascota</button>
+    <span style="font-size:13px;color:#75798c">martina@barrio.org</span>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 48px,rgba(233,233,237,.16) calc(100% - 48px),transparent)"></div>
+  <div style="padding:28px 56px 44px;display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;max-width:1040px">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <span style="font-family:Inter,sans-serif;font-weight:500;font-size:46px;line-height:1;letter-spacing:-.02em">27</span>
+          <span style="font-size:15px;color:#9397ab">mascotas en el registro · 19 vistas esta semana</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;max-width:1040px">
+      <select class="input" style="width:190px"><option>Todas las zonas</option></select>
+      <div class="seg" style="margin-left:auto">
+        <label class="seg-opt"><input type="radio" name="v3"><i class="ph ph-squares-four" style="font-size:15px"></i>Cuadrícula</label>
+        <label class="seg-opt"><input type="radio" name="v3" defaultChecked="{{ true }}"><i class="ph ph-rows" style="font-size:15px"></i>Lista</label>
+      </div>
+    </div>
+    <table class="table" style="max-width:1040px">
+      <thead><tr><th style="width:46%">Mascota</th><th>Zona</th><th>Último avistamiento</th><th style="text-align:right">Racha</th></tr></thead>
+      <tbody>
+        <sc-for list="{{ pets }}" as="p" hint-placeholder-count="6">
+          <tr>
+            <td style="padding-block:10px">
+              <span style="display:flex;align-items:center;gap:12px">
+                <span style="width:40px;height:40px;flex:none;border-radius:6px;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px);display:grid;place-items:center"><i class="ph ph-paw-print" style="font-size:15px;color:#595d6c"></i></span>
+                <span><span style="display:block;font-family:Inter,sans-serif;font-weight:500">{{ p.name }}</span><span style="display:block;font-size:12px;color:#75798c">{{ p.alias }}</span></span>
+              </span>
+            </td>
+            <td style="color:#b2b6ca">{{ p.zone }}</td>
+            <td style="color:#b2b6ca">{{ p.last }}</td>
+            <td style="text-align:right;color:#b2b6ca">{{ p.streak }}</td>
+          </tr>
+        </sc-for>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+</div>
+<div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#75798c;margin:38px 0 14px">Variantes pedidas — PetCard y header</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+<div id="1d" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1d" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1d</a>PetCard — tres tratamientos</div>
+<div style="width:748px;padding:24px;border-radius:12px;background:#1b1d2b;box-shadow:var(--shadow-sm);display:flex;gap:22px;align-items:flex-start">
+  <div style="width:210px;display:flex;flex-direction:column;gap:10px">
+    <div class="card" style="padding:0;overflow:hidden;gap:0">
+      <div style="aspect-ratio:3/2;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px);display:grid;place-items:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#595d6c">foto 3:2</span></div>
+      <div style="padding:10px 11px 12px"><div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Luna</div><div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#9397ab;margin-top:2px"><i class="ph ph-map-pin" style="font-size:12px"></i>Plaza Mitre</div></div>
+    </div>
+    <div style="font-size:11px;line-height:1.5;color:#75798c"><span style="color:#cfd3e5">A · sobria.</span> La actual, con la foto separada del texto. Sin foto cae a una franja lisa con ícono.</div>
+  </div>
+  <div style="width:210px;display:flex;flex-direction:column;gap:10px">
+    <div class="card" style="padding:0;overflow:hidden;gap:0;position:relative">
+      <div style="aspect-ratio:4/5;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px)"></div>
+      <div style="position:absolute;inset:auto 0 0 0;padding:34px 11px 11px;background:linear-gradient(to top,#12131f 12%,rgba(18,19,31,.7) 55%,transparent)">
+        <div style="font-family:Inter,sans-serif;font-weight:500;font-size:17px">Luna</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:12px;color:#cfd3e5;margin-top:1px"><i class="ph ph-map-pin" style="font-size:12px"></i>Plaza Mitre</div>
+      </div>
+      <span class="tag tag-accent" style="position:absolute;top:9px;left:9px">Vista hoy</span>
+    </div>
+    <div style="font-size:11px;line-height:1.5;color:#75798c"><span style="color:#b5abfc">B · foto protagonista. ✓ elegida</span> Retrato 4:5 con el nombre encima; el estado entra como tag. Aplicada en la cuadrícula (<a href="#1a">1a</a>); la vista lista sigue usando la fila C, que no es una card.</div>
+  </div>
+  <div style="width:250px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div class="card" style="flex-direction:row;align-items:center;gap:11px;padding:9px">
+        <div style="width:48px;height:48px;flex:none;border-radius:6px;background:repeating-linear-gradient(135deg,#232532 0 6px,#1e2030 6px 12px)"></div>
+        <div style="flex:1;min-width:0"><div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Luna</div><div style="font-size:12px;color:#9397ab;margin-top:1px">la tricolor · Plaza Mitre</div></div>
+        <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#b5abfc"><i class="ph ph-check-circle" style="font-size:14px"></i>hoy</span>
+      </div>
+      <div class="card" style="flex-direction:row;align-items:center;gap:11px;padding:9px">
+        <div style="width:48px;height:48px;flex:none;border-radius:6px;background:#1e2030;display:grid;place-items:center"><i class="ph ph-image-square" style="font-size:16px;color:#3f424d"></i></div>
+        <div style="flex:1;min-width:0"><div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Canela</div><div style="font-size:12px;color:#9397ab;margin-top:1px">Barrio Norte</div></div>
+        <span style="font-size:11px;color:#75798c">hace 4 días</span>
+      </div>
+    </div>
+    <div style="font-size:11px;line-height:1.5;color:#75798c"><span style="color:#cfd3e5">C · fila de lista.</span> Es la que agrega dato nuevo: cuándo se la vio por última vez. Recomendada para la vista lista y para zonas con muchas mascotas.</div>
+  </div>
+</div>
+</div>
+
+<div id="1e" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1e" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1e</a>Header — tres variantes</div>
+<div style="width:600px;padding:24px;border-radius:12px;background:#1b1d2b;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;flex-direction:column;gap:7px">
+    <div style="border-radius:8px;background:#161826;overflow:hidden">
+      <div class="nav" style="padding:13px 18px">
+        <span class="nav-brand" style="display:flex;align-items:center;gap:8px"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:19px"></i>PetDex</span>
+        <a href="#1e">Iniciar sesión</a>
+      </div>
+      <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 48px,rgba(233,233,237,.16) calc(100% - 48px),transparent)"></div>
+    </div>
+    <div style="font-size:11px;line-height:1.5;color:#75798c"><span style="color:#cfd3e5">A · mínima.</span> Marca y sesión, nada más. Regla que se desvanece en las puntas — firma de Nocturne.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:7px">
+    <div style="border-radius:8px;background:#161826;overflow:hidden">
+      <div class="nav" style="padding:11px 18px;gap:14px">
+        <span class="nav-brand" style="display:flex;align-items:center;gap:8px;margin-right:0"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:19px"></i>PetDex</span>
+        <div style="position:relative;display:flex;align-items:center;flex:1;max-width:260px;margin-left:8px">
+          <i class="ph ph-magnifying-glass" style="position:absolute;left:9px;font-size:14px;color:#75798c"></i>
+          <input class="input" type="search" placeholder="Buscar" style="min-height:32px;padding-left:29px;font-size:13px">
+        </div>
+        <button class="btn btn-primary" style="margin-left:auto"><i class="ph ph-plus" style="font-size:14px"></i>Agregar</button>
+        <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+      </div>
+      <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 48px,rgba(233,233,237,.16) calc(100% - 48px),transparent)"></div>
+    </div>
+    <div style="font-size:11px;line-height:1.5;color:#75798c"><span style="color:#b5abfc">B · buscador en el header. ✓ elegida</span> Aplicada en <a href="#1a">1a</a>, <a href="#1b">1b</a>, <a href="#1c">1c</a> y <a href="#1g">1g</a>. En 375 el buscador baja a una segunda fila del propio header y las acciones quedan solo con ícono.</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:7px">
+    <div style="border-radius:8px;background:#161826;overflow:hidden">
+      <div class="nav" style="padding:11px 16px;gap:10px">
+        <span class="nav-brand" style="display:flex;align-items:center;gap:8px;margin-right:0"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:19px"></i>PetDex</span>
+        <span class="tag tag-neutral" style="margin-right:auto">Plaza Mitre</span>
+        <button class="btn btn-icon btn-secondary"><i class="ph ph-magnifying-glass" style="font-size:15px"></i></button>
+        <button class="btn btn-icon btn-primary"><i class="ph ph-plus" style="font-size:15px"></i></button>
+      </div>
+      <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 48px,rgba(233,233,237,.16) calc(100% - 48px),transparent)"></div>
+    </div>
+    <div style="font-size:11px;line-height:1.5;color:#75798c"><span style="color:#cfd3e5">C · contextual (mobile).</span> La zona filtrada viaja en el header; acciones solo ícono para no comerse el ancho de 375.</div>
+  </div>
+</div>
+</div>
+
+</div>
+<div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#75798c;margin:38px 0 14px">Ficha de mascota — /mascotas/[slug]</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+<div id="1f" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1f" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1f</a>Mobile 375 · visitante (calendario en solo lectura)</div>
+<div style="width:375px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 9px">
+    <a href="#1f" style="display:flex;align-items:center;gap:6px;margin-right:auto;color:#b2b6ca"><i class="ph ph-caret-left" style="font-size:15px"></i>Registro</a>
+    <a href="#1f">Iniciar sesión</a>
+  </div>
+  <div style="padding:6px 17px 24px;display:flex;flex-direction:column;gap:20px">
+    <div style="aspect-ratio:3/2;border-radius:8px;background:repeating-linear-gradient(135deg,#232532 0 7px,#1e2030 7px 14px);display:grid;place-items:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#595d6c">foto de Luna · 3:2</span></div>
+    <div>
+      <h3 style="margin:0 0 3px">Luna</h3>
+      <div style="font-size:14px;color:#9397ab">“la tricolor”, “la de la fuente”</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
+        <span class="tag tag-neutral"><i class="ph ph-map-pin" style="font-size:12px;margin-right:4px"></i>Plaza Mitre</span>
+        <span class="tag tag-outline">Activa</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 12px">
+      <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">Ubicación</div><div style="font-size:15px;margin-top:3px">Cantero de la fuente</div></div>
+      <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">Edad estimada</div><div style="font-size:15px;margin-top:3px">3 años</div></div>
+      <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">Peso</div><div style="font-size:15px;margin-top:3px">4,2 kg</div></div>
+      <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">En el registro</div><div style="font-size:15px;margin-top:3px">12 mar 2026</div></div>
+    </div>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#cfd3e5;text-wrap:pretty">Duerme abajo del banco de la esquina noroeste. Se deja acariciar, no se deja alzar. Castrada en abril.</p>
+    <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 40px,rgba(233,233,237,.16) calc(100% - 40px),transparent)"></div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <h5 style="margin:0">Avistamientos</h5>
+        <div style="display:flex;align-items:center;gap:6px"><button class="btn btn-icon btn-secondary" style="width:32px;height:32px"><i class="ph ph-caret-left" style="font-size:14px"></i></button><span style="font-size:13px;color:#b2b6ca;min-width:88px;text-align:center">agosto 2026</span><button class="btn btn-icon btn-secondary" style="width:32px;height:32px" disabled><i class="ph ph-caret-right" style="font-size:14px"></i></button></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-size:10px;color:#75798c;text-align:center">
+        <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:-8px">
+        <sc-for list="{{ days }}" as="d" hint-placeholder-count="36">
+          <div style="height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative">
+            <span style="font-size:10px;line-height:1;color:#75798c">{{ d.n }}</span>
+            <sc-if value="{{ d.seen }}"><span style="width:24px;height:24px;border-radius:50%;background:#423a6a;border:1px solid #9184d9;display:grid;place-items:center"><i class="ph-bold ph-check" style="font-size:11px;color:#d2cefd"></i></span></sc-if>
+            <sc-if value="{{ d.missed }}"><span style="width:24px;height:24px;border-radius:50%;border:1px solid #595d6c;display:grid;place-items:center"><i class="ph ph-x" style="font-size:11px;color:#9397ab"></i></span></sc-if>
+            <sc-if value="{{ d.none }}" hint-placeholder-val="{{ true }}"><span style="width:24px;height:24px;border-radius:50%;border:1px dashed #3f424d"></span></sc-if>
+            <sc-if value="{{ d.future }}"><span style="width:24px;height:24px"></span></sc-if>
+            <sc-if value="{{ d.pending }}"><span style="position:absolute;top:14px;right:9px;width:8px;height:8px;border-radius:50%;background:#9184d9;box-shadow:0 0 0 2px #161826"></span></sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px 14px;font-size:11px;color:#9397ab">
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:50%;background:#423a6a;border:1px solid #9184d9;display:grid;place-items:center"><i class="ph-bold ph-check" style="font-size:7px;color:#d2cefd"></i></span>vista</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:50%;border:1px solid #595d6c"></span>revisada, no estaba</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:50%;border:1px dashed #3f424d"></span>sin registro</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#9184d9"></span>pendiente de sincronizar</span>
+      </div>
+      <div style="display:flex;gap:28px;padding-top:4px">
+        <div><div style="font-family:Inter,sans-serif;font-weight:500;font-size:30px;line-height:1">18</div><div style="font-size:12px;color:#9397ab;margin-top:4px">vistas este mes</div></div>
+        <div><div style="font-family:Inter,sans-serif;font-weight:500;font-size:30px;line-height:1">5 <span style="font-size:15px;color:#9397ab">días</span></div><div style="font-size:12px;color:#9397ab;margin-top:4px">racha actual</div></div>
+      </div>
+    </div>
+    <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 40px,rgba(233,233,237,.16) calc(100% - 40px),transparent)"></div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <h5 style="margin:0">Hitos</h5>
+        <button class="btn btn-ghost" style="font-size:12px"><i class="ph ph-arrows-down-up" style="font-size:14px"></i>Invertir</button>
+      </div>
+      <div class="card" style="gap:5px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:12px;color:#75798c">18 abr 2026</span><span class="tag tag-accent">Salud</span></div>
+        <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Castración</div>
+        <p style="margin:0;font-size:13px;color:#9397ab">Volvió a la plaza el mismo día, comió bien.</p>
+      </div>
+      <div class="card" style="gap:5px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:12px;color:#75798c">12 mar 2026</span><span class="tag tag-neutral">Registro</span></div>
+        <div style="font-family:Inter,sans-serif;font-weight:500;font-size:15px">Primera vez avistada</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="1g" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1g" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1g</a>Desktop 1440 · admin — marcado, calendario e hitos</div>
+<div style="width:1440px;border-radius:12px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;background:#1b1d2b">
+    <span style="display:flex;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:#3f424d"></span><span style="width:9px;height:9px;border-radius:50%;background:#3f424d"></span><span style="width:9px;height:9px;border-radius:50%;background:#3f424d"></span></span>
+    <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#75798c;background:#161826;padding:4px 12px;border-radius:5px">petdex.app/mascotas/luna</span>
+  </div>
+  <div class="nav" style="padding:12px 56px;gap:14px">
+    <span class="nav-brand" style="display:flex;align-items:center;gap:8px;font-size:19px;margin-right:0"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:20px"></i>PetDex</span>
+    <div style="position:relative;display:flex;align-items:center;flex:1;max-width:380px;margin-left:10px">
+      <i class="ph ph-magnifying-glass" style="position:absolute;left:9px;font-size:14px;color:#75798c"></i>
+      <input class="input" type="search" placeholder="Buscar por nombre o apodo" style="min-height:34px;padding-left:29px;font-size:13px">
+    </div>
+    <button class="btn btn-primary" style="margin-left:auto"><i class="ph ph-plus" style="font-size:14px"></i>Agregar mascota</button>
+    <span style="font-size:13px;color:#75798c">martina@barrio.org</span>
+    <button class="btn btn-icon btn-secondary" title="Cerrar sesión"><i class="ph ph-sign-out" style="font-size:15px"></i></button>
+  </div>
+  <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 48px,rgba(233,233,237,.16) calc(100% - 48px),transparent)"></div>
+  <div style="padding:22px 56px 48px;display:flex;flex-direction:column;gap:20px">
+    <a href="#1g" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#9397ab;text-decoration:none;width:fit-content"><i class="ph ph-caret-left" style="font-size:14px"></i>Registro</a>
+    <div style="display:grid;grid-template-columns:472px minmax(0,1fr);gap:56px;max-width:1180px;align-items:start">
+
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:4px">
+          <button class="btn btn-ghost" style="font-size:13px"><i class="ph ph-pencil-simple" style="font-size:15px"></i>Editar</button>
+          <span style="width:1px;height:18px;background:#3f424d;margin:0 6px"></span>
+          <button class="btn btn-icon btn-ghost" title="Eliminar"><i class="ph ph-trash" style="font-size:16px;color:#9397ab"></i></button>
+        </div>
+        <div style="aspect-ratio:3/2;border-radius:8px;background:repeating-linear-gradient(135deg,#232532 0 7px,#1e2030 7px 14px);display:grid;place-items:center"><span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#595d6c">foto de Luna · 3:2 · .lighten</span></div>
+        <div>
+          <h2 style="margin:0 0 4px">Luna</h2>
+          <div style="font-size:15px;color:#9397ab">“la tricolor”, “la de la fuente”</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+            <span class="tag tag-neutral"><i class="ph ph-map-pin" style="font-size:12px;margin-right:4px"></i>Plaza Mitre</span>
+            <span class="tag tag-outline">Activa</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 14px">
+          <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">Ubicación</div><div style="font-size:15px;margin-top:3px">Cantero de la fuente</div></div>
+          <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">Edad estimada</div><div style="font-size:15px;margin-top:3px">3 años</div></div>
+          <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">Peso</div><div style="font-size:15px;margin-top:3px">4,2 kg</div></div>
+          <div><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#75798c">En el registro</div><div style="font-size:15px;margin-top:3px">12 mar 2026</div></div>
+        </div>
+        <p style="margin:0;font-size:15px;line-height:1.65;color:#cfd3e5;text-wrap:pretty;max-width:44ch">Duerme abajo del banco de la esquina noroeste. Se deja acariciar, no se deja alzar. Castrada en abril; la reconocen los del kiosco.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h5 style="margin:0">¿La viste hoy?</h5>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-primary" style="min-height:48px;flex:1;font-size:15px"><i class="ph ph-check" style="font-size:17px"></i>Vista hoy</button>
+            <button class="btn btn-secondary" style="min-height:48px;flex:1;font-size:15px"><i class="ph ph-x" style="font-size:16px"></i>Pasé y no estaba</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#9397ab"><span style="width:8px;height:8px;border-radius:50%;background:#9184d9"></span>Marcada hoy sin conexión — se sincroniza sola cuando vuelva la señal.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h5 style="margin:0">Avistamientos</h5>
+            <div style="display:flex;align-items:center;gap:8px"><button class="btn btn-icon btn-secondary" style="width:32px;height:32px"><i class="ph ph-caret-left" style="font-size:14px"></i></button><span style="font-size:14px;color:#b2b6ca;min-width:110px;text-align:center">agosto 2026</span><button class="btn btn-icon btn-secondary" style="width:32px;height:32px" disabled><i class="ph ph-caret-right" style="font-size:14px"></i></button></div>
+          </div>
+          <div style="max-width:560px">
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font-size:11px;color:#75798c;text-align:center;margin-bottom:6px"><span>lun</span><span>mar</span><span>mié</span><span>jue</span><span>vie</span><span>sáb</span><span>dom</span></div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">
+              <sc-for list="{{ days }}" as="d" hint-placeholder-count="36">
+                <div style="height:58px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;position:relative">
+                  <span style="font-size:11px;line-height:1;color:#75798c">{{ d.n }}</span>
+                  <sc-if value="{{ d.seen }}"><span style="width:28px;height:28px;border-radius:50%;background:#423a6a;border:1px solid #9184d9;display:grid;place-items:center"><i class="ph-bold ph-check" style="font-size:13px;color:#d2cefd"></i></span></sc-if>
+                  <sc-if value="{{ d.missed }}"><span style="width:28px;height:28px;border-radius:50%;border:1px solid #595d6c;display:grid;place-items:center"><i class="ph ph-x" style="font-size:13px;color:#9397ab"></i></span></sc-if>
+                  <sc-if value="{{ d.none }}" hint-placeholder-val="{{ true }}"><span style="width:28px;height:28px;border-radius:50%;border:1px dashed #3f424d"></span></sc-if>
+                  <sc-if value="{{ d.future }}"><span style="width:28px;height:28px"></span></sc-if>
+                  <sc-if value="{{ d.pending }}"><span style="position:absolute;top:16px;right:16px;width:9px;height:9px;border-radius:50%;background:#9184d9;box-shadow:0 0 0 2px #161826"></span></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;max-width:560px">
+            <div style="display:flex;gap:36px">
+              <div><div style="font-family:Inter,sans-serif;font-weight:500;font-size:34px;line-height:1">18</div><div style="font-size:13px;color:#9397ab;margin-top:5px">vistas este mes</div></div>
+              <div><div style="font-family:Inter,sans-serif;font-weight:500;font-size:34px;line-height:1">5 <span style="font-size:16px;color:#9397ab">días</span></div><div style="font-size:13px;color:#9397ab;margin-top:5px">racha actual</div></div>
+            </div>
+            <button class="btn btn-ghost" style="font-size:13px"><i class="ph ph-pencil-simple" style="font-size:15px"></i>Corregir otro día…</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:560px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h5 style="margin:0">Hitos</h5>
+            <div style="display:flex;align-items:center;gap:6px">
+              <button class="btn btn-ghost" style="font-size:13px"><i class="ph ph-arrows-down-up" style="font-size:15px"></i>Invertir orden</button>
+              <button class="btn btn-secondary"><i class="ph ph-plus" style="font-size:14px"></i>Agregar hito</button>
+            </div>
+          </div>
+          <div class="card" style="gap:6px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:12px;color:#75798c">18 abr 2026</span><span class="tag tag-accent">Salud</span>
+              <span style="display:flex;gap:2px;margin-left:auto"><button class="btn btn-icon btn-ghost" style="width:30px;height:30px"><i class="ph ph-pencil-simple" style="font-size:15px"></i></button><button class="btn btn-icon btn-ghost" style="width:30px;height:30px"><i class="ph ph-trash" style="font-size:15px;color:#9397ab"></i></button></span>
+            </div>
+            <div style="font-family:Inter,sans-serif;font-weight:500;font-size:16px">Castración</div>
+            <p style="margin:0;font-size:13px;color:#9397ab">Volvió a la plaza el mismo día, comió bien.</p>
+          </div>
+          <div class="card" style="gap:6px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:12px;color:#75798c">12 mar 2026</span><span class="tag tag-neutral">Registro</span>
+              <span style="display:flex;gap:2px;margin-left:auto"><button class="btn btn-icon btn-ghost" style="width:30px;height:30px"><i class="ph ph-pencil-simple" style="font-size:15px"></i></button><button class="btn btn-icon btn-ghost" style="width:30px;height:30px"><i class="ph ph-trash" style="font-size:15px;color:#9397ab"></i></button></span>
+            </div>
+            <div style="font-family:Inter,sans-serif;font-weight:500;font-size:16px">Primera vez avistada</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#75798c;margin:38px 0 14px">Formularios — alta/edición de mascota e hitos</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+<div id="1h" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1h" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1h</a>PetForm · desktop (área de contenido, 1040)</div>
+<div style="width:1104px;padding:32px;border-radius:12px;background:#161826;box-shadow:var(--shadow-sm)">
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <div>
+      <h3 style="margin:0 0 4px">Editar a Luna</h3>
+      <div style="font-size:13px;color:#75798c">Los campos vacíos no se muestran en la ficha.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:40px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field"><label>Nombre</label><input class="input" value="Luna"></div>
+          <div class="field"><label>Apodos <span style="color:#595d6c">· separados por coma</span></label><input class="input" value="la tricolor, la de la fuente"></div>
+        </div>
+        <div class="field">
+          <label>Dirección de la ficha</label>
+          <div style="display:flex;align-items:center;gap:0">
+            <span style="font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#75798c;background:#1e2030;border:1px solid rgba(233,233,237,.16);border-right:none;border-radius:8px 0 0 8px;padding:8px 10px;white-space:nowrap">petdex.app/mascotas/</span>
+            <input class="input" value="luna" style="border-radius:0 8px 8px 0;font-family:ui-monospace,Menlo,monospace;font-size:13px">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="field"><label>Zona</label><select class="input"><option>Plaza Mitre</option></select></div>
+          <div class="field"><label>Ubicación exacta</label><input class="input" value="Cantero de la fuente"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <div class="field"><label>En el registro desde</label><input class="input" type="date" value="2026-03-12"></div>
+          <div class="field"><label>Edad estimada</label><input class="input" value="3 años" placeholder="texto libre"></div>
+          <div class="field"><label>Peso</label><input class="input" value="4,2 kg"></div>
+        </div>
+        <div class="field">
+          <label>Estado</label>
+          <div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:6px">
+            <label class="radio"><input type="radio" name="est" defaultChecked="{{ true }}"><span class="dot"></span>Activa</label>
+            <label class="radio"><input type="radio" name="est"><span class="dot"></span>Sin ver hace tiempo</label>
+            <label class="radio"><input type="radio" name="est"><span class="dot"></span>Adoptada</label>
+            <label class="radio"><input type="radio" name="est"><span class="dot"></span>Fallecida</label>
+          </div>
+        </div>
+        <div class="field"><label>Descripción</label><textarea class="input">Duerme abajo del banco de la esquina noroeste. Se deja acariciar, no se deja alzar.</textarea></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="field">
+          <label>Foto</label>
+          <div style="aspect-ratio:3/2;border-radius:8px;border:1px dashed #3f424d;background:repeating-linear-gradient(135deg,#232532 0 7px,#1e2030 7px 14px);display:grid;place-items:center;gap:6px;text-align:center">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:7px;padding:14px">
+              <i class="ph ph-image-square" style="font-size:26px;color:#595d6c"></i>
+              <span style="font-size:12px;color:#9397ab">Arrastrá una foto o <a href="#1h">elegí un archivo</a></span>
+              <span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#595d6c">se comprime a 1600px · webp</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:#1e2030">
+          <i class="ph ph-arrow-clockwise" style="font-size:16px;color:#9184d9"></i>
+          <span style="font-size:13px;color:#b2b6ca;flex:1">Subiendo foto…</span>
+          <span style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#75798c">68%</span>
+        </div>
+        <div style="height:3px;border-radius:2px;background:#232532;overflow:hidden;margin-top:-8px"><div style="width:68%;height:100%;background:#9184d9"></div></div>
+      </div>
+    </div>
+    <div style="height:1px;background:linear-gradient(to right,transparent,rgba(233,233,237,.16) 48px,rgba(233,233,237,.16) calc(100% - 48px),transparent)"></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn btn-secondary">Cancelar</button>
+      <button class="btn btn-primary"><i class="ph ph-check" style="font-size:15px"></i>Guardar cambios</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="1i" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1i" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1i</a>Mobile 375 · alta de mascota</div>
+<div style="width:375px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 9px">
+    <a href="#1i" style="display:flex;align-items:center;gap:6px;margin-right:auto;color:#b2b6ca"><i class="ph ph-x" style="font-size:16px"></i>Cancelar</a>
+    <button class="btn btn-primary" style="font-size:13px">Guardar</button>
+  </div>
+  <div style="padding:10px 17px 24px;display:flex;flex-direction:column;gap:16px">
+    <h4 style="margin:0">Nueva mascota</h4>
+    <div style="aspect-ratio:3/2;border-radius:8px;border:1px dashed #3f424d;display:grid;place-items:center">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <i class="ph ph-camera" style="font-size:24px;color:#75798c"></i>
+        <span style="font-size:13px;color:#9397ab">Sacar o elegir una foto</span>
+      </div>
+    </div>
+    <div class="field"><label>Nombre</label><input class="input" style="min-height:44px;font-size:16px" placeholder="Cómo le dicen en el barrio"></div>
+    <div class="field"><label>Apodos</label><input class="input" style="min-height:44px;font-size:16px" placeholder="separados por coma"></div>
+    <div class="field"><label>Zona</label><select class="input" style="min-height:44px;font-size:16px"><option>Elegir zona…</option></select></div>
+    <div class="field"><label>Ubicación exacta</label><input class="input" style="min-height:44px;font-size:16px" placeholder="Cantero de la fuente"></div>
+    <div class="field"><label>En el registro desde</label><input class="input" type="date" value="2026-08-12" style="min-height:44px;font-size:16px"></div>
+    <div class="field"><label>Descripción</label><textarea class="input" style="font-size:16px" placeholder="Cómo reconocerla, dónde duerme, si se deja acercar…"></textarea></div>
+    <button class="btn btn-primary btn-block" style="min-height:48px;font-size:15px">Agregar al registro</button>
+  </div>
+</div>
+</div>
+
+<div id="1j" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1j" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1j</a>Mobile 375 · nuevo hito</div>
+<div style="width:375px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+  <div class="nav" style="padding:11px 17px 9px">
+    <a href="#1j" style="display:flex;align-items:center;gap:6px;margin-right:auto;color:#b2b6ca"><i class="ph ph-caret-left" style="font-size:15px"></i>Luna</a>
+  </div>
+  <div style="padding:10px 17px 24px;display:flex;flex-direction:column;gap:16px">
+    <h4 style="margin:0">Nuevo hito</h4>
+    <div class="field"><label>Título</label><input class="input" style="min-height:44px;font-size:16px" value="Castración"></div>
+    <div class="field"><label>Fecha</label><input class="input" type="date" value="2026-04-18" style="min-height:44px;font-size:16px"></div>
+    <div class="field">
+      <label>Categoría</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+        <label class="seg-opt" style="border:1px solid #9184d9;border-radius:8px;color:#9184d9;padding:8px 14px"><input type="radio" name="cat" defaultChecked="{{ true }}">Salud</label>
+        <label class="seg-opt" style="border:1px solid rgba(233,233,237,.16);border-radius:8px;padding:8px 14px"><input type="radio" name="cat">Registro</label>
+        <label class="seg-opt" style="border:1px solid rgba(233,233,237,.16);border-radius:8px;padding:8px 14px"><input type="radio" name="cat">Adopción</label>
+        <label class="seg-opt" style="border:1px solid rgba(233,233,237,.16);border-radius:8px;padding:8px 14px"><input type="radio" name="cat">Otro</label>
+      </div>
+    </div>
+    <div class="field"><label>Nota <span style="color:#595d6c">· opcional</span></label><textarea class="input" style="font-size:16px" placeholder="Un par de líneas para el contexto"></textarea></div>
+    <button class="btn btn-primary btn-block" style="min-height:48px;font-size:15px">Guardar hito</button>
+    <div style="font-size:12px;color:#75798c;text-align:center">Los hitos son públicos: los ve cualquiera que abra la ficha.</div>
+  </div>
+</div>
+</div>
+
+</div>
+<div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#75798c;margin:38px 0 14px">Diálogos — acciones destructivas y corrección de días △</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+<div id="1k" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1k" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1k</a>Un solo patrón para eliminar</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:14px">
+  <div style="padding:28px;border-radius:12px;background:#101120;display:grid;place-items:center">
+    <div class="dialog elev-lg" style="width:440px">
+      <div style="display:flex;align-items:center;gap:10px"><i class="ph ph-trash" style="font-size:20px;color:#b5abfc"></i><span class="dialog-title">¿Eliminar a Luna?</span></div>
+      <div class="dialog-body">Se borran también sus 14 hitos y sus 96 avistamientos. No se puede deshacer desde la app.</div>
+      <div class="dialog-actions"><button class="btn btn-secondary">Cancelar</button><button class="btn btn-primary">Sí, eliminar</button></div>
+    </div>
+  </div>
+  <div style="padding:22px 28px;border-radius:12px;background:#101120;display:grid;place-items:center">
+    <div class="dialog elev-lg" style="width:380px">
+      <div style="display:flex;align-items:center;gap:10px"><i class="ph ph-trash" style="font-size:18px;color:#b5abfc"></i><span class="dialog-title" style="font-size:18px">¿Eliminar “Castración”?</span></div>
+      <div class="dialog-body">El hito desaparece de la ficha. No se puede deshacer.</div>
+      <div class="dialog-actions"><button class="btn btn-secondary">Cancelar</button><button class="btn btn-primary">Eliminar</button></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:8px;background:#1e2030;box-shadow:var(--shadow-sm)">
+    <i class="ph ph-check-circle" style="font-size:17px;color:#9184d9"></i>
+    <span style="font-size:13px;color:#cfd3e5;flex:1">Se eliminó a Luna.</span>
+    <button class="btn btn-ghost" style="font-size:13px">Deshacer</button>
+    <button class="btn btn-icon btn-ghost" style="width:28px;height:28px"><i class="ph ph-x" style="font-size:14px;color:#75798c"></i></button>
+  </div>
+  <div style="font-size:11px;line-height:1.55;color:#75798c"><span style="color:#cfd3e5">△ Patrón único.</span> Mascota e hito comparten diálogo: ícono de tacho, título con el nombre entre comillas o después del “¿Eliminar”, consecuencias concretas en el cuerpo, y confirmar como acción delineada de acento. Nocturne es monocromo — no hay rojo de peligro, así que la jerarquía la dan el ícono, el aislamiento del botón en la ficha y este diálogo. La franja de <span style="color:#b5abfc">Deshacer</span> (15 s) ✓ va: es la única red de seguridad post-borrado.</div>
+</div>
+</div>
+
+<div id="1l" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1l" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1l</a>Corregir un día pasado — dos entradas, un diálogo</div>
+<div style="width:560px;display:flex;flex-direction:column;gap:14px">
+  <div style="padding:28px;border-radius:12px;background:#101120;display:grid;place-items:center">
+    <div class="dialog elev-lg" style="width:400px">
+      <span class="dialog-title" style="font-size:18px">Jueves 6 de agosto</span>
+      <div class="dialog-body">Sin registro. ¿Qué pasó ese día?</div>
+      <div style="display:flex;gap:10px"><button class="btn btn-primary" style="flex:1;min-height:44px"><i class="ph ph-check" style="font-size:15px"></i>La vi</button><button class="btn btn-secondary" style="flex:1;min-height:44px"><i class="ph ph-x" style="font-size:15px"></i>Pasé y no estaba</button></div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#75798c"><i class="ph ph-wifi-high" style="font-size:14px"></i>Corregir días pasados requiere conexión.</div>
+    </div>
+  </div>
+  <div style="padding:28px;border-radius:12px;background:#101120;display:grid;place-items:center">
+    <div class="dialog elev-lg" style="width:400px">
+      <span class="dialog-title" style="font-size:18px">Corregir otro día</span>
+      <div class="field"><label>Día</label><input class="input" type="date" value="2026-08-06" style="min-height:42px"></div>
+      <div style="display:flex;gap:10px"><button class="btn btn-primary" style="flex:1;min-height:44px"><i class="ph ph-check" style="font-size:15px"></i>La vi</button><button class="btn btn-secondary" style="flex:1;min-height:44px"><i class="ph ph-x" style="font-size:15px"></i>Pasé y no estaba</button></div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#b5abfc"><i class="ph ph-warning-circle" style="font-size:14px"></i>Ese día ya figura como “vista”. Guardar lo reemplaza.</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:12px;background:#1b1d2b">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:5px;position:relative">
+      <span style="font-size:11px;color:#75798c;line-height:1">6</span>
+      <span style="width:28px;height:28px;border-radius:50%;border:1px dashed #9184d9;display:grid;place-items:center"><i class="ph ph-pencil-simple" style="font-size:13px;color:#9184d9"></i></span>
+    </div>
+    <div style="font-size:11px;line-height:1.55;color:#75798c;flex:1"><span style="color:#cfd3e5">△ Misma affordance.</span> Al pasar el mouse (o mantener apretado en mobile) sobre un día pasado, el círculo punteado toma el acento y muestra el lápiz — el mismo ícono del botón “Corregir otro día…”. Los dos caminos abren el mismo diálogo; el único delta es el selector de fecha cuando no venís desde una celda.</div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<div style="font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#75798c;margin:38px 0 14px">Sesión y estados del sistema</div>
+<div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+<div id="1m" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1m" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1m</a>Login · y cuenta sin acceso</div>
+<div style="display:flex;gap:20px;align-items:flex-start">
+  <div style="width:375px;height:600px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:0 28px 40px">
+      <div style="display:flex;align-items:center;gap:10px"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:26px"></i><span style="font-family:Inter,sans-serif;font-weight:500;font-size:24px">PetDex</span></div>
+      <div>
+        <h4 style="margin:0 0 6px">Entrar para editar</h4>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#9397ab">Mirar el registro no necesita cuenta. Solo las personas autorizadas del barrio pueden agregar mascotas y marcar avistamientos.</p>
+      </div>
+      <button class="btn btn-secondary btn-block" style="min-height:48px;font-size:15px"><i class="ph ph-google-logo" style="font-size:17px"></i>Continuar con Google</button>
+      <a href="#1m" style="font-size:13px;text-align:center">Volver al registro</a>
+    </div>
+  </div>
+  <div style="width:375px;height:600px;border-radius:20px;background:#161826;box-shadow:var(--shadow-md);overflow:hidden;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 20px 2px;font-size:12px;color:#b2b6ca"><span style="font-weight:600">9:41</span><span style="display:flex;gap:5px;font-size:13px"><i class="ph-fill ph-cell-signal-full"></i><i class="ph-fill ph-wifi-high"></i><i class="ph-fill ph-battery-full"></i></span></div>
+    <div class="nav" style="padding:11px 17px 9px"><span class="nav-brand" style="display:flex;align-items:center;gap:7px"><i class="ph-fill ph-paw-print" style="color:#9184d9;font-size:19px"></i>PetDex</span></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:18px;padding:0 28px 60px">
+      <span style="width:56px;height:56px;border-radius:50%;border:1px dashed #3f424d;display:grid;place-items:center"><i class="ph ph-prohibit" style="font-size:24px;color:#75798c"></i></span>
+      <div>
+        <h4 style="margin:0 0 6px">Esta cuenta no tiene acceso</h4>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#9397ab">Entraste como <span style="color:#cfd3e5">vecino@gmail.com</span>, pero no está en la lista de personas que pueden editar el registro. Podés seguir mirándolo sin cuenta.</p>
+      </div>
+      <div style="display:flex;gap:10px"><button class="btn btn-secondary" style="min-height:42px"><i class="ph ph-sign-out" style="font-size:15px"></i>Cerrar sesión</button><a class="btn btn-ghost" href="#1m" style="min-height:42px">Ver el registro</a></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="1n" style="display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;align-items:baseline;gap:8px;font-family:Inter,sans-serif;font-size:11px;color:#9397ab"><a href="#1n" style="font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#292b31;color:#cfd3e5;border-radius:5px;text-decoration:none">1n</a>Vacíos, sin conexión y avisos △</div>
+<div style="width:600px;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;gap:16px">
+    <div style="flex:1;padding:32px 24px;border-radius:12px;background:#161826;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px">
+      <span style="width:72px;height:72px;border-radius:50%;border:1px dashed #3f424d;display:grid;place-items:center"><i class="ph ph-paw-print" style="font-size:30px;color:#595d6c"></i></span>
+      <div style="font-family:Inter,sans-serif;font-weight:500;font-size:17px">Todavía no hay ninguna mascota</div>
+      <p style="margin:0;font-size:13px;color:#9397ab">Empezá por la que más ves: nombre, zona y una foto alcanzan.</p>
+      <button class="btn btn-primary" style="margin-top:2px"><i class="ph ph-plus" style="font-size:15px"></i>Agregar la primera</button>
+    </div>
+    <div style="flex:1;padding:32px 24px;border-radius:12px;background:#161826;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px">
+      <span style="width:72px;height:72px;border-radius:50%;border:1px dashed #3f424d;display:grid;place-items:center"><i class="ph ph-magnifying-glass" style="font-size:28px;color:#595d6c"></i></span>
+      <div style="font-family:Inter,sans-serif;font-weight:500;font-size:17px">Nada con “lunita”</div>
+      <p style="margin:0;font-size:13px;color:#9397ab">Probá con un apodo, o mirá todas las zonas.</p>
+      <button class="btn btn-ghost" style="margin-top:2px">Limpiar filtros</button>
+    </div>
+  </div>
+  <div style="padding:32px 24px;border-radius:12px;background:#161826;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px">
+    <span style="width:72px;height:72px;border-radius:50%;border:1px dashed #3f424d;display:grid;place-items:center"><i class="ph ph-wifi-slash" style="font-size:28px;color:#595d6c"></i></span>
+    <div style="font-family:Inter,sans-serif;font-weight:500;font-size:17px">Esta página no está guardada</div>
+    <p style="margin:0;font-size:13px;color:#9397ab;max-width:38ch">Sin conexión solo podés abrir lo que ya visitaste. Volvé a intentar cuando tengas señal.</p>
+    <span style="font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#595d6c;margin-top:2px">/offline</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;background:#1e2030;font-size:13px;color:#b2b6ca"><i class="ph ph-wifi-slash" style="font-size:15px;color:#9184d9"></i>Sin conexión — mostrando datos de las 9:12</div>
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;background:#2b2741;font-size:13px;color:#d2cefd"><i class="ph ph-arrow-clockwise" style="font-size:15px"></i>Hay una versión nueva de PetDex<button class="btn btn-ghost" style="margin-left:auto;font-size:13px">Recargar</button></div>
+    <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;background:#1e2030;font-size:13px;color:#b2b6ca"><i class="ph ph-warning" style="font-size:15px;color:#b5abfc"></i><span>No se pudo guardar el avistamiento de <a href="#1n">Luna</a> — el día ya estaba registrado.</span><button class="btn btn-icon btn-ghost" style="width:28px;height:28px;margin-left:auto"><i class="ph ph-x" style="font-size:14px;color:#75798c"></i></button></div>
+  </div>
+  <div style="font-size:11px;line-height:1.55;color:#75798c"><span style="color:#cfd3e5">△ Vacíos con marca.</span> Los tres estados comparten la misma figura: círculo punteado de 72px con un ícono, título, una línea de explicación y como mucho una acción. Es la misma forma que el círculo punteado de “sin registro” en el calendario, así que el vocabulario cierra. Los avisos son franjas de 1 línea: la de update es la única tintada de acento.</div>
+</div>
+</div>
+
+</div>
+
+<p style="margin:34px 0 0;font-size:12px;line-height:1.6;color:#75798c;max-width:760px">Para seguir: “el catálogo con la variante <a href="#1e">1e</a>-B de header” · “ficha <a href="#1g">1g</a> pero con el calendario arriba de los datos” · “agregá el estado hover/focus de cada control para el handoff” · “una vuelta más de exploración visual del calendario”.</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    const marks = {1:'seen',2:'seen',3:'missed',4:'seen',6:'seen',7:'seen',8:'seen',9:'missed',10:'seen',11:'seen',12:'seen'};
+    const days = [];
+    for (let i = 0; i < 5; i++) days.push({ n: '', blank: true });
+    for (let n = 1; n <= 31; n++) {
+      const m = marks[n] || null, future = n > 12;
+      days.push({ n: String(n), blank: false, seen: m === 'seen', missed: m === 'missed',
+        none: !m && !future, future, pending: n === 12 });
+    }
+    const pets = [
+      { name: 'Luna', alias: 'la tricolor', zone: 'Plaza Mitre', last: 'Hoy', streak: '5 días' },
+      { name: 'Tito', alias: 'el naranja de la esquina', zone: 'Estación', last: 'Ayer', streak: '2 días' },
+      { name: 'Canela', alias: '—', zone: 'Barrio Norte', last: 'Hace 4 días', streak: '—' },
+      { name: 'Sombra', alias: 'negrito', zone: 'Parque Sur', last: 'Hoy', streak: '11 días' },
+      { name: 'Manchas', alias: 'el de la feria', zone: 'Feria', last: 'Hace 2 días', streak: '—' },
+      { name: 'Pelusa', alias: '—', zone: 'Plaza Mitre', last: 'Hace 4 días', streak: '—' }
+    ];
+    return { days, pets };
+  }
+}
+</script>
+</body>
+</html>
