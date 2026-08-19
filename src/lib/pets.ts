@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server"
 import type { Milestone } from "@/lib/milestones"
+import type { CalendarDayValue } from "@/lib/sightings"
 import type { PetGender, PetOutcome, PetVisibility } from "@/lib/validation/pet-schema"
 
 export type PetSummary = {
+  id: string
   slug: string
   name: string
   nicknames: string[]
@@ -13,6 +15,7 @@ export type PetSummary = {
   visibility: PetVisibility
   gender: PetGender
   seenToday: boolean
+  todayValue: CalendarDayValue
   lastSeenOn: string | null
 }
 
@@ -42,13 +45,14 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
   const { data, error } = await supabase
     .from("pets_overview")
     .select(
-      "slug, name, nicknames, photo_url, zone, status, sterilized, visibility, gender, seen_today, last_seen_on"
+      "id, slug, name, nicknames, photo_url, zone, status, sterilized, visibility, gender, seen_today, today_not_there, last_seen_on"
     )
     .order("registered_on", { ascending: false })
 
   if (error) throw error
 
   return (data ?? []).map((row) => ({
+    id: row.id!,
     slug: row.slug!,
     name: row.name!,
     nicknames: row.nicknames ?? [],
@@ -59,8 +63,15 @@ export async function getPetSummaries(): Promise<PetSummary[]> {
     visibility: (row.visibility ?? "publico") as PetVisibility,
     gender: (row.gender ?? "desconocido") as PetGender,
     seenToday: row.seen_today ?? false,
+    todayValue: todayValueFromRow(row.seen_today, row.today_not_there),
     lastSeenOn: row.last_seen_on,
   }))
+}
+
+function todayValueFromRow(seenToday: boolean | null, todayNotThere: boolean | null): CalendarDayValue {
+  if (seenToday) return "visto"
+  if (todayNotThere) return "revisado_no_estaba"
+  return "sin_registro"
 }
 
 export async function getPetCount(): Promise<number> {

@@ -4,6 +4,7 @@ import type { PetSummary } from "@/lib/pets"
 
 function pet(overrides: Partial<PetSummary> = {}): PetSummary {
   return {
+    id: "00000000-0000-0000-0000-000000000000",
     slug: "firulais",
     name: "Firulais",
     nicknames: [],
@@ -14,6 +15,7 @@ function pet(overrides: Partial<PetSummary> = {}): PetSummary {
     visibility: "publico",
     gender: "desconocido",
     seenToday: false,
+    todayValue: "sin_registro",
     lastSeenOn: null,
     ...overrides,
   }

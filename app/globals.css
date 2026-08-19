@@ -168,6 +168,14 @@ html[data-view="list"] .pet-card-placeholder-list {
   display: flex;
 }
 
+/* Botón de marcar avistamiento (<MarkTodayToggle>): en grid flota sobre la
+   foto (absolute, definido en pet-card.tsx); en lista pasa a ser un ítem
+   más de la fila, empujado al extremo derecho. */
+html[data-view="list"] .pet-card-mark-toggle {
+  position: static;
+  margin-left: auto;
+}
+
 /* Rules fade to transparent at both ends instead of stopping cleanly — a
    Nocturne signature (nocturne.css .hr, portado como utilidad de fondo). */
 .divider-fade {

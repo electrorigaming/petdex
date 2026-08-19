@@ -199,6 +199,7 @@ export type Database = {
           slug: string | null
           status: string | null
           sterilized: boolean | null
+          today_not_there: boolean | null
           total_sightings: number | null
           visibility: string | null
           weight_kg: number | null
@@ -221,6 +222,7 @@ export type Database = {
           slug?: string | null
           status?: never
           sterilized?: boolean | null
+          today_not_there?: never
           total_sightings?: never
           visibility?: string | null
           weight_kg?: number | null
@@ -243,6 +245,7 @@ export type Database = {
           slug?: string | null
           status?: never
           sterilized?: boolean | null
+          today_not_there?: never
           total_sightings?: never
           visibility?: string | null
           weight_kg?: number | null
