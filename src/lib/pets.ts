@@ -16,7 +16,7 @@ export type PetSummary = {
   lastSeenOn: string | null
 }
 
-export type PetStatus = "activo" | "sin_ver" | "adoptado" | "fallecido"
+export type PetStatus = "activo" | "sin_ver" | "adoptado" | "fallecido" | "desconocido"
 
 export type PetDetail = {
   name: string

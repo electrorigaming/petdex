@@ -1,16 +1,17 @@
 import { z } from "zod"
 
-// Los 4 valores que puede mostrar la ficha/cuadrícula/filtros — activo y
+// Los 5 valores que puede mostrar la ficha/cuadrícula/filtros — activo y
 // sin_ver ya no se cargan a mano, pets_overview los calcula solos según
-// los avistamientos (migración 20260817120000). Acá siguen los 4 porque
+// los avistamientos (migración 20260817120000). Acá siguen los 5 porque
 // esta lista sigue siendo la taxonomía de LECTURA completa.
-export const PET_STATUS_OPTIONS = ["activo", "sin_ver", "adoptado", "fallecido"] as const
+export const PET_STATUS_OPTIONS = ["activo", "sin_ver", "adoptado", "fallecido", "desconocido"] as const
 
 export const PET_STATUS_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number], string> = {
   activo: "Activo",
   sin_ver: "Desaparecido",
   adoptado: "Adoptado",
   fallecido: "Fallecido",
+  desconocido: "Desconocido",
 }
 
 // Forma para prosa/UI (ficha, tarjetas) — distinta de PET_STATUS_LABEL,
@@ -20,6 +21,7 @@ export const PET_STATUS_DISPLAY_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number
   sin_ver: "Desaparecida",
   adoptado: "Adoptada",
   fallecido: "Fallecida",
+  desconocido: "Desconocida",
 }
 
 // Único subconjunto que se sigue cargando a mano, desde el formulario
@@ -27,11 +29,11 @@ export const PET_STATUS_DISPLAY_LABEL: Record<(typeof PET_STATUS_OPTIONS)[number
 // sobre lo que digan los avistamientos. Sin desenlace (outcome null), el
 // estado mostrado sale de si hubo un avistamiento "visto" en los últimos
 // 3 días — ver la migración para el detalle exacto de la regla.
-export const PET_OUTCOME_OPTIONS = ["adoptado", "fallecido"] as const
+export const PET_OUTCOME_OPTIONS = ["adoptado", "fallecido", "desconocido"] as const
 
 export type PetOutcome = (typeof PET_OUTCOME_OPTIONS)[number] | null
 
-export const PET_OUTCOME_NONE_LABEL = "Ninguno (según avistamientos)"
+export const PET_OUTCOME_NONE_LABEL = "Por avistamiento"
 
 export const PET_VISIBILITY_OPTIONS = ["publico", "privado"] as const
 
