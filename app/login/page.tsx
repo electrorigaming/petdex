@@ -18,8 +18,8 @@ export default async function LoginPage({
       <div>
         <h4 className="mb-1.5 text-h4 text-text">Entrar para editar</h4>
         <p className="text-body text-text-secondary">
-          Mirar el registro no necesita cuenta. Solo las personas autorizadas del barrio pueden
-          agregar mascotas y marcar avistamientos.
+          Ver el Registro no necesita cuenta. Solicita una cuenta para agregar hitos, editar y
+          marcar avistamientos.
         </p>
       </div>
       <LoginButton next={next} />

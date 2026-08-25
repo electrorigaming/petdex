@@ -54,7 +54,8 @@ export function AccountRequestForm() {
       <div>
         <p className="text-label font-medium text-text">¿No tenés cuenta?</p>
         <p className="text-meta text-text-secondary">
-          Pedí acceso como Usuario para editar hitos y marcar avistamientos.
+          Pedí acceso como Usuario para editar hitos, marcar avistamientos y crear mascotas
+          privadas.
         </p>
       </div>
       <div className="field">
