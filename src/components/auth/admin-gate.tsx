@@ -17,11 +17,15 @@
 import type { ReactNode } from "react"
 import { useSession } from "@/hooks/use-session"
 import { NotAdminScreen } from "@/components/auth/not-admin-screen"
+import { RequestPendingScreen } from "@/components/auth/request-pending-screen"
 
 export function AdminGate({ children }: { children: ReactNode }) {
-  const { isAuthenticated, isAdmin, loading } = useSession()
+  const { isAuthenticated, isAdmin, isEditor, requestStatus, loading } = useSession()
 
-  if (!loading && isAuthenticated && !isAdmin) {
+  if (!loading && isAuthenticated && !isAdmin && !isEditor) {
+    if (requestStatus === "pendiente") {
+      return <RequestPendingScreen />
+    }
     return <NotAdminScreen />
   }
 

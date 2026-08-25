@@ -8,6 +8,7 @@ import { z } from "zod"
 import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check"
 import { WarningIcon } from "@phosphor-icons/react/dist/ssr/Warning"
 import { createPet, updatePet } from "@/lib/actions/pets"
+import { useSession } from "@/hooks/use-session"
 import {
   petFieldsSchema,
   PET_STATUS_LABEL,
@@ -66,6 +67,13 @@ function parseNicknames(text: string): string[] {
 
 export function PetForm(props: PetFormProps) {
   const router = useRouter()
+  // Una cuenta Usuario solo puede crear/editar mascotas Privadas propias
+  // (007-roles-y-solicitudes, FR-004/FR-007): nunca ve el campo Tipo, y el
+  // valor siempre viaja fijo en "privado" — en modo editar ya llega así en
+  // initialValues (garantizado por RLS: si puede cargar esta ficha y es
+  // Privada, es la creadora), en modo crear se fuerza más abajo.
+  const { role, loading: sessionLoading } = useSession()
+  const isUsuario = role === "usuario"
   // Generado una sola vez en el cliente: sirve como pets.id (el insert lo
   // provee explícito) y como prefijo de la ruta de Storage antes de que la
   // fila exista (research.md §4).
@@ -108,6 +116,12 @@ export function PetForm(props: PetFormProps) {
   })
 
   const name = watch("name")
+
+  useEffect(() => {
+    if (isUsuario) {
+      setValue("visibility", "privado", { shouldDirty: false })
+    }
+  }, [isUsuario, setValue])
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent) {
@@ -339,27 +353,29 @@ export function PetForm(props: PetFormProps) {
             />
           </div>
 
-          <div className="field">
-            <Label>Tipo</Label>
-            <Controller
-              control={control}
-              name="visibility"
-              render={({ field }) => (
-                <div className="mt-1.5 flex flex-wrap gap-4">
-                  {PET_VISIBILITY_OPTIONS.map((visibility) => (
-                    <Radio
-                      key={visibility}
-                      name="visibility"
-                      checked={field.value === visibility}
-                      onChange={() => field.onChange(visibility)}
-                    >
-                      {PET_VISIBILITY_LABEL[visibility]}
-                    </Radio>
-                  ))}
-                </div>
-              )}
-            />
-          </div>
+          {!isUsuario && !sessionLoading && (
+            <div className="field">
+              <Label>Tipo</Label>
+              <Controller
+                control={control}
+                name="visibility"
+                render={({ field }) => (
+                  <div className="mt-1.5 flex flex-wrap gap-4">
+                    {PET_VISIBILITY_OPTIONS.map((visibility) => (
+                      <Radio
+                        key={visibility}
+                        name="visibility"
+                        checked={field.value === visibility}
+                        onChange={() => field.onChange(visibility)}
+                      >
+                        {PET_VISIBILITY_LABEL[visibility]}
+                      </Radio>
+                    ))}
+                  </div>
+                )}
+              />
+            </div>
+          )}
 
           <div className="field">
             <Label htmlFor="description">Descripción</Label>

@@ -37,7 +37,7 @@ function EmptyFigure({
 }
 
 export function EmptyState() {
-  const { isAuthenticated } = useSession()
+  const { isEditor } = useSession()
 
   return (
     <EmptyFigure
@@ -45,7 +45,7 @@ export function EmptyState() {
       title="Todavía no hay ninguna mascota"
       description="Empezá por la que más ves: nombre, zona y una foto alcanzan."
     >
-      {isAuthenticated && (
+      {isEditor && (
         <Button asChild variant="primary" className="mt-0.5">
           <Link href="/mascotas/nueva">
             <PlusIcon size={15} aria-hidden="true" />

@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { LoginButton } from "@/components/auth/login-button"
+import { AccountRequestForm } from "@/components/account-requests/account-request-form"
 import { Logo } from "@/components/logo"
 
 export default async function LoginPage({
@@ -22,6 +23,8 @@ export default async function LoginPage({
         </p>
       </div>
       <LoginButton next={next} />
+      <div className="divider-fade" />
+      <AccountRequestForm />
       <Link href="/" className="text-center text-meta text-text-secondary hover:text-text">
         Volver al registro
       </Link>

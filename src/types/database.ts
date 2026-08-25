@@ -14,17 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
-      admins: {
+      account_requests: {
         Row: {
+          display_name: string
+          email: string
+          id: string
+          requested_at: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          display_name: string
+          email: string
+          id?: string
+          requested_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          display_name?: string
+          email?: string
+          id?: string
+          requested_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      app_users: {
+        Row: {
+          approved_by: string | null
           created_at: string
+          display_name: string
+          email: string
+          role: string
           user_id: string
         }
         Insert: {
+          approved_by?: string | null
           created_at?: string
+          display_name: string
+          email: string
+          role: string
           user_id: string
         }
         Update: {
+          approved_by?: string | null
           created_at?: string
+          display_name?: string
+          email?: string
+          role?: string
           user_id?: string
         }
         Relationships: []
@@ -67,6 +112,51 @@ export type Database = {
           },
           {
             foreignKeyName: "milestones_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets_overview"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pet_activity_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          actor_label: string
+          created_at: string
+          detail: string | null
+          id: string
+          pet_id: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          actor_label: string
+          created_at?: string
+          detail?: string | null
+          id?: string
+          pet_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          actor_label?: string
+          created_at?: string
+          detail?: string | null
+          id?: string
+          pet_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pet_activity_log_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pet_activity_log_pet_id_fkey"
             columns: ["pet_id"]
             isOneToOne: false
             referencedRelation: "pets_overview"
@@ -255,7 +345,10 @@ export type Database = {
       }
     }
     Functions: {
+      claim_approved_account: { Args: never; Returns: undefined }
+      current_actor_label: { Args: never; Returns: string }
       is_admin: { Args: never; Returns: boolean }
+      is_editor: { Args: never; Returns: boolean }
       mark_sighting: {
         Args: {
           p_date?: string
@@ -277,6 +370,13 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      my_account_status: {
+        Args: never
+        Returns: {
+          request_status: string
+          role: string
+        }[]
       }
       today_local: { Args: never; Returns: string }
     }

@@ -92,3 +92,43 @@ describe("RLS: sightings_admin_write (rpc mark_sighting)", () => {
     await admin.auth.signOut()
   })
 })
+
+describe("RLS: sightings_editor_write con cuenta Usuario (feature 007)", () => {
+  it("permite mark_sighting a una cuenta Usuario sobre una mascota pública", async () => {
+    const admin = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    await admin.auth.signInWithPassword({
+      email: process.env.TEST_ADMIN_EMAIL!,
+      password: process.env.TEST_ADMIN_PASSWORD!,
+    })
+    const pet = await createTestPetAsAdmin(admin)
+    await admin.auth.signOut()
+
+    const usuario = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    await usuario.auth.signInWithPassword({
+      email: process.env.TEST_USER_EMAIL!,
+      password: process.env.TEST_USER_PASSWORD!,
+    })
+
+    const { data, error } = await usuario.rpc("mark_sighting", {
+      p_pet_id: pet.id,
+      p_seen: true,
+      p_date: "2026-08-11",
+    })
+    expect(error).toBeNull()
+    expect(data?.seen).toBe(true)
+    await usuario.auth.signOut()
+
+    await admin.auth.signInWithPassword({
+      email: process.env.TEST_ADMIN_EMAIL!,
+      password: process.env.TEST_ADMIN_PASSWORD!,
+    })
+    await admin.from("pets").delete().eq("id", pet.id)
+    await admin.auth.signOut()
+  })
+})

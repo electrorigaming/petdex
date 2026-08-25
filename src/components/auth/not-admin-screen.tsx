@@ -42,6 +42,9 @@ export function NotAdminScreen() {
           Ver el registro
         </Link>
       </div>
+      <Link href="/login" className="text-meta text-text-secondary hover:text-text">
+        Solicitar una cuenta de Usuario
+      </Link>
     </main>
   )
 }

@@ -92,7 +92,7 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
 
   const previousPhotoUrl = existing.photo_url
 
-  const { error } = await supabase
+  const { data: updated, error } = await supabase
     .from("pets")
     .update({
       name: values.name,
@@ -116,9 +116,19 @@ export async function updatePet(id: string, input: UpdatePetInput): Promise<Writ
       ...(values.photoUrl !== undefined ? { photo_url: values.photoUrl } : {}),
     })
     .eq("id", id)
+    .select("id")
+    .maybeSingle()
 
   if (error) {
     return { ok: false, message: mapPostgresError(error) }
+  }
+  // Un update sin fila afectada no es un error de Postgres (a diferencia de
+  // un insert) — RLS simplemente no encontró nada que tocar. Sin esto, una
+  // cuenta sin permiso vería "guardado" sin que nada haya cambiado
+  // (007-roles-y-solicitudes, research.md §10: el rol Usuario es la primera
+  // cuenta que puede leer una mascota Pública sin poder escribirla).
+  if (!updated) {
+    return { ok: false, message: "No tenés permiso para editar esta mascota." }
   }
 
   // Orden de operaciones: la fila ya se actualizó con éxito arriba — recién
@@ -172,9 +182,17 @@ export async function deletePet(
   const { data: milestones } = await supabase.from("milestones").select("*").eq("pet_id", id)
   const { data: sightings } = await supabase.from("sightings").select("*").eq("pet_id", id)
 
-  const { error } = await supabase.from("pets").delete().eq("id", id)
+  const { error, count } = await supabase.from("pets").delete({ count: "exact" }).eq("id", id)
   if (error) {
     return { ok: false, message: mapPostgresError(error) }
+  }
+  // Mismo motivo que en updatePet(): un delete sin fila afectada no reporta
+  // error — sin este chequeo, el snapshot ya leído más arriba (que sí pasó
+  // por RLS de lectura) se devolvería como si el borrado hubiera funcionado,
+  // y "Deshacer" fallaría después con un error de clave primaria duplicada
+  // en vez de uno de permiso (research.md §10).
+  if (count === 0) {
+    return { ok: false, message: "No tenés permiso para eliminar esta mascota." }
   }
 
   // La foto NO se borra del storage acá a propósito: si se restaura la

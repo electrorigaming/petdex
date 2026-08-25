@@ -53,7 +53,7 @@ function SearchField({ className }: { className?: string }) {
 
 export function AppHeader() {
   const pathname = usePathname()
-  const { isAuthenticated, loading, email } = useSession()
+  const { isAuthenticated, isAdmin, loading, email } = useSession()
   const isCatalog = pathname === "/"
 
   return (
@@ -69,6 +69,14 @@ export function AppHeader() {
           <>
             {isAuthenticated ? (
               <>
+                {isAdmin && (
+                  <Link
+                    href="/admin/solicitudes"
+                    className="hidden text-meta text-text-secondary hover:text-text md:inline"
+                  >
+                    Solicitudes
+                  </Link>
+                )}
                 <AddPetButton />
                 {email && (
                   <span className="hidden text-meta text-text-secondary md:inline">{email}</span>

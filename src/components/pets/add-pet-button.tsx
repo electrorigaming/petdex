@@ -17,8 +17,8 @@ import { useSession } from "@/hooks/use-session"
 import { Button } from "@/components/ui/button"
 
 export function AddPetButton() {
-  const { isAuthenticated, loading } = useSession()
-  if (loading || !isAuthenticated) return null
+  const { isEditor, loading } = useSession()
+  if (loading || !isEditor) return null
 
   return (
     <>

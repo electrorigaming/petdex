@@ -12,24 +12,31 @@
 import { useSession } from "@/hooks/use-session"
 import { EditPetButton } from "@/components/pets/edit-pet-button"
 import { DeletePetButton } from "@/components/pets/delete-pet-button"
+import type { PetVisibility } from "@/lib/validation/pet-schema"
 
 export function PetAdminActions({
   slug,
   petId,
   petName,
+  visibility,
 }: {
   slug: string
   petId: string
   petName: string
+  visibility: PetVisibility
 }) {
-  const { isAuthenticated, loading } = useSession()
-  if (loading || !isAuthenticated) return null
+  // Una cuenta Usuario solo edita/elimina su propia mascota Privada — si
+  // `visibility` es "privado" y esta cuenta pudo cargar la ficha, por RLS ya
+  // es su creadora (007-roles-y-solicitudes, research.md §8).
+  const { isAdmin, isEditor, loading } = useSession()
+  const canWrite = isAdmin || (isEditor && visibility === "privado")
+  if (loading || !canWrite) return null
 
   return (
     <div className="flex items-center justify-end gap-1">
-      <EditPetButton slug={slug} />
+      <EditPetButton slug={slug} visibility={visibility} />
       <span className="mx-1.5 h-[18px] w-px bg-divider" aria-hidden="true" />
-      <DeletePetButton petId={petId} petName={petName} />
+      <DeletePetButton petId={petId} petName={petName} visibility={visibility} />
     </div>
   )
 }

@@ -1,8 +1,8 @@
 # PetDex
 
 PWA de registro y seguimiento de animales callejeros de un barrio.
-Lectura pública sin cuenta; escritura solo para cuentas administradoras
-autorizadas (login con Google).
+Lectura pública sin cuenta; escritura solo para cuentas autorizadas (login
+con Google), con dos roles: Administradora y Usuario.
 
 **Stack:** Next.js App Router · TypeScript · Tailwind · shadcn/ui · Supabase · Vercel
 **Metodología:** Spec-Driven Development (Spec-Kit). Los artefactos viven en `specs/`.
@@ -29,12 +29,34 @@ NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 ```
 
-### Login de administradoras
+### Login y roles
 
 Google Sign-In únicamente — sin contraseña propia, sin registro, sin
-recuperación de contraseña. **Puede haber más de una cuenta administradora**:
-cada email de Google autorizado se carga a mano en la tabla `admins`, todas
-con exactamente los mismos permisos, sin roles ni jerarquía entre ellas.
+recuperación de contraseña. Toda cuenta con acceso vive en `app_users`
+(`user_id`, `email`, `display_name`, `role`, `approved_by`), con dos roles:
+
+- **Administradora**: crea/edita/elimina cualquier mascota Pública; sus
+  propias mascotas Privadas; aprueba/rechaza/revoca cuentas Usuario; es la
+  única que ve el Historial de una mascota.
+- **Usuario**: agrega/edita/elimina hitos y marca avistamientos en
+  cualquier mascota Pública; puede crear sus propias mascotas, siempre y
+  únicamente con Tipo Privado, y editar/eliminar solo esas — nunca una
+  mascota Pública, nunca el campo Tipo, nunca una Privada ajena (ni
+  siquiera una administradora ve la Privada de una cuenta Usuario — mismo
+  aislamiento que ya rige entre dos administradoras distintas).
+
+**Puede haber más de una cuenta de cada rol**: todas con exactamente los
+mismos permisos dentro de su rol, sin jerarquía entre ellas. El alta directa
+por SQL (mismo criterio que antes con `admins`) sigue siendo válida para
+ambos roles. Además, en `/login` hay un formulario público (sin sesión) para
+solicitar una cuenta Usuario; una administradora la aprueba o rechaza desde
+`/admin/solicitudes`, y el rol se otorga recién en el próximo login real de
+Google con ese email (`rpc('claim_approved_account')`, llamado desde
+`app/auth/callback/route.ts`) — aprobar no alcanza por sí solo.
+
+Cada mascota tiene un registro de modificaciones de solo lectura
+(`pet_activity_log`), llenado únicamente por triggers — ninguna cuenta,
+incluida una administradora, puede escribirlo a mano.
 
 ### Clientes de Supabase
 

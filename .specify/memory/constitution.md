@@ -1,28 +1,29 @@
 <!--
-Sync Impact Report — v1.0.0 → 1.1.0
-- Version change: 1.0.0 → 1.1.0 (MINOR: expande alcance v1 + actualiza
-  rationale de un principio existente, sin redefinirlo de forma incompatible)
-- Trigger: clarificación de la feature 002-panel-administracion
-  (specs/002-panel-administracion/spec.md) — el login del panel de admin pasa
-  de "una única cuenta con email/contraseña" a "múltiples cuentas
-  administradoras autorizadas por email de Google (Google Sign-In)", todas
-  con los mismos permisos, sin roles ni jerarquía.
+Sync Impact Report — v1.1.0 → 1.2.0
+- Version change: 1.1.0 → 1.2.0 (MINOR: expande un principio existente para
+  admitir más de un rol de escritura, sin redefinir su garantía central)
+- Trigger: feature 007-roles-y-solicitudes
+  (specs/007-roles-y-solicitudes/spec.md) — se agrega el rol Usuario (permisos
+  acotados frente a Administradora: puede escribir hitos y avistamientos, no
+  puede crear/editar/eliminar mascotas), con alta por solicitud pública
+  aprobada por una administradora.
 - Modified principles:
-  - I. Los permisos viven en la base de datos — Rationale actualizado: "una
-    sola cuenta de escritura" → "un conjunto acotado de cuentas de escritura
-    (administradoras autorizadas por Google, todas con los mismos permisos)".
-    La regla central del principio (RLS como única garantía real, service
-    role key prohibida) no cambió.
+  - I. Los permisos viven en la base de datos — Rationale actualizado:
+    "cuentas de escritura ... todas con exactamente los mismos permisos, sin
+    roles ni jerarquía entre ellas" → "cuentas de escritura agrupadas en
+    roles con permisos distintos entre sí; dentro de un mismo rol, ninguna
+    cuenta tiene más privilegios que otra". La regla central del principio
+    (RLS como única garantía real, service role key prohibida) no cambió.
 - Added principles: ninguno
 - Removed principles: ninguno
-- Scope change: "Stack y Alcance" — se retira "múltiples administradores" de
-  la lista de exclusiones del alcance v1 (ahora está dentro de alcance).
+- Scope change: ninguno en "Stack y Alcance" — el rol Usuario y la solicitud
+  de cuenta ya estaban dentro del alcance de "panel de admin" de v1.
 - Added sections: ninguna
 - Removed sections: ninguna
 - Templates requiring follow-up: none — .specify/templates/*.md reference the
   constitution generically and need no principle-specific edits.
-- Deferred TODOs: `CLAUDE.md` se actualiza en el mismo cambio para reflejar
-  esta enmienda (guía operativa derivada de esta constitución).
+- Deferred TODOs: `CLAUDE.md` se actualiza como parte de la implementación de
+  007-roles-y-solicitudes para reflejar esta enmienda.
 -->
 
 # PetDex Constitution
@@ -40,12 +41,14 @@ La service role key de Supabase NO se usa en este proyecto: no vive en el
 destrabar una tarea, eso es una señal de que una política está mal escrita;
 la solución es arreglar la política, nunca saltear RLS.
 **Rationale**: Es una app de lectura pública con un conjunto acotado de
-cuentas de escritura — cada una una cuenta de Google autorizada manualmente
-como administradora, todas con exactamente los mismos permisos, sin roles ni
-jerarquía entre ellas. Sin este principio, cualquier descuido en una Server
-Action expondría escritura no autorizada; centralizar la garantía en Postgres
-hace que la seguridad no dependa de que cada nuevo endpoint recuerde
-revalidar, sin importar cuántas cuentas administradoras existan.
+cuentas de escritura, agrupadas en roles (por ejemplo Administradora y
+Usuario) con permisos distintos entre sí — cada cuenta es una de Google
+autorizada manualmente o mediante una solicitud aprobada. Dentro de un mismo
+rol, todas las cuentas tienen exactamente los mismos permisos, sin jerarquía
+entre ellas. Sin este principio, cualquier descuido en una Server Action
+expondría escritura no autorizada; centralizar la garantía en Postgres hace
+que la seguridad no dependa de que cada nuevo endpoint recuerde revalidar,
+sin importar cuántos roles o cuentas existan.
 
 ### II. Minimalismo visual (Swiss Style)
 La interfaz sigue una estética Swiss Style minimalista: paleta neutra con un
@@ -150,4 +153,4 @@ explícitamente en la descripción del cambio. `CLAUDE.md`, en la raíz del
 repositorio, sirve como guía operativa del día a día derivada de esta
 constitución.
 
-**Version**: 1.1.0 | **Ratified**: 2026-08-09 | **Last Amended**: 2026-08-10
+**Version**: 1.2.0 | **Ratified**: 2026-08-09 | **Last Amended**: 2026-08-24

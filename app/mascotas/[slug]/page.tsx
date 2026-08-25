@@ -4,6 +4,7 @@ import { CaretLeftIcon } from "@phosphor-icons/react/dist/ssr/CaretLeft"
 import { MilestoneTimeline } from "@/components/milestone-timeline"
 import { PetDetail } from "@/components/pet-detail"
 import { PetAdminActions } from "@/components/pets/pet-admin-actions"
+import { ActivityLog } from "@/components/pets/activity-log"
 import { PetSightingsSection } from "@/components/sightings/pet-sightings-section"
 import { getAllPetSlugs, getMilestonesForPet, getPetBySlug } from "@/lib/pets"
 
@@ -38,7 +39,7 @@ export default async function PetPage({
       </Link>
       <div className="flex flex-col gap-5 md:grid md:grid-cols-[472px_minmax(0,1fr)] md:items-start md:gap-14">
         <div className="flex flex-col gap-5">
-          <PetAdminActions slug={slug} petId={pet.id} petName={pet.name} />
+          <PetAdminActions slug={slug} petId={pet.id} petName={pet.name} visibility={pet.visibility} />
           <PetDetail pet={pet} />
         </div>
         <div className="flex flex-col gap-6">
@@ -49,6 +50,7 @@ export default async function PetPage({
             registeredOn={pet.registeredOn}
           />
           <MilestoneTimeline milestones={milestones} petSlug={slug} />
+          <ActivityLog petId={pet.id} />
         </div>
       </div>
     </main>

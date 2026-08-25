@@ -19,6 +19,7 @@ import { deletePet, restorePet } from "@/lib/actions/pets"
 import { useSession } from "@/hooks/use-session"
 import { useDeleteUndo } from "@/components/delete-undo-context"
 import { Button } from "@/components/ui/button"
+import type { PetVisibility } from "@/lib/validation/pet-schema"
 import {
   Dialog,
   DialogContent,
@@ -29,15 +30,24 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-export function DeletePetButton({ petId, petName }: { petId: string; petName: string }) {
-  const { isAuthenticated, loading } = useSession()
+export function DeletePetButton({
+  petId,
+  petName,
+  visibility,
+}: {
+  petId: string
+  petName: string
+  visibility: PetVisibility
+}) {
+  const { isAdmin, isEditor, loading } = useSession()
+  const canWrite = isAdmin || (isEditor && visibility === "privado")
   const router = useRouter()
   const { announceUndo } = useDeleteUndo()
   const [open, setOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  if (loading || !isAuthenticated) return null
+  if (loading || !canWrite) return null
 
   async function handleConfirm() {
     setDeleting(true)

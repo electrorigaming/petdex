@@ -23,7 +23,7 @@ import { todayLocal } from "@/lib/dates"
 import { enqueueSighting } from "@/lib/offline/queue"
 import { subscribe } from "@/lib/offline/events"
 import { usePendingSighting } from "@/hooks/use-pending-sighting"
-import { AdminOnly } from "@/components/auth/admin-only"
+import { EditorOnly } from "@/components/auth/editor-only"
 import { cn } from "@/lib/utils"
 
 const NEXT_SEEN: Record<CalendarDayValue, boolean> = {
@@ -46,9 +46,9 @@ export function MarkTodayToggle(props: {
   className?: string
 }) {
   return (
-    <AdminOnly>
+    <EditorOnly>
       <MarkTodayToggleInner {...props} />
-    </AdminOnly>
+    </EditorOnly>
   )
 }
 

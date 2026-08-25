@@ -113,7 +113,7 @@ function FilterablePetGrid({
   const [zone, setZoneState] = useState(ALL_ZONES)
   const [filters, setFilters] = useState<PetFilters>(DEFAULT_PET_FILTERS)
   const [filtersOpen, setFiltersOpen] = useState(false)
-  const { isAdmin } = useSession()
+  const { isEditor } = useSession()
 
   const router = useRouter()
   const [isRefreshing, startRefresh] = useTransition()
@@ -330,7 +330,7 @@ function FilterablePetGrid({
               ))}
             </div>
           </div>
-          {isAdmin && (
+          {isEditor && (
             <div>
               <p className="mb-1.5 text-legend uppercase tracking-wide text-text-secondary">Tipo</p>
               <div className="flex flex-wrap gap-2">

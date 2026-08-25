@@ -30,7 +30,7 @@ export function PetSightingsSection({
   petName: string
   registeredOn: string
 }) {
-  const { isAuthenticated } = useSession()
+  const { isEditor } = useSession()
   const yesterday = addDays(todayLocal(), -1)
   // Una mascota registrada hoy no tiene ningún día pasado para corregir.
   const hasPastDay = registeredOn <= yesterday
@@ -79,10 +79,10 @@ export function PetSightingsSection({
         // <MarkTodayControl> (<AdminOnly>), no se ofrece a quien no tiene
         // sesión (RLS igual la rechazaría, pero no tiene sentido abrir el
         // diálogo para que falle).
-        onDaySelect={isAuthenticated ? handleDaySelect : undefined}
-        onCorrectDay={isAuthenticated && hasPastDay ? handleManualEntry : undefined}
+        onDaySelect={isEditor ? handleDaySelect : undefined}
+        onCorrectDay={isEditor && hasPastDay ? handleManualEntry : undefined}
       />
-      {isAuthenticated && (
+      {isEditor && (
         <PastDayDialog
           petId={petId}
           date={selectedPastDate}

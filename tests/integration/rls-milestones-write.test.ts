@@ -124,3 +124,65 @@ describe("RLS: milestones_admin_write", () => {
     expect(count).toBe(1)
   })
 })
+
+describe("RLS: milestones_editor_write con cuenta Usuario (feature 007)", () => {
+  it("permite insert/update/delete a una cuenta Usuario sobre el hito de una mascota pública", async () => {
+    const admin = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    await admin.auth.signInWithPassword({
+      email: process.env.TEST_ADMIN_EMAIL!,
+      password: process.env.TEST_ADMIN_PASSWORD!,
+    })
+    const { data: pet, error: petError } = await admin
+      .from("pets")
+      .insert({ id: crypto.randomUUID(), slug: `rls-milestones-usuario-${Date.now()}`, name: "RLS milestones usuario" })
+      .select()
+      .single()
+    if (petError) throw petError
+    await admin.auth.signOut()
+
+    const usuario = createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    await usuario.auth.signInWithPassword({
+      email: process.env.TEST_USER_EMAIL!,
+      password: process.env.TEST_USER_PASSWORD!,
+    })
+
+    const { data: created, error: createError } = await usuario
+      .from("milestones")
+      .insert({ pet_id: pet.id, title: "Hito de usuario", occurred_on: "2026-01-01" })
+      .select()
+      .single()
+    expect(createError).toBeNull()
+    expect(created?.title).toBe("Hito de usuario")
+
+    const { data: updated, error: updateError } = await usuario
+      .from("milestones")
+      .update({ title: "Hito editado por usuario" })
+      .eq("id", created!.id)
+      .select()
+      .single()
+    expect(updateError).toBeNull()
+    expect(updated?.title).toBe("Hito editado por usuario")
+
+    const { error: deleteError, count } = await usuario
+      .from("milestones")
+      .delete({ count: "exact" })
+      .eq("id", created!.id)
+    expect(deleteError).toBeNull()
+    expect(count).toBe(1)
+
+    await usuario.auth.signOut()
+
+    await admin.auth.signInWithPassword({
+      email: process.env.TEST_ADMIN_EMAIL!,
+      password: process.env.TEST_ADMIN_PASSWORD!,
+    })
+    await admin.from("pets").delete().eq("id", pet.id)
+    await admin.auth.signOut()
+  })
+})

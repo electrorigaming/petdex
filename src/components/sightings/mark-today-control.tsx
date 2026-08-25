@@ -20,7 +20,7 @@ import { todayLocal } from "@/lib/dates"
 import { enqueueSighting } from "@/lib/offline/queue"
 import { subscribe } from "@/lib/offline/events"
 import { usePendingSighting } from "@/hooks/use-pending-sighting"
-import { AdminOnly } from "@/components/auth/admin-only"
+import { EditorOnly } from "@/components/auth/editor-only"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -42,9 +42,9 @@ export function MarkTodayControl({
   onMarked?: () => void
 }) {
   return (
-    <AdminOnly>
+    <EditorOnly>
       <MarkTodayControlInner petId={petId} petSlug={petSlug} petName={petName} onMarked={onMarked} />
-    </AdminOnly>
+    </EditorOnly>
   )
 }
 

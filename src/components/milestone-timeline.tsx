@@ -26,10 +26,11 @@ export function MilestoneTimeline({
   milestones: Milestone[]
   petSlug: string
 }) {
-  // isAdmin ya no llega del servidor (research.md §1): el HTML de
-  // /mascotas/[slug] no puede variar por sesión para poder cachearlo con el
-  // service worker.
-  const { isAuthenticated: isAdmin } = useSession()
+  // isEditor ya no llega del servidor (research.md §1, 002-panel-administracion):
+  // el HTML de /mascotas/[slug] no puede variar por sesión para poder
+  // cachearlo con el service worker. Admin y Usuario comparten estos
+  // controles por igual (007-roles-y-solicitudes).
+  const { isEditor } = useSession()
   const [milestones, setMilestones] = useState(initialMilestones)
   const [direction, setDirection] = useState<"desc" | "asc">("desc")
   const sorted = sortMilestones(milestones, direction)
@@ -58,7 +59,7 @@ export function MilestoneTimeline({
               Invertir orden
             </Button>
           )}
-          {isAdmin && (
+          {isEditor && (
             <Button asChild variant="secondary">
               <Link href={`/mascotas/${petSlug}/hitos/nuevo`}>
                 <PlusIcon size={14} aria-hidden="true" />
@@ -82,7 +83,7 @@ export function MilestoneTimeline({
                 {milestone.category && (
                   <Badge variant="accent">{CATEGORY_LABEL[milestone.category]}</Badge>
                 )}
-                {isAdmin && (
+                {isEditor && (
                   <span className="ml-auto flex items-center gap-0.5">
                     <Button
                       asChild
